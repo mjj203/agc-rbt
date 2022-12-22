@@ -1,0 +1,77 @@
+{
+    "options": {
+        "paths": {
+            "root": "",
+            "fonts": "../fonts",
+            "mbtiles": "../data",
+            "styles": "../styles"
+        },
+	"serveStaticMaps": true,
+	"formatQuality": {
+		"jpeg": 100,
+		"webp": 100,
+		"png": 100
+	},
+	"maxScaleFactor": 4,
+	"maxSize": 8192,
+	"minRendererPoolSizes": [16,8,4],
+	"maxRendererPoolSizes": [16,8,4],
+	"pbfAlias": "pbf",
+        "serveAllFonts": true
+    },
+    "data": {
+        "RBT": {
+		"mbtiles": "rbt_europe.mbtiles"
+        },
+        "HILLSHADE": {
+		"mbtiles": "hillshade_europe.mbtiles"
+        },
+	"LANDCOVER": {
+		"mbtiles": "landcover_europe.mbtiles"
+	}
+    },
+    "styles": {
+        "RBT-TPC-3395": {
+            "style": "RBT-TPC-3395/style.json",
+            "serve_data": true,
+            "serve_rendered": true,
+            "tilejson": {
+                "format": "png",
+                "bounds": [
+                    -180,
+                    -80,
+                    180,
+                    84
+                ]
+            }
+        },
+        "RBT-JOG-3395": {
+            "style": "RBT-JOG-3395/style.json",
+            "serve_data": true,
+            "serve_rendered": true,
+            "tilejson": {
+                "format": "png",
+                "bounds": [
+                    -180,
+                    -80,
+                    180,
+                    84
+                ]
+            }
+        },
+        "RBT-TLM-3395": {
+            "style": "RBT-TLM-3395/style.json",
+            "serve_data": true,
+            "serve_rendered": true,
+            "tilejson": {
+                "format": "png",
+                "bounds": [
+                    -180,
+                    -80,
+                    180,
+                    84
+                ]
+            }
+        }
+    }
+}
