@@ -111,6 +111,7 @@ Next, start Docker Desktop from the Windows Start menu.
 Select Settings and then General.
 
     Select the Use WSL 2 based engine and Expose daemon on tcp://localhost:2375 check boxes.
+    ![image info](./settings_general.png)
 
 Now select Settings -> Resources -> WSL Integration.
 
