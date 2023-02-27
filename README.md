@@ -22,10 +22,10 @@ Download and install [Git](https://git-scm.com/downloads) and [LFS](https://gith
 #### Install Docker
 Download and install [Docker](https://docs.docker.com/get-docker/) for your OS. For windows ensure [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) is installed by following [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for the latest Windows 10/11 or [Manual WSL](https://learn.microsoft.com/en-us/windows/wsl/install-manual) for older versions. Once WSL is enabled, then follow the [Windows install directions](https://docs.docker.com/desktop/install/windows-install/) and download the [installer](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe).
 
-#### LINUX SETUP
+## LINUX SETUP
 Install git for your distro.
 
-##### For FEDORA/RHEL/CENTOS:
+### For FEDORA/RHEL/CENTOS:
 
 ```
 sudo dnf remove docker docker-client \
@@ -43,7 +43,7 @@ sudo dnf install docker-ce docker-ce-cli \
 git lfs install;
 ```
 
-##### For ubuntu/debian:
+### For ubuntu/debian:
 
 ```
 sudo apt-get remove docker docker-engine docker.io containerd runc;
@@ -63,7 +63,7 @@ sudo apt-get install \
 git lfs install;
 ```
 
-#### WINDOWS SETUP
+## WINDOWS SETUP
 
 Manual install of WSL2 using PowerShell as an admin:
 
@@ -98,7 +98,7 @@ sudo apt upgrade -y;
 sudo apt install git git-lfs;
 git lfs install;
 ```
-##### Turn on Docker Desktop WSL 2
+### Turn on Docker Desktop WSL 2
 
 https://docs.docker.com/desktop/windows/wsl/
 
