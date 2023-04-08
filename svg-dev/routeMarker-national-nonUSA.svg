@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Road_Route_Marker_national_non_USA"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="12px"
+	 viewBox="0 0 22 12" enable-background="new 0 0 22 12" xml:space="preserve">
+<g>
+	<path fill="#FFFFFF" d="M4.0002,11.5003c-1.9297,0-3.5-1.5703-3.5-3.5v-4c0-1.9297,1.5703-3.5,3.5-3.5h14
+		c1.9297,0,3.5,1.5703,3.5,3.5v4c0,1.9297-1.5703,3.5-3.5,3.5H4.0002z"/>
+	<path fill="#4B4B4B" d="M18,1c1.6542,0,3,1.3458,3,3v4c0,1.6542-1.3458,3-3,3H4c-1.6542,0-3-1.3458-3-3V4c0-1.6542,1.3458-3,3-3H18
+		 M18,0H4C1.7909,0,0,1.7909,0,4v4c0,2.2091,1.7909,4,4,4h14c2.2091,0,4-1.7909,4-4V4C22,1.7909,20.2091,0,18,0L18,0z"/>
+</g>
+</svg>
