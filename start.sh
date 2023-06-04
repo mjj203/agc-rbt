@@ -6,6 +6,10 @@ docker rm rbt-tileserver-gl
 docker run -d \
 	--name rbt-tileserver-gl \
 	--restart=always \
+	--ipc=host \
+	--ulimit memlock=-1 \
+	--ulimit stack=67108864 \
+	--shm-size=16gb \
 	-v $(pwd)/fonts:/fonts \
 	-v $(pwd)/data:/data \
 	-v $(pwd)/styles:/styles \

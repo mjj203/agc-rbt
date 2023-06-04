@@ -1,4 +1,11 @@
 {
+  "aerial-tower-communication": {
+    "height": 68,
+    "pixelRatio": 1,
+    "width": 37,
+    "x": 569,
+    "y": 0
+  },
   "brush-thicket-level1": {
     "height": 128,
     "pixelRatio": 1,
@@ -17,106 +24,106 @@
     "height": 24,
     "pixelRatio": 1,
     "width": 64,
-    "x": 512,
+    "x": 893,
     "y": 0
   },
   "cable-nonObstruction-powerTransmission": {
     "height": 24,
     "pixelRatio": 1,
     "width": 128,
-    "x": 576,
-    "y": 0
+    "x": 512,
+    "y": 128
   },
   "circle-dot-10": {
     "height": 10,
     "pixelRatio": 1,
     "width": 10,
-    "x": 558,
+    "x": 888,
     "y": 128
   },
   "circle-dot-6": {
     "height": 6,
     "pixelRatio": 1,
     "width": 6,
-    "x": 1001,
-    "y": 128
+    "x": 398,
+    "y": 512
   },
   "circle-dot-7": {
     "height": 7,
     "pixelRatio": 1,
     "width": 7,
-    "x": 987,
-    "y": 128
+    "x": 384,
+    "y": 512
   },
   "circle-dot-8": {
     "height": 8,
     "pixelRatio": 1,
     "width": 8,
-    "x": 971,
+    "x": 1013,
     "y": 128
   },
   "circle-dot-9": {
     "height": 9,
     "pixelRatio": 1,
     "width": 9,
-    "x": 962,
+    "x": 1004,
     "y": 128
   },
   "dam-hard": {
     "height": 18,
     "pixelRatio": 1,
     "width": 72,
-    "x": 770,
-    "y": 0
+    "x": 640,
+    "y": 128
   },
   "dam-loose": {
     "height": 18,
     "pixelRatio": 1,
     "width": 72,
-    "x": 842,
-    "y": 0
+    "x": 712,
+    "y": 128
   },
   "dot-10": {
     "height": 10,
     "pixelRatio": 1,
     "width": 10,
-    "x": 568,
+    "x": 898,
     "y": 128
   },
   "dot-4": {
     "height": 4,
     "pixelRatio": 1,
     "width": 4,
-    "x": 1018,
-    "y": 128
+    "x": 415,
+    "y": 512
   },
   "dot-5": {
     "height": 5,
     "pixelRatio": 1,
     "width": 5,
-    "x": 1013,
-    "y": 128
+    "x": 410,
+    "y": 512
   },
   "dot-6": {
     "height": 6,
     "pixelRatio": 1,
     "width": 6,
-    "x": 1007,
-    "y": 128
+    "x": 404,
+    "y": 512
   },
   "dot-7": {
     "height": 7,
     "pixelRatio": 1,
     "width": 7,
-    "x": 994,
-    "y": 128
+    "x": 391,
+    "y": 512
   },
   "dot-8": {
     "height": 8,
     "pixelRatio": 1,
     "width": 8,
-    "x": 979,
-    "y": 128
+    "x": 992,
+    "y": 256
   },
   "dry-drainage-level1": {
     "height": 128,
@@ -131,6 +138,13 @@
     "width": 128,
     "x": 128,
     "y": 128
+  },
+  "filled-square": {
+    "height": 20,
+    "pixelRatio": 1,
+    "width": 20,
+    "x": 981,
+    "y": 0
   },
   "forest-scattered-level1": {
     "height": 128,
@@ -174,39 +188,32 @@
     "x": 128,
     "y": 256
   },
-  "heliport-16": {
-    "height": 16,
+  "heliport": {
+    "height": 40,
     "pixelRatio": 1,
-    "width": 16,
-    "x": 986,
+    "width": 40,
+    "x": 787,
     "y": 0
   },
-  "heliport-18": {
-    "height": 18,
+  "heliport-hospital": {
+    "height": 40,
     "pixelRatio": 1,
-    "width": 18,
-    "x": 914,
+    "width": 40,
+    "x": 827,
     "y": 0
   },
-  "heliport-20": {
-    "height": 20,
+  "lighthouse": {
+    "height": 62,
     "pixelRatio": 1,
-    "width": 20,
-    "x": 750,
+    "width": 54,
+    "x": 606,
     "y": 0
   },
-  "heliport-22": {
-    "height": 22,
+  "located-object": {
+    "height": 26,
     "pixelRatio": 1,
-    "width": 22,
-    "x": 728,
-    "y": 0
-  },
-  "heliport-24": {
-    "height": 24,
-    "pixelRatio": 1,
-    "width": 24,
-    "x": 704,
+    "width": 26,
+    "x": 867,
     "y": 0
   },
   "marsh-level1": {
@@ -227,161 +234,182 @@
     "height": 8,
     "pixelRatio": 1,
     "width": 128,
-    "x": 512,
+    "x": 832,
     "y": 384
   },
   "pipeline-above-surface-water": {
     "height": 8,
     "pixelRatio": 1,
     "width": 128,
-    "x": 640,
-    "y": 384
+    "x": 0,
+    "y": 512
   },
   "pipeline-below-surface": {
     "height": 8,
     "pixelRatio": 1,
     "width": 64,
-    "x": 768,
-    "y": 384
+    "x": 128,
+    "y": 512
   },
   "pipeline-below-surface-water": {
     "height": 8,
     "pixelRatio": 1,
     "width": 64,
-    "x": 832,
-    "y": 384
+    "x": 192,
+    "y": 512
   },
   "pipeline-on-surface": {
     "height": 8,
     "pixelRatio": 1,
     "width": 64,
-    "x": 896,
-    "y": 384
+    "x": 256,
+    "y": 512
   },
   "pipeline-on-surface-water": {
     "height": 8,
     "pixelRatio": 1,
     "width": 64,
-    "x": 960,
-    "y": 384
+    "x": 320,
+    "y": 512
+  },
+  "power-substation": {
+    "height": 50,
+    "pixelRatio": 1,
+    "width": 20,
+    "x": 736,
+    "y": 0
   },
   "railway-1track": {
     "height": 10,
     "pixelRatio": 1,
     "width": 32,
-    "x": 578,
+    "x": 908,
     "y": 128
   },
   "railway-1track-electrified": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
-    "x": 610,
+    "x": 940,
     "y": 128
   },
   "railway-1track-electrified-satellite": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
-    "x": 674,
-    "y": 128
+    "x": 512,
+    "y": 256
   },
   "railway-1track-satellite": {
     "height": 10,
     "pixelRatio": 1,
     "width": 32,
-    "x": 738,
-    "y": 128
+    "x": 576,
+    "y": 256
   },
   "railway-2orMoreTracks": {
     "height": 10,
     "pixelRatio": 1,
     "width": 32,
-    "x": 770,
-    "y": 128
+    "x": 608,
+    "y": 256
   },
   "railway-2orMoreTracks-electrified": {
-    "height": 10,
-    "pixelRatio": 1,
-    "width": 64,
-    "x": 802,
-    "y": 128
-  },
-  "railway-2orMoreTracks-electrified-satellite": {
-    "height": 10,
-    "pixelRatio": 1,
-    "width": 64,
-    "x": 866,
-    "y": 128
-  },
-  "railway-2orMoreTracks-satellite": {
-    "height": 10,
-    "pixelRatio": 1,
-    "width": 32,
-    "x": 930,
-    "y": 128
-  },
-  "railway-narrow-1track": {
-    "height": 10,
-    "pixelRatio": 1,
-    "width": 64,
-    "x": 512,
-    "y": 256
-  },
-  "railway-narrow-1track-electrified": {
-    "height": 10,
-    "pixelRatio": 1,
-    "width": 64,
-    "x": 576,
-    "y": 256
-  },
-  "railway-narrow-1track-electrified-satellite": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
     "x": 640,
     "y": 256
   },
-  "railway-narrow-1track-satellite": {
+  "railway-2orMoreTracks-electrified-satellite": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
     "x": 704,
     "y": 256
   },
+  "railway-2orMoreTracks-satellite": {
+    "height": 10,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 768,
+    "y": 256
+  },
+  "railway-narrow-1track": {
+    "height": 10,
+    "pixelRatio": 1,
+    "width": 64,
+    "x": 800,
+    "y": 256
+  },
+  "railway-narrow-1track-electrified": {
+    "height": 10,
+    "pixelRatio": 1,
+    "width": 64,
+    "x": 864,
+    "y": 256
+  },
+  "railway-narrow-1track-electrified-satellite": {
+    "height": 10,
+    "pixelRatio": 1,
+    "width": 64,
+    "x": 928,
+    "y": 256
+  },
+  "railway-narrow-1track-satellite": {
+    "height": 10,
+    "pixelRatio": 1,
+    "width": 64,
+    "x": 512,
+    "y": 384
+  },
   "railway-narrow-2orMoreTracks": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
-    "x": 768,
-    "y": 256
+    "x": 576,
+    "y": 384
   },
   "railway-narrow-2orMoreTracks-electrified": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
-    "x": 832,
-    "y": 256
+    "x": 640,
+    "y": 384
   },
   "railway-narrow-2orMoreTracks-electrified-satellite": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
-    "x": 896,
-    "y": 256
+    "x": 704,
+    "y": 384
   },
   "railway-narrow-2orMoreTracks-satellite": {
     "height": 10,
     "pixelRatio": 1,
     "width": 64,
-    "x": 960,
-    "y": 256
+    "x": 768,
+    "y": 384
+  },
+  "railway-station": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 957,
+    "y": 0
+  },
+  "rig-inland": {
+    "height": 46,
+    "pixelRatio": 1,
+    "width": 31,
+    "x": 756,
+    "y": 0
   },
   "routeMarker-international": {
     "height": 14,
     "pixelRatio": 1,
     "width": 24,
-    "x": 512,
+    "x": 820,
     "y": 128,
 	"content": [3, 3, 21, 11],
 	"stretchX": [[11, 13]],
@@ -391,7 +419,7 @@
     "height": 18,
     "pixelRatio": 1,
     "width": 18,
-    "x": 932,
+    "x": 1001,
     "y": 0,
 	"content": [3, 3, 15, 15],
 	"stretchX": [[8, 10]],
@@ -401,8 +429,8 @@
     "height": 18,
     "pixelRatio": 1,
     "width": 18,
-    "x": 950,
-    "y": 0,
+    "x": 784,
+    "y": 128,
 	"content": [3, 3, 15, 14],
 	"stretchX": [[6, 7], [11, 12]],
 	"stretchY": [[7, 8]]
@@ -411,8 +439,8 @@
     "height": 12,
     "pixelRatio": 1,
     "width": 22,
-    "x": 1002,
-    "y": 0,
+    "x": 844,
+    "y": 128,
 	"content": [3, 3, 19, 10],
 	"stretchX": [[10, 12]],
 	"stretchY": [[4, 8]]
@@ -421,8 +449,8 @@
     "height": 18,
     "pixelRatio": 1,
     "width": 18,
-    "x": 968,
-    "y": 0,
+    "x": 802,
+    "y": 128,
 	"content": [3, 3, 15, 14],
 	"stretchX": [[6, 7], [11, 12]],
 	"stretchY": [[7, 8]]
@@ -431,7 +459,7 @@
     "height": 12,
     "pixelRatio": 1,
     "width": 22,
-    "x": 536,
+    "x": 866,
     "y": 128,
 	"content": [3, 3, 19, 10],
 	"stretchX": [[10, 12]],
@@ -464,5 +492,33 @@
     "width": 128,
     "x": 384,
     "y": 384
+  },
+  "tower-non-communication": {
+    "height": 54,
+    "pixelRatio": 1,
+    "width": 20,
+    "x": 696,
+    "y": 0
+  },
+  "vertical-obstruction-offshore": {
+    "height": 74,
+    "pixelRatio": 1,
+    "width": 57,
+    "x": 512,
+    "y": 0
+  },
+  "water-tower": {
+    "height": 54,
+    "pixelRatio": 1,
+    "width": 20,
+    "x": 716,
+    "y": 0
+  },
+  "wind-turbine": {
+    "height": 62,
+    "pixelRatio": 1,
+    "width": 36,
+    "x": 660,
+    "y": 0
   }
 }

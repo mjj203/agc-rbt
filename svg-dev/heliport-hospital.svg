@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 27.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 27.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+	 width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
 <g>
-	<rect x="1.125" y="1.125" fill="#FFFFFF" width="21.75" height="21.75"/>
-	<path fill="#38469D" d="M21.75,2.25v19.5H2.25V2.25H21.75 M24,0H0v24h24V0L24,0z"/>
+	<g>
+		<rect x="1.7002" y="1.7002" fill="#FFFFFF" width="36.5996" height="36.5996"/>
+		<path fill="#38469D" d="M36.6,3.4v33.2H3.4V3.4H36.6 M40,0H0v40h40V0L40,0z"/>
+	</g>
+	<polygon fill="#38469D" points="24.6512,10.2325 24.6512,18.1395 15.3488,18.1395 15.3488,10.2325 12.093,10.2325 12.093,18.1395 
+		12.093,21.8605 12.093,29.7675 15.3488,29.7675 15.3488,21.8605 24.6512,21.8605 24.6512,29.7675 27.907,29.7675 27.907,21.8605 
+		27.907,18.1395 27.907,10.2325 	"/>
 </g>
-<polygon fill="#38469D" points="14.7907,6.1395 14.7907,10.8837 9.2093,10.8837 9.2093,6.1395 7.2558,6.1395 7.2558,10.8837 
-	7.2558,13.1163 7.2558,17.8605 9.2093,17.8605 9.2093,13.1163 14.7907,13.1163 14.7907,17.8605 16.7442,17.8605 16.7442,13.1163 
-	16.7442,10.8837 16.7442,6.1395 "/>
 </svg>
