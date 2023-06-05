@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tileserver.fullname" . }}-tileserver
+  labels:
+  {{- include "tileserver.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.tileserver.type }}
+  selector:
+    app: tileservergl
+  {{- include "tileserver.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.tileserver.ports | toYaml | nindent 2 -}}

@@ -1,0 +1,20 @@
+gl:
+  replicas: 1
+  tileservergl:
+    args:
+    - -c
+    - /data/config/config.json
+    image:
+      repository: docker.io/mjj203/rbt
+      tag: tileserver-gl-v5.2.1-pre.3
+kubernetesClusterDomain: cluster.local
+pvc:
+  efsAp1:
+    storageClass: efs-sc
+    storageRequest: 5Gi
+tileserver:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  type: ClusterIP
