@@ -130,6 +130,6 @@ From the WSL distribution you can now clone the repo and run the start script.
 
 ```
 git clone https://github.com/mjj203/agc-rbt.git
-cd rbt
+cd agc-rbt/tileserver
 ./start.sh
 ```

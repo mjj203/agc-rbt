@@ -1,0 +1,80 @@
+{
+    "options": {
+        "paths": {
+            "root": "",
+            "fonts": "../fonts",
+            "mbtiles": "../data",
+            "styles": "../styles"
+        },
+        "serveStaticMaps": true,
+        "formatQuality": {
+            "jpeg": 100,
+            "webp": 100,
+            "png": 100
+        },
+        "tileMargin": 0,
+        "pbfAlias": "pbf",
+        "maxSize": 2048,
+        "minRendererPoolSizes": [8, 4],
+        "maxRendererPoolSizes": [8, 4],
+        "pbfAlias": "pbf",
+        "serveAllFonts": true,
+        "serveAllStyles": true,
+        "serveStaticMaps": true
+    },
+    "data": {
+        "CULTURAL": {
+            "mbtiles": "cultural.mbtiles"
+        },
+        "HILLSHADE": {
+            "mbtiles": "hillshade3395.mbtiles"
+        },
+        "PHYSICAL": {
+            "mbtiles": "physical.mbtiles"
+        }
+    },
+    "styles": {
+        "RBT-TPC-3395": {
+            "style": "RBT-TPC-3395/style.json",
+            "serve_data": true,
+            "serve_rendered": false,
+            "tilejson": {
+                "format": "png",
+                "bounds": [
+                    -180,
+                    -80,
+                    180,
+                    84
+                ]
+            }
+        },
+        "RBT-JOG-3395": {
+            "style": "RBT-JOG-3395/style.json",
+            "serve_data": true,
+            "serve_rendered": false,
+            "tilejson": {
+                "format": "png",
+                "bounds": [
+                    -180,
+                    -80,
+                    180,
+                    84
+                ]
+            }
+        },
+        "RBT-TLM-3395": {
+            "style": "RBT-TLM-3395/style.json",
+            "serve_data": true,
+            "serve_rendered": true,
+            "tilejson": {
+                "format": "png",
+                "bounds": [
+                    -180,
+                    -80,
+                    180,
+                    84
+                ]
+            }
+        }
+    }
+}
