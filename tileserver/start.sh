@@ -15,6 +15,6 @@ docker run -d \
 	-v $(pwd)/styles:/styles \
 	-v $(pwd)/config:/config \
 	-p 0.0.0.0:8080:8080 \
-	docker.io/mjj203/rbt:tileserver-gl-v5.2.1-pre.3 \
+	docker.io/mjj203/rbt:tileservergl-3395-latest \
 	--verbose \
 	--config /config/config.json
