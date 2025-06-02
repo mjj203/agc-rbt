@@ -174,6 +174,8 @@ git lfs install
 # Clone the RBT project and start it
 git clone https://github.com/mjj203/agc-rbt.git && \
     cd agc-rbt && \
+    chmod 755 -R nginx mapproxy tileserver && \
+    chown 1001:1001 -R nginx mapproxy tileserver && \
     docker compose up -d
 ```
 
@@ -185,10 +187,10 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
     sudo ./aws/install;
 sudo apt-get remove docker docker-engine \
     docker.io containerd runc;
-sudo apt-get update && \
-    sudo apt-get install ca-certificates \
+sudo apt-get update;
+sudo apt-get install ca-certificates \
     curl gnupg lsb-release;
-sudo update-ca-certificates; 
+sudo update-ca-certificates;
 sudo mkdir -m 0755 -p /etc/apt/keyrings;
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg;
 echo \
@@ -203,6 +205,8 @@ sudo apt-get install \
 git lfs install;
 git clone https://github.com/mjj203/agc-rbt.git && \
     cd agc-rbt && \
+    chmod 755 -R nginx mapproxy tileserver && \
+    chown 1001:1001 -R nginx mapproxy tileserver && \
     docker compose up -d;
 ```
 
@@ -250,6 +254,8 @@ sudo apt-get install \
 git lfs install;
 git clone https://github.com/mjj203/agc-rbt.git && \
     cd agc-rbt && \
+    chmod 755 -R nginx mapproxy tileserver && \
+    chown 1001:1001 -R nginx mapproxy tileserver && \
     docker compose up -d;
 ```
 
@@ -310,11 +316,11 @@ This means you need administrator privileges.
 ### How to Know It's Working
 1. Open your web browser
 2. Go to `http://localhost:8080`
-3. You should see The TileserverGL main page
-4. Go to `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
-5. You should see the MapProxy Generated WMTS
-6. `http://localhost:80/wms?SERVICE=WMS&REQUEST=GETCAPABILITIES`
-7. You should see the MapProxy Generated WMS
+- You should see The TileserverGL main page
+3. Go to `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
+- You should see the MapProxy Generated WMTS
+4. Go to `http://localhost:8081/wms?SERVICE=WMS&REQUEST=GETCAPABILITIES`
+- You should see the MapProxy Generated WMS
 
 ## Connecting GIS Clients to RBT
 
@@ -324,9 +330,9 @@ RBT provides multiple ways for GIS clients (like QGIS, ArcGIS, or Global Mapper)
 
 RBT exposes the following endpoints for GIS client connections:
 
-#### 1. **MapProxy Services (Port 80)** - Best for Standard GIS Clients
-- **WMS**: `http://localhost:80/wms`
-- **WMTS**: `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
+#### 1. **MapProxy Services (Port 8081)** - Best for Standard GIS Clients
+- **WMS**: `http://localhost:8081/wms`
+- **WMTS**: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
 - These provide cached raster tiles in standard OGC formats
 - Compatible with virtually all GIS software
 
@@ -343,7 +349,7 @@ RBT exposes the following endpoints for GIS client connections:
 2. Click **New** to create a new connection
 3. Enter:
    - **Name**: RBT MapProxy WMS
-   - **URL**: `http://localhost:80/wms`
+   - **URL**: `http://localhost:8081/wms`
 4. Click **OK**, then **Connect**
 5. Select available layers and click **Add**
 
@@ -352,7 +358,7 @@ RBT exposes the following endpoints for GIS client connections:
 2. Click **New** to create a new connection
 3. Enter:
    - **Name**: RBT MapProxy WMTS
-   - **URL**: `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
+   - **URL**: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
 4. Click **OK**, then **Connect**
 5. Select available layers and click **Add**
 
@@ -379,8 +385,8 @@ RBT exposes the following endpoints for GIS client connections:
 #### For ArcGIS Pro:
 1. In the **Catalog** pane, right-click **Servers**
 2. Select **Add WMTS Server**
-3. Enter URL: `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
-4. Or for WMS: Select **Add WMS Server** and use `http://localhost:80/wms`
+3. Enter URL: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
+4. Or for WMS: Select **Add WMS Server** and use `http://localhost:8081/wms`
 
 #### For ArcMap:
 1. Open **Catalog Window**
