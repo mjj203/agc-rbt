@@ -4,30 +4,36 @@ The [AGC](https://www.agc.army.mil/) Releasable Basemap Tiles (RBT) prototype is
 
 The RBT prototype is funded by [NGA](https://www.nga.mil/) and development, demonstration and enhancement will continue with the help of the Army Geospatial Enterprise [AGE](https://www.agc.army.mil/Army-Geospatial-Enterprise/About/) community, [GDIT](https://www.gdit.com), and [Axis Maps](https://www.axismaps.com/).
 
-## Deploying with [TileserverGL](https://github.com/acalcutt/tileserver-gl#maplibre-tileserver-gl)
-The RBT prototype is deployed as a containerized application using a modified version of [TileserverGL](https://hub.docker.com/repository/registry-1.docker.io/mjj203/rbt/tags?page=1&ordering=last_updated), that uses [MapLibre](https://maplibre.org/) instead of [MapboxGL](https://www.mapbox.com/mapbox-gljs), and enables EPSG:3395 projections for both WMTS and TileJSON endpoints. The `start.sh` script is an easy way to deploy the current config, styles, data, and fonts within this repo. Just clone this repo with [Git](https://git-scm.com/) to any linux or Windows WSL system with [Docker](https://www.docker.com/) installed, and run `./start.sh` within the root directory.
+# Architecture
+
+The RBT prototype is deployed as a containerized application using a modified version of [TileserverGL](https://github.com/mjj203/tileserver-gl), that uses [MapLibre](https://maplibre.org/) instead of [MapboxGL](https://www.mapbox.com/mapbox-gljs), and enables **EPSG:3395** projections for both WMTS and TileJSON endpoints. Additionally [MapProxy](https://mapproxy.org/) is deployed to enable **EPSG:4326** Raster Tiles via OGC WMTS Endpoints by caching the Raster Tiles created dynamically from the TileserverGL deployment.
+
+The RBT stack is optimized for deployment into a Kubernetes environment in the cloud or onprem using helm charts. Local deployments can use **Docker Compose** after setting up the local environment with the required tools and getting an S3 credential from our team to download our MBTiles data for TileserverGL using the **AWSCLI**.
+
+# Install
+
+Before cloning this repo you will need to ensure **Git**, **Git Large File Storage (LFS)**, **AWSCLI**, and **Docker** are installed and enabled on your system.
+
+1. Contact the RBT program manager [Tom Boggess](Thomas.J.Boggess@usace.army.mil) to request S3 Credentials to download our MBTiles data.
+2. Install AWSCLI
+- Download and install [AWSCLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) for your OS.
+- Configure the **RBT** profile using `aws configure --profile rbt`
+3. Install Git
+- Download and install [Git](https://git-scm.com/downloads) and [LFS](https://github.com/git-lfs/git-lfs/releases/tag/v3.3.0) for your OS.
+- Clone the project locally `git clone https://github.com/mjj203/agc-rbt.git`
+4. Install Docker
+- Download and install [Docker](https://docs.docker.com/get-docker/) for your OS.
+- Deploy with **Docker Compose** inside the `agc-rbt` project with `docker compose up -d`
+- Monitor deployment with `docker compose logs`
+
+## Linux Setup
+
+**FEDORA/RHEL/CENTOS:**
 
 ```
-git clone https://github.com/mjj203/agc-rbt.git
-cd rbt
-./start.sh
-```
-
-### Setup Environment
-Before cloning this repo you will need to ensure [Git](https://git-scm.com/downloads), [Git Large File Storage (LFS)](https://git-lfs.github.com/), and [Docker](https://docs.docker.com/get-docker/) are installed and enabled on your system. 
-
-#### Install Git
-Download and install [Git](https://git-scm.com/downloads) and [LFS](https://github.com/git-lfs/git-lfs/releases/tag/v3.3.0) for your OS. For Windows just download the [Git Windows Installer](https://github.com/git-for-windows/git/releases/download/v2.38.1.windows.1/Git-2.38.1-64-bit.exe) and [LFS Windows Installer](https://github.com/git-lfs/git-lfs/releases/download/v3.3.0/git-lfs-windows-v3.3.0.exe), then double click each starting with Git to run through the installation. Then open your Git Bash or Git Cmd terminal and execute `git lfs install`.
-
-#### Install Docker
-Download and install [Docker](https://docs.docker.com/get-docker/) for your OS. For windows ensure [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) is installed by following [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for the latest Windows 10/11 or [Manual WSL](https://learn.microsoft.com/en-us/windows/wsl/install-manual) for older versions. Once WSL is enabled, then follow the [Windows install directions](https://docs.docker.com/desktop/install/windows-install/) and download the [installer](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe).
-
-## LINUX SETUP
-Install git for your distro.
-
-### For FEDORA/RHEL/CENTOS:
-
-```
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    sudo ./aws/install;
 sudo dnf remove docker docker-client \
     docker-client-latest docker-common \
     docker-latest docker-latest-logrotate \
@@ -41,9 +47,65 @@ sudo dnf install docker-ce docker-ce-cli \
     containerd.io docker-buildx-plugin \
     docker-compose-plugin git-all git-lfs;
 git lfs install;
+git clone https://github.com/mjj203/agc-rbt.git && \
+    cd agc-rbt && \
+    docker compose up -d;
 ```
 
-### For ubuntu/debian:
+**ubuntu/debian:**
+
+```
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    sudo ./aws/install;
+sudo apt-get remove docker docker-engine \
+    docker.io containerd runc;
+sudo apt-get update && \
+    sudo apt-get install ca-certificates \
+    curl gnupg lsb-release;
+sudo update-ca-certificates; 
+sudo mkdir -m 0755 -p /etc/apt/keyrings;
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg;
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo chmod a+r /etc/apt/keyrings/docker.gpg;
+sudo apt-get update;
+sudo apt-get install \
+    docker-ce docker-ce-cli containerd.io \
+    docker-buildx-plugin docker-compose-plugin \
+    git-all git-lfs;
+git lfs install;
+git clone https://github.com/mjj203/agc-rbt.git && \
+    cd agc-rbt && \
+    docker compose up -d;
+```
+
+## Windows Setup
+
+For windows ensure [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/) is installed by following [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) for the latest Windows 10/11 or [Manual WSL](https://learn.microsoft.com/en-us/windows/wsl/install-manual) for older versions. Once WSL is enabled, then follow the [Windows install directions](https://docs.docker.com/desktop/install/windows-install/) and download the [installer](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe).
+
+Manual install of WSL2 using PowerShell as an admin:
+
+```
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+Now restart your machine before proceeding to the next steps.
+
+[Download the WSL2 Linux Kernel update](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi). Double-click to run - you will be prompted for elevated permissions, select ‘yes’ to approve this installation.
+
+```
+wsl --set-default-version 2
+wsl --install -d Ubuntu-24.04
+```
+
+Once you have installed WSL, you will need to create a user account and password for your newly installed Linux distribution. See the [Best practices](https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password) for setting up a WSL development environment guide to learn more.
+
+### Windows install without Docker Desktop
+
+Now install **git**, **git-lfs**, **docker**, and **awscli** in your WSL ubuntu distribution by opening the distro from the Windows Start Menu and running the below commands.
 
 ```
 sudo apt-get remove docker docker-engine docker.io containerd runc;
@@ -54,57 +116,21 @@ sudo mkdir -m 0755 -p /etc/apt/keyrings;
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg;
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null;
 sudo chmod a+r /etc/apt/keyrings/docker.gpg;
 sudo apt-get update;
 sudo apt-get install \
     docker-ce docker-ce-cli containerd.io docker-buildx-plugin \
     docker-compose-plugin git-all git-lfs;
 git lfs install;
+git clone https://github.com/mjj203/agc-rbt.git && \
+    cd agc-rbt && \
+    docker compose up -d;
 ```
 
-## WINDOWS SETUP
+### Windows install with Docker Desktop
 
-Manual install of WSL2 using PowerShell as an admin:
-
-```
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-```
-Now restart your machine before proceeding to the next steps.
-
-[Download the WSL2 Linux Kernel update](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi). Double-click to run - you will be prompted for elevated permissions, select ‘yes’ to approve this installation.
-
-Open PowerShell as an admin and run:
-
-```
-wsl --set-default-version 2
-
-curl.exe -L -o ubuntu-2204.appx https://aka.ms/wslubuntu2204
-
-Add-AppxPackage .\ubuntu-2204.appx
-
-wsl --set-version ubuntu-2204 2
-```
-
-Once you have installed WSL, you will need to create a user account and password for your newly installed Linux distribution. See the [Best practices](https://learn.microsoft.com/en-us/windows/wsl/setup/environment#set-up-your-linux-username-and-password) for setting up a WSL development environment guide to learn more.
-
-Now install git and git-lfs in your WSL ubuntu distribution by opening the distro from the Windows Start Menu and running the below commands.
-
-```
-sudo apt update;
-sudo apt upgrade -y;
-sudo apt install git git-lfs;
-git lfs install;
-```
-### Turn on Docker Desktop WSL 2
-
-https://docs.docker.com/desktop/windows/wsl/
-
-https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers
-
-First install Docker Desktop by [Downloading](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) the latest version. Double click and follow the install instructions.
+If you prefer to use the Docker Desktop GUI instead of Docker Engine then innstall Docker Desktop by [Downloading](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) the latest version and then follow the [Docker WSL](https://docs.docker.com/desktop/features/wsl/) and [Microsoft WSL](https://learn.microsoft.com/en-us/windows/wsl/install) instructions to enable docker in WSL.
 
 Next, start Docker Desktop from the Windows Start menu.
 
@@ -126,10 +152,12 @@ To confirm that Docker has been installed, open your WSL distribution (e.g. Ubun
 docker --version
 ```
 
-From the WSL distribution you can now clone the repo and run the start script.
+From the WSL distribution you can now clone the repo and run **docker compose**:
 
 ```
-git clone https://github.com/mjj203/agc-rbt.git
-cd agc-rbt/tileserver
-./start.sh
+sudo apt-get install git-all git-lfs;
+git lfs install;
+git clone https://github.com/mjj203/agc-rbt.git && \
+    cd agc-rbt && \
+    docker compose up -d;
 ```

@@ -1,0 +1,54 @@
+services:
+  mapproxy:
+    image: mjj203/mapproxy:latest
+    container_name: mapproxy
+    ports:
+      - "0.0.0.0:5000:5000"
+    volumes:
+      - ./mapproxy/data:/data
+      - ./mapproxy/config/mapproxy.yaml:/app/mapproxy.yaml
+      - ./mapproxy/config/uwsgi.ini:/app/uwsgi.ini
+      - ./mapproxy/locks:/locks
+      - ./mapproxy/tile_locks:/tile_locks
+    depends_on:
+      - tileservergl
+    shm_size: '16gb'
+    restart: unless-stopped
+    networks:
+      - rbt-network
+
+  nginx:
+    image: mjj203/nginx:latest
+    container_name: nginx
+    ports:
+      - "0.0.0.0:80:80"
+    volumes:
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/cache:/var/cache/nginx
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - mapproxy
+    shm_size: '1gb'
+    restart: unless-stopped
+    networks:
+      - rbt-network
+
+  tileservergl:
+    image: mjj203/tileservergl:4.10.3
+    container_name: tileservergl
+    ports:
+      - "0.0.0.0:8080:8080"
+    volumes:
+      - ./tileserver/data:/data
+      - ./tileserver/fonts:/fonts
+      - ./tileserver/styles:/styles
+      - ./tileserver/config:/config
+    command: ["-c", "/config/config.json"]
+    restart: unless-stopped
+    shm_size: '16gb'
+    networks:
+      - rbt-network
+
+networks:
+  rbt-network:
+    driver: bridge

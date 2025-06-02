@@ -1,0 +1,245 @@
+services:
+  wmts:
+    restful: true
+    kvp: false
+    md:
+      title: RBT WMTS
+  wms:
+    md:
+      title: RBT WMS
+
+layers:
+  - name: rbt_topo_3395
+    title: rbt_topo_3395
+    sources: [rbt_topo_3395_cache]
+  - name: rbt_topo_4326
+    title: rbt_topo_4326
+    min_res: 0.0439453125
+    sources: [rbt_topo_4326_cache]
+  - name: rbt_topo_3857
+    title: rbt_topo_3857
+    sources: [rbt_topo_3857_cache]
+  - name: rbt_dark_3395
+    title: rbt_dark_3395
+    sources: [rbt_dark_3395_cache]
+  - name: rbt_dark_4326
+    title: rbt_dark_4326
+    min_res: 0.0439453125
+    sources: [rbt_dark_4326_cache]
+  - name: rbt_dark_3857
+    title: rbt_dark_3857
+    sources: [rbt_dark_3857_cache]
+  - name: rbt_overlay_3395
+    title: rbt_overlay_3395
+    sources: [rbt_overlay_3395_cache]
+  - name: rbt_overlay_4326
+    title: rbt_overlay_4326
+    min_res: 0.0439453125
+    sources: [rbt_overlay_4326_cache]
+  - name: rbt_overlay_3857
+    title: rbt_overlay_3857
+    sources: [rbt_overlay_3857_cache]
+
+caches:
+  rbt_topo_4326_cache:
+    sources: [rbt_topo_3395_cache]
+    format: mixed
+    request_format: image/png
+    grids: [wgs84]
+    minimize_meta_requests: true
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/topo4326
+      table_name: topo_4326
+  rbt_topo_3857_cache:
+    sources: [rbt_topo_3395_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [webmercator]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/topo3857
+      table_name: topo_3857
+  rbt_topo_3395_cache:
+    sources: [rbt_topo_source]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [mercator_3395]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/topo3395
+      table_name: topo_3395
+  rbt_dark_4326_cache:
+    sources: [rbt_dark_3395_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [wgs84]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/dark4326
+      table_name: dark_4326
+  rbt_dark_3857_cache:
+    sources: [rbt_dark_3395_cache]
+    format: mixed
+    request_format: image/png
+    grids: [webmercator]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/dark3857
+      table_name: dark_3857
+  rbt_dark_3395_cache:
+    sources: [rbt_dark_source]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [mercator_3395]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/dark3395
+      table_name: dark_3395
+  rbt_overlay_4326_cache:
+    sources: [rbt_overlay_3395_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [wgs84]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/overlay4326
+      table_name: overlay_4326
+  rbt_overlay_3857_cache:
+    sources: [rbt_overlay_3395_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [webmercator]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/overlay3857
+      table_name: overlay_3857
+  rbt_overlay_3395_cache:
+    sources: [rbt_overlay_source]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [mercator_3395]
+    cache:
+      type: geopackage
+      levels: true
+      directory: /data/geopackage/overlay3395
+      table_name: overlay_3395
+
+sources:
+  rbt_topo_source:
+    type: tile
+    # Changed from cluster URL to local container URL
+    url: http://tileserver:8080/styles/RBT-TOPO-3395/%(z)s/%(x)s/%(y)s.png
+    grid: mercator_3395
+  rbt_dark_source:
+    type: tile
+    # Changed from cluster URL to local container URL
+    url: http://tileserver:8080/styles/RBT-DARK-3395/%(z)s/%(x)s/%(y)s.png
+    grid: mercator_3395
+  rbt_overlay_source:
+    type: tile
+    # Changed from cluster URL to local container URL
+    url: http://tileserver:8080/styles/RBT-OVERLAY-3395/%(z)s/%(x)s/%(y)s.png
+    grid: mercator_3395
+    transparent: true
+
+grids:
+  webmercator:
+    base: GLOBAL_WEBMERCATOR
+    srs: EPSG:3857
+    origin: nw
+    tile_size: [256, 256]
+    bbox:
+      [
+        -20037508.342789244,
+        -20037508.342789244,
+        20037508.342789244,
+        20037508.342789244
+      ]
+  mercator_3395:
+    base: GLOBAL_WEBMERCATOR
+    srs: EPSG:3395
+    origin: nw
+    tile_size: [256, 256]
+    bbox:
+      [
+        -20037508.342789244,
+        -20037508.342789244,
+        20037508.342789244,
+        20037508.342789244
+      ]
+  wgs84:
+    base: GLOBAL_GEODETIC
+    srs: EPSG:4326
+    origin: nw
+    res:
+      [
+        0.055,
+        0.04394531250000000000, # Original Level (e.g., L4 of GLOBAL_GEODETIC)
+        0.03107421875000000200, # Intermediate
+        0.02197265625000000000, # Original Level (e.g., L5)
+        0.01553710937500000100, # Intermediate
+        0.01098632812500000000, # Original Level (e.g., L6)
+        0.00776855468750000040, # Intermediate
+        0.00549316406250000000, # Original Level (e.g., L7)
+        0.00388427734375000020, # Intermediate
+        0.00274658203125000000, # Original Level (e.g., L8)
+        0.00194213867187500010, # Intermediate
+        0.00137329101562500000, # Original Level (e.g., L9)
+        0.00097106933593750005, # Intermediate
+        0.00068664550781250000, # Original Level (e.g., L10)
+        0.00048553466796875002, # Intermediate
+        0.00034332275390625000, # Original Level (e.g., L11)
+        0.00024276733398437501, # Intermediate
+        0.00017166137695312500, # Original Level (e.g., L12)
+        0.00012138366699218751, # Intermediate
+        0.00008583068847656250, # Original Level (e.g., L13)
+        0.00006069183349609375, # Intermediate
+        0.00004291534423828125, # Original Level (e.g., L14)
+        0.00003034591674804688, # Intermediate
+        0.00002145767211914062, # Original Level (e.g., L15)
+        0.00001517295837402344, # Intermediate
+        0.00001072883605957031, # Original Level (e.g., L16)
+        0.00000758647918701172, # Intermediate
+        0.00000536441802978516, # Original Level (e.g., L17)
+        0.00000379323959350586, # Intermediate
+        0.00000268220901489258  # Original Level (e.g., L18)
+      ]
+    tile_size: [256, 256]
+    bbox:
+      [
+        -180.0,
+        -90.0,
+        180.0,
+        90.0
+      ]
+
+globals:
+  http:
+    ssl_no_cert_checks: true
+  image:
+    resampling_method: bicubic
+    paletted: false
+  cache:
+    base_dir: /data
+    lock_dir: /locks
+    tile_lock_dir: /tile_locks
+    meta_size: [1, 1]
+    concurrent_tile_creators: 8
+    meta_buffer: 0
+    bulk_meta_tiles: true 
