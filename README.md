@@ -313,6 +313,109 @@ This means you need administrator privileges.
 3. You should see The TileserverGL main page
 4. Go to `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
 5. You should see the MapProxy Generated WMTS
+6. `http://localhost:80/wms?SERVICE=WMS&REQUEST=GETCAPABILITIES`
+7. You should see the MapProxy Generated WMS
+
+## Connecting GIS Clients to RBT
+
+RBT provides multiple ways for GIS clients (like QGIS, ArcGIS, or Global Mapper) to connect and access map data. Here's how to connect using different protocols:
+
+### Available Service Endpoints
+
+RBT exposes the following endpoints for GIS client connections:
+
+#### 1. **MapProxy Services (Port 80)** - Best for Standard GIS Clients
+- **WMS**: `http://localhost:80/wms`
+- **WMTS**: `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
+- These provide cached raster tiles in standard OGC formats
+- Compatible with virtually all GIS software
+
+#### 2. **TileserverGL Services (Port 8080)** - For Modern GIS Clients
+- **WMTS per style**: `http://localhost:8080/styles/{style-id}/wmts.xml`
+- **TileJSON**: `http://localhost:8080/styles/{style-id}.json`
+- **Vector Tiles**: `http://localhost:8080/data/{data-id}/{z}/{x}/{y}.pbf`
+- **Raster Tiles**: `http://localhost:8080/styles/{style-id}/{z}/{x}/{y}.png`
+
+### Connecting QGIS to RBT
+
+#### Method 1: MapProxy WMS (Easiest)
+1. In QGIS, go to **Layer → Add Layer → Add WMS/WMTS Layer**
+2. Click **New** to create a new connection
+3. Enter:
+   - **Name**: RBT MapProxy WMS
+   - **URL**: `http://localhost:80/wms`
+4. Click **OK**, then **Connect**
+5. Select available layers and click **Add**
+
+#### Method 2: MapProxy WMTS
+1. In QGIS, go to **Layer → Add Layer → Add WMS/WMTS Layer**
+2. Click **New** to create a new connection
+3. Enter:
+   - **Name**: RBT MapProxy WMTS
+   - **URL**: `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
+4. Click **OK**, then **Connect**
+5. Select available layers and click **Add**
+
+#### Method 3: TileserverGL WMTS (Direct Access)
+1. First, visit `http://localhost:8080` to see available styles
+2. Note the style ID you want to use (e.g., "RBT-TOPO-3395")
+3. In QGIS, go to **Layer → Add Layer → Add WMS/WMTS Layer**
+4. Enter:
+   - **Name**: RBT TileserverGL - [Style Name]
+   - **URL**: `http://localhost:8080/styles/[style-id]/wmts.xml`
+   - Example: `http://localhost:8080/styles/RBT-TOPO-3395/wmts.xml`
+
+#### Method 4: Vector Tiles (QGIS 3.14+)
+1. In QGIS, go to **Layer → Add Layer → Add Vector Tile Layer**
+2. Click **New** under **Vector Tile Connections**
+3. Enter:
+   - **Name**: RBT Vector Tiles
+   - **URL**: `http://localhost:8080/data/{data-id}/{z}/{x}/{y}.pbf`
+   - **Style URL**: `http://localhost:8080/styles/{style-id}/style.json`
+4. Set Min/Max zoom levels (typically 0-15)
+
+### Connecting ArcGIS to RBT
+
+#### For ArcGIS Pro:
+1. In the **Catalog** pane, right-click **Servers**
+2. Select **Add WMTS Server**
+3. Enter URL: `http://localhost:80/wmts/1.0.0/WMTSCapabilities.xml`
+4. Or for WMS: Select **Add WMS Server** and use `http://localhost:80/wms`
+
+#### For ArcMap:
+1. Open **Catalog Window**
+2. Expand **GIS Servers**
+3. Double-click **Add WMTS Server** or **Add WMS Server**
+4. Enter the appropriate URL from above
+
+### Advanced TileserverGL Endpoints
+
+Based on the [TileserverGL documentation](https://tileserver.readthedocs.io/en/latest/endpoints.html), you can also access:
+
+- **List all styles**: `http://localhost:8080/styles.json`
+- **Style details**: `http://localhost:8080/styles/{style-id}/style.json`
+- **Available fonts**: `http://localhost:8080/fonts.json`
+- **Static images**: `http://localhost:8080/styles/{style-id}/static/{lon},{lat},{zoom}/{width}x{height}.png`
+- **Data inspection**: `http://localhost:8080/data/{data-id}/{z}/{x}/{y}.geojson`
+
+### Choosing the Right Endpoint
+
+- **Use MapProxy (Port 80)** when:
+  - You need maximum compatibility with older GIS software
+  - You want cached tiles for better performance
+  - You're using standard OGC protocols (WMS/WMTS)
+
+- **Use TileserverGL (Port 8080)** when:
+  - You want vector tiles for dynamic styling
+  - You need the latest style directly from the source
+  - You're using modern GIS clients that support vector tiles
+
+### Troubleshooting GIS Client Connections
+
+1. **Connection Failed**: Ensure Docker containers are running (`docker ps`)
+2. **No Layers Visible**: Check that you've downloaded the map data (Phase 3)
+3. **Slow Performance**: Use MapProxy endpoints for cached tiles
+4. **Style Issues**: Vector tiles require GIS client support for MapLibre styles
 
 ### How to Stop the Application
 Run: `docker compose down --remove-orphans`
