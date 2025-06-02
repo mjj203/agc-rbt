@@ -1,6 +1,6 @@
 services:
   mapproxy:
-    image: mjj203/mapproxy:latest
+    image: docker.io/mjj203/mapproxy:latest
     container_name: mapproxy
     ports:
       - "0.0.0.0:5000:5000"
@@ -18,7 +18,7 @@ services:
       - rbt-network
 
   nginx:
-    image: mjj203/nginx:latest
+    image: docker.io/mjj203/nginx:latest
     container_name: nginx
     ports:
       - "0.0.0.0:80:80"
@@ -34,7 +34,7 @@ services:
       - rbt-network
 
   tileservergl:
-    image: mjj203/tileservergl:4.10.3
+    image: docker.io/mjj203/tileservergl:4.10.3
     container_name: tileservergl
     ports:
       - "0.0.0.0:8080:8080"

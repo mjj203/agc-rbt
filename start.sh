@@ -9,11 +9,11 @@ docker run -d \
 	--ulimit memlock=-1 \
 	--ulimit stack=67108864 \
 	--shm-size=16gb \
-	-v $(pwd)/fonts:/fonts \
-	-v $(pwd)/data:/data \
-	-v $(pwd)/styles:/styles \
-	-v $(pwd)/config:/config \
+	-v ./tileserver/fonts:/fonts \
+	-v ./tileserver/data:/data \
+	-v ./tileserver/styles:/styles \
+	-v ./tileserver/config:/config \
 	-p 0.0.0.0:8080:8080 \
-	docker.io/mjj203/rbt:tileservergl-3395-latest \
+	docker.io/mjj203/tileservergl:4.10.3 \
 	--verbose \
 	--config /config/config.json
