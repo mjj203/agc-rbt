@@ -35,7 +35,7 @@ services:
       - rbt-network
 
   tileservergl:
-    image: docker.io/mjj203/tileservergl:4.10.3
+    image: docker.io/mjj203/rbt:tileservergl-3395-latest
     container_name: tileservergl
     ports:
       - "0.0.0.0:8080:8080"

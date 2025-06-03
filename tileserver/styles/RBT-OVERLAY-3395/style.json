@@ -1584,75 +1584,6 @@
       }
     },
     {
-      "id": "reef-pattern",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Reef",
-          "feature:code": "BD120"
-        }
-      },
-      "source": "PHYSICAL",
-      "source-layer": "landcover",
-      "minzoom": 11,
-      "filter": [
-        "match",
-        [
-          "get",
-          "subclass"
-        ],
-        "reef",
-        true,
-        false
-      ],
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-pattern": "reef-arc",
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          11,
-          4,
-          18,
-          10
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          11,
-          0.5,
-          15,
-          0.2
-        ],
-        "line-offset": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          11,
-          -1,
-          18,
-          -3
-        ]
-      }
-    },
-    {
       "id": "port--halo",
       "type": "line",
       "metadata": {
@@ -4488,72 +4419,6 @@
       }
     },
     {
-      "id": "taxiway--line1",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Taxiway",
-          "feature:code": "GB075"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "runway_curve",
-      "minzoom": 12,
-      "filter": [
-        "in",
-        "subclass",
-        "taxiway"
-      ],
-      "layout": {
-        "visibility": "visible",
-        "line-cap": "butt"
-      },
-      "paint": {
-        "line-color": "rgba(0, 0, 0, 0.4)",
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          15,
-          2
-        ],
-        "line-gap-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          18,
-          2
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.2
-        ]
-      }
-    },
-    {
       "id": "taxiway--apron--surface--outline--halo",
       "type": "line",
       "metadata": {
@@ -4622,6 +4487,72 @@
           1,
           15,
           2
+        ]
+      }
+    },
+    {
+      "id": "taxiway--line1",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Taxiway",
+          "feature:code": "GB075"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "runway_curve",
+      "minzoom": 12,
+      "filter": [
+        "in",
+        "subclass",
+        "taxiway"
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "butt"
+      },
+      "paint": {
+        "line-color": "rgba(0, 0, 0, 0.4)",
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          15,
+          2
+        ],
+        "line-gap-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          18,
+          2
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
         ]
       }
     },
@@ -5726,7 +5657,7 @@
       }
     },
     {
-      "id": "tunnel--road--track--pedestrian--trail--halo",
+      "id": "tunnel--road--notIntact--halo",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -5736,7 +5667,7 @@
       },
       "source": "CULTURAL",
       "source-layer": "highway",
-      "minzoom": 9,
+      "minzoom": 11,
       "filter": [
         "all",
         [
@@ -5792,7 +5723,6 @@
             true
           ],
           [
-            "pedestrian",
             "unclassified",
             "service",
             "road"
@@ -5806,23 +5736,6 @@
             13,
             true
           ],
-          [
-            "path",
-            "track",
-            "footway",
-            "bridleway",
-            "steps",
-            "cycleway"
-          ],
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            15,
-            true
-          ],
           false
         ],
         [
@@ -5832,8 +5745,6 @@
             "lifecycle_type"
           ],
           [
-            "intact",
-            "construction",
             "demolished",
             "destroyed",
             "razed",
@@ -5844,11 +5755,10 @@
         ]
       ],
       "layout": {
-        "line-join": "round",
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "rgba(0,0,0,0.4)",
+        "line-color": "rgba(255,221,22,0.6)",
         "line-opacity": [
           "interpolate",
           [
@@ -5858,7 +5768,21 @@
             "zoom"
           ],
           12,
-          1,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            0.5,
+            1
+          ],
           16,
           0.5,
           18,
@@ -5881,16 +5805,6 @@
               "subclass"
             ],
             [
-              "path",
-              "track",
-              "footway",
-              "bridleway",
-              "steps",
-              "cycleway"
-            ],
-            0,
-            [
-              "pedestrian",
               "residential",
               "unclassified",
               "service",
@@ -5907,16 +5821,6 @@
               "subclass"
             ],
             [
-              "path",
-              "track",
-              "footway",
-              "bridleway",
-              "steps",
-              "cycleway"
-            ],
-            8,
-            [
-              "pedestrian",
               "residential",
               "unclassified",
               "service",
@@ -5929,7 +5833,7 @@
       }
     },
     {
-      "id": "tunnel--trail",
+      "id": "tunnel--road--notIntact",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -5939,217 +5843,7 @@
       },
       "source": "CULTURAL",
       "source-layer": "highway",
-      "minzoom": 15,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "path",
-            "footway",
-            "bridleway",
-            "steps",
-            "cycleway"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "tunnel",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
-        "line-dasharray": [
-          3,
-          3
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.5,
-          18,
-          0.2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          15,
-          0.6,
-          18,
-          1
-        ]
-      }
-    },
-    {
-      "id": "tunnel--pedestrian",
-      "type": "line",
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 13,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "pedestrian",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "tunnel",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
-        "line-dasharray": [
-          0.3,
-          1
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.5,
-          18,
-          0.2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          13,
-          1,
-          18,
-          6
-        ]
-      }
-    },
-    {
-      "id": "tunnel--road--track",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Tunnel",
-          "feature:code": "AQ130"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 9,
+      "minzoom": 11,
       "filter": [
         "all",
         [
@@ -6218,16 +5912,6 @@
             13,
             true
           ],
-          "track",
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            15,
-            true
-          ],
           false
         ],
         [
@@ -6237,8 +5921,6 @@
             "lifecycle_type"
           ],
           [
-            "intact",
-            "construction",
             "demolished",
             "destroyed",
             "razed",
@@ -6252,27 +5934,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(255,255,255,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(255,255,255,1)",
-            "rgba(255,221,22,1)"
-          ]
-        ],
+        "line-color": "rgba(0,0,0,1)",
         "line-dasharray": [
           4,
           2
@@ -6297,8 +5959,7 @@
               "residential",
               "unclassified",
               "service",
-              "road",
-              "track"
+              "road"
             ],
             0,
             1
@@ -6314,8 +5975,7 @@
               "residential",
               "unclassified",
               "service",
-              "road",
-              "track"
+              "road"
             ],
             6,
             12
@@ -6340,8 +6000,7 @@
               "residential",
               "unclassified",
               "service",
-              "road",
-              "track"
+              "road"
             ],
             0.5,
             1
@@ -6371,12 +6030,655 @@
               "residential",
               "unclassified",
               "service",
-              "road",
-              "track"
+              "road"
             ],
             0.5,
             1
           ],
+          18,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "id": "tunnel--road--halo",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Tunnel",
+          "feature:code": "AQ130"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 9,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk",
+            "primary",
+            "secondary"
+          ],
+          true,
+          [
+            "tertiary",
+            "motorway_link",
+            "trunk_link",
+            "primary_link"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            11,
+            true
+          ],
+          [
+            "residential",
+            "secondary_link",
+            "tertiary_link"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            12,
+            true
+          ],
+          [
+            "unclassified",
+            "service",
+            "road"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            13,
+            true
+          ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "intact",
+            "construction"
+          ],
+          true,
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
+          false
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(0,0,0,0.4)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            0.5,
+            1
+          ],
+          16,
+          0.5,
+          18,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            2,
+            6
+          ],
+          18,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            14,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "id": "tunnel--road",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Tunnel",
+          "feature:code": "AQ130"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 9,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk",
+            "primary",
+            "secondary"
+          ],
+          true,
+          [
+            "tertiary",
+            "motorway_link",
+            "trunk_link",
+            "primary_link"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            11,
+            true
+          ],
+          [
+            "residential",
+            "secondary_link",
+            "tertiary_link"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            12,
+            true
+          ],
+          [
+            "unclassified",
+            "service",
+            "road"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            13,
+            true
+          ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "intact",
+            "construction"
+          ],
+          true,
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
+          false
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,255,255,1)",
+        "line-dasharray": [
+          4,
+          2
+        ],
+        "line-gap-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            0,
+            1
+          ],
+          18,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            6,
+            12
+          ]
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            0.5,
+            1
+          ],
+          16,
+          0.5,
+          18,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            [
+              "residential",
+              "unclassified",
+              "service",
+              "road"
+            ],
+            0.5,
+            1
+          ],
+          18,
+          2
+        ]
+      }
+    },
+    {
+      "id": "tunnel--railway--notIntact--halo",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Tunnel",
+          "feature:code": "AQ130"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "railway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "platform",
+            "subway"
+          ],
+          false,
+          true
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_desc"
+          ],
+          "subway",
+          false,
+          true
+        ],
+        [
+          "match",
+          [
+            "get",
+            "dps_type"
+          ],
+          [
+            "sidetrack_not-intact_broadstandard_nonelectrified",
+            "sidetrack_not-intact_broadstandard_electrified",
+            "sidetrack_not-intact_narrow_nonelectrified",
+            "sidetrack_not-intact_narrow_electrified",
+            "railway_not-intact_broadstandard_nonelectrified_singletrack",
+            "railway_not-intact_broadstandard_electrified_singletrack",
+            "railway_not-intact_broadstandard_nonelectrified_multipletracks",
+            "railway_not-intact_broadstandard_electrified_multipletracks",
+            "railway_not-intact_narrow_electrified_singletrack",
+            "railway_not-intact_narrow_electrified_multipletracks",
+            "railway_not-intact_narrow_nonelectrified_singletrack",
+            "railway_not-intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "butt"
+      },
+      "paint": {
+        "line-color": "rgba(238,238,238,0.6)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.5,
+          18,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          10,
+          2,
+          18,
+          8
+        ]
+      }
+    },
+    {
+      "id": "tunnel--railway--notIntact",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Tunnel",
+          "feature:code": "AQ130"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "railway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "platform",
+            "subway"
+          ],
+          false,
+          true
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_desc"
+          ],
+          "subway",
+          false,
+          true
+        ],
+        [
+          "match",
+          [
+            "get",
+            "dps_type"
+          ],
+          [
+            "sidetrack_not-intact_broadstandard_nonelectrified",
+            "sidetrack_not-intact_broadstandard_electrified",
+            "sidetrack_not-intact_narrow_nonelectrified",
+            "sidetrack_not-intact_narrow_electrified",
+            "railway_not-intact_broadstandard_nonelectrified_singletrack",
+            "railway_not-intact_broadstandard_electrified_singletrack",
+            "railway_not-intact_broadstandard_nonelectrified_multipletracks",
+            "railway_not-intact_broadstandard_electrified_multipletracks",
+            "railway_not-intact_narrow_electrified_singletrack",
+            "railway_not-intact_narrow_electrified_multipletracks",
+            "railway_not-intact_narrow_nonelectrified_singletrack",
+            "railway_not-intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "butt"
+      },
+      "paint": {
+        "line-color": "rgba(0,0,0,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.5,
+          18,
+          0.2
+        ],
+        "line-dasharray": [
+          4,
+          2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          10,
+          1,
           18,
           2
         ]
@@ -6423,52 +6725,31 @@
           "match",
           [
             "get",
-            "lifecycle_desc"
+            "dps_type"
           ],
-          "subway",
-          false,
-          true
-        ],
-        [
-          "has",
-          "dps_type"
+          [
+            "sidetrack_intact_broadstandard_nonelectrified",
+            "sidetrack_intact_broadstandard_electrified",
+            "sidetrack_intact_narrow_nonelectrified",
+            "sidetrack_intact_narrow_electrified",
+            "railway_intact_broadstandard_nonelectrified_singletrack",
+            "railway_intact_broadstandard_electrified_singletrack",
+            "railway_intact_broadstandard_nonelectrified_multipletracks",
+            "railway_intact_broadstandard_electrified_multipletracks",
+            "railway_intact_narrow_electrified_singletrack",
+            "railway_intact_narrow_electrified_multipletracks",
+            "railway_intact_narrow_nonelectrified_singletrack",
+            "railway_intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
         ]
       ],
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(0,0,0,0.4)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "dps_type"
-            ],
-            [
-              "sidetrack_intact_broadstandard_nonelectrified",
-              "sidetrack_intact_broadstandard_electrified",
-              "sidetrack_intact_narrow_nonelectrified",
-              "sidetrack_intact_narrow_electrified",
-              "railway_intact_broadstandard_nonelectrified_singletrack",
-              "railway_intact_broadstandard_electrified_singletrack",
-              "railway_intact_broadstandard_nonelectrified_multipletracks",
-              "railway_intact_broadstandard_electrified_multipletracks",
-              "railway_intact_narrow_electrified_singletrack",
-              "railway_intact_narrow_electrified_multipletracks",
-              "railway_intact_narrow_nonelectrified_singletrack",
-              "railway_intact_narrow_nonelectrified_multipletracks"
-            ],
-            "rgba(0,0,0,0.4)",
-            "rgba(238,238,238,0.6)"
-          ]
-        ],
+        "line-color": "rgba(0,0,0,0.4)",
         "line-opacity": [
           "interpolate",
           [
@@ -6541,52 +6822,31 @@
           "match",
           [
             "get",
-            "lifecycle_desc"
+            "dps_type"
           ],
-          "subway",
-          false,
-          true
-        ],
-        [
-          "has",
-          "dps_type"
+          [
+            "sidetrack_intact_broadstandard_nonelectrified",
+            "sidetrack_intact_broadstandard_electrified",
+            "sidetrack_intact_narrow_nonelectrified",
+            "sidetrack_intact_narrow_electrified",
+            "railway_intact_broadstandard_nonelectrified_singletrack",
+            "railway_intact_broadstandard_electrified_singletrack",
+            "railway_intact_broadstandard_nonelectrified_multipletracks",
+            "railway_intact_broadstandard_electrified_multipletracks",
+            "railway_intact_narrow_electrified_singletrack",
+            "railway_intact_narrow_electrified_multipletracks",
+            "railway_intact_narrow_nonelectrified_singletrack",
+            "railway_intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
         ]
       ],
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(238,238,238,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "dps_type"
-            ],
-            [
-              "sidetrack_intact_broadstandard_nonelectrified",
-              "sidetrack_intact_broadstandard_electrified",
-              "sidetrack_intact_narrow_nonelectrified",
-              "sidetrack_intact_narrow_electrified",
-              "railway_intact_broadstandard_nonelectrified_singletrack",
-              "railway_intact_broadstandard_electrified_singletrack",
-              "railway_intact_broadstandard_nonelectrified_multipletracks",
-              "railway_intact_broadstandard_electrified_multipletracks",
-              "railway_intact_narrow_electrified_singletrack",
-              "railway_intact_narrow_electrified_multipletracks",
-              "railway_intact_narrow_nonelectrified_singletrack",
-              "railway_intact_narrow_nonelectrified_multipletracks"
-            ],
-            "rgba(238,238,238,1)",
-            "rgba(0,0,0,1)"
-          ]
-        ],
+        "line-color": "rgba(238,238,238,1)",
         "line-dasharray": [
           4,
           2
@@ -6623,7 +6883,7 @@
       }
     },
     {
-      "id": "subway--halo",
+      "id": "subway--notIntact--halo",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -6678,8 +6938,27 @@
           true
         ],
         [
-          "has",
-          "dps_type"
+          "match",
+          [
+            "get",
+            "dps_type"
+          ],
+          [
+            "sidetrack_not-intact_broadstandard_nonelectrified",
+            "sidetrack_not-intact_broadstandard_electrified",
+            "sidetrack_not-intact_narrow_nonelectrified",
+            "sidetrack_not-intact_narrow_electrified",
+            "railway_not-intact_broadstandard_nonelectrified_singletrack",
+            "railway_not-intact_broadstandard_electrified_singletrack",
+            "railway_not-intact_broadstandard_nonelectrified_multipletracks",
+            "railway_not-intact_broadstandard_electrified_multipletracks",
+            "railway_not-intact_narrow_electrified_singletrack",
+            "railway_not-intact_narrow_electrified_multipletracks",
+            "railway_not-intact_narrow_nonelectrified_singletrack",
+            "railway_not-intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
         ]
       ],
       "layout": {
@@ -6687,7 +6966,197 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
+        "line-color": "rgba(238,238,238,0.6)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.5
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          3,
+          18,
+          6
+        ]
+      }
+    },
+    {
+      "id": "subway--notIntact--line",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Railway",
+          "feature:code": "AN010"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "railway",
+      "minzoom": 12,
+      "filter": [
+        "all",
+        [
+          "any",
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            "subway",
+            true,
+            false
+          ],
+          [
+            "match",
+            [
+              "get",
+              "lifecycle_desc"
+            ],
+            "subway",
+            true,
+            false
+          ]
+        ],
+        [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "match",
+            [
+              "get",
+              "service"
+            ],
+            "yard",
+            false,
+            true
+          ],
+          13,
+          true
+        ],
+        [
+          "match",
+          [
+            "get",
+            "dps_type"
+          ],
+          [
+            "sidetrack_not-intact_broadstandard_nonelectrified",
+            "sidetrack_not-intact_broadstandard_electrified",
+            "sidetrack_not-intact_narrow_nonelectrified",
+            "sidetrack_not-intact_narrow_electrified",
+            "railway_not-intact_broadstandard_nonelectrified_singletrack",
+            "railway_not-intact_broadstandard_electrified_singletrack",
+            "railway_not-intact_broadstandard_nonelectrified_multipletracks",
+            "railway_not-intact_broadstandard_electrified_multipletracks",
+            "railway_not-intact_narrow_electrified_singletrack",
+            "railway_not-intact_narrow_electrified_multipletracks",
+            "railway_not-intact_narrow_nonelectrified_singletrack",
+            "railway_not-intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(0,0,0,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.5
+        ],
+        "line-dasharray": [
+          0,
+          2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          2,
+          18,
+          4
+        ]
+      }
+    },
+    {
+      "id": "subway--halo",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Railway",
+          "feature:code": "AN010"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "railway",
+      "minzoom": 12,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "subway",
+          true,
+          false
+        ],
+        [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "match",
+            [
+              "get",
+              "service"
+            ],
+            "yard",
+            false,
+            true
+          ],
+          13,
+          true
+        ],
+        [
           "match",
           [
             "get",
@@ -6707,9 +7176,16 @@
             "railway_intact_narrow_nonelectrified_singletrack",
             "railway_intact_narrow_nonelectrified_multipletracks"
           ],
-          "rgba(0,0,0,0.4)",
-          "rgba(238,238,238,0.6)"
-        ],
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(0,0,0,0.4)",
         "line-opacity": [
           "interpolate",
           [
@@ -6754,27 +7230,14 @@
       "filter": [
         "all",
         [
-          "any",
+          "match",
           [
-            "match",
-            [
-              "get",
-              "subclass"
-            ],
-            "subway",
-            true,
-            false
+            "get",
+            "subclass"
           ],
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_desc"
-            ],
-            "subway",
-            true,
-            false
-          ]
+          "subway",
+          true,
+          false
         ],
         [
           "step",
@@ -6795,15 +7258,6 @@
           true
         ],
         [
-          "has",
-          "dps_type"
-        ]
-      ],
-      "layout": {
-        "line-cap": "round"
-      },
-      "paint": {
-        "line-color": [
           "match",
           [
             "get",
@@ -6823,9 +7277,15 @@
             "railway_intact_narrow_nonelectrified_singletrack",
             "railway_intact_narrow_nonelectrified_multipletracks"
           ],
-          "rgba(238,238,238,1)",
-          "rgba(0,0,0,1)"
-        ],
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-color": "rgba(238,238,238,1)",
         "line-dasharray": [
           0,
           2
@@ -6965,9 +7425,7 @@
             "track",
             "path",
             "bridleway",
-            "footway",
-            "steps",
-            "cycleway"
+            "footway"
           ],
           true,
           false
@@ -6988,13 +7446,6 @@
           ],
           true,
           false
-        ],
-        [
-          "!",
-          [
-            "has",
-            "brunnel"
-          ]
         ]
       ],
       "layout": {
@@ -7057,9 +7508,7 @@
           [
             "path",
             "bridleway",
-            "footway",
-            "steps",
-            "cycleway"
+            "footway"
           ],
           true,
           false
@@ -7080,13 +7529,6 @@
           ],
           true,
           false
-        ],
-        [
-          "!",
-          [
-            "has",
-            "brunnel"
-          ]
         ]
       ],
       "layout": {
@@ -7094,19 +7536,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
+        "line-color": "rgba(255,255,255,1)",
         "line-dasharray": [
           9,
           3
@@ -7182,13 +7612,6 @@
           ],
           true,
           false
-        ],
-        [
-          "!",
-          [
-            "has",
-            "brunnel"
-          ]
         ]
       ],
       "layout": {
@@ -7196,19 +7619,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
+        "line-color": "rgba(255,255,255,1)",
         "line-dasharray": [
           20,
           2.5
@@ -7337,7 +7748,7 @@
       }
     },
     {
-      "id": "road--other--pedestrian--notIntact--line1",
+      "id": "road--other--notIntact--line1",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -7354,13 +7765,12 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "subclass"
           ],
           [
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "unclassified",
+            "service",
+            "road"
           ],
           true,
           false
@@ -7369,13 +7779,13 @@
           "match",
           [
             "get",
-            "subclass"
+            "lifecycle_type"
           ],
           [
-            "pedestrian",
-            "unclassified",
-            "service",
-            "road"
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
           ],
           true,
           false
@@ -7434,14 +7844,9 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "subclass"
           ],
-          [
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
+          "residential",
           true,
           false
         ],
@@ -7449,11 +7854,13 @@
           "match",
           [
             "get",
-            "subclass"
+            "lifecycle_type"
           ],
           [
-            "living_street",
-            "residential"
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
           ],
           true,
           false
@@ -7495,7 +7902,7 @@
       }
     },
     {
-      "id": "road--link--notIntact--line1",
+      "id": "road--other--notIntact--line2",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -7505,9 +7912,23 @@
       },
       "source": "CULTURAL",
       "source-layer": "highway",
-      "minzoom": 11,
+      "minzoom": 13,
       "filter": [
         "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "unclassified",
+            "service",
+            "road"
+          ],
+          true,
+          false
+        ],
         [
           "match",
           [
@@ -7523,6 +7944,140 @@
           true,
           false
         ],
+        [
+          "!",
+          [
+            "has",
+            "brunnel"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": 0.2,
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          13,
+          1,
+          14,
+          1.6,
+          18,
+          6
+        ]
+      }
+    },
+    {
+      "id": "road--street--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 12,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "residential",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel",
+          false,
+          "bridge",
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            13,
+            false
+          ],
+          true
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": 0.2,
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          14,
+          2.2,
+          18,
+          10
+        ]
+      }
+    },
+    {
+      "id": "road--link--notIntact--line1",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
         [
           "match",
           [
@@ -7548,6 +8103,21 @@
             12,
             true
           ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
           false
         ],
         [
@@ -7638,6 +8208,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "tertiary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -7646,16 +8226,6 @@
             "razed",
             "removed"
           ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "tertiary",
           true,
           false
         ],
@@ -7734,6 +8304,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "secondary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -7742,16 +8322,6 @@
             "razed",
             "removed"
           ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "secondary",
           true,
           false
         ],
@@ -7832,6 +8402,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "primary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -7840,16 +8420,6 @@
             "razed",
             "removed"
           ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "primary",
           true,
           false
         ],
@@ -7930,13 +8500,11 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "subclass"
           ],
           [
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "motorway",
+            "trunk"
           ],
           true,
           false
@@ -7945,11 +8513,13 @@
           "match",
           [
             "get",
-            "subclass"
+            "lifecycle_type"
           ],
           [
-            "motorway",
-            "trunk"
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
           ],
           true,
           false
@@ -8014,7 +8584,599 @@
       }
     },
     {
-      "id": "road--other--pedestrian--line1",
+      "id": "road--link--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway_link",
+            "trunk_link",
+            "primary_link"
+          ],
+          true,
+          [
+            "secondary_link",
+            "tertiary_link"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            12,
+            true
+          ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "tunnel",
+          false,
+          "bridge",
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            13,
+            false
+          ],
+          true
+        ]
+      ],
+      "layout": {
+        "line-cap": [
+          "step",
+          [
+            "zoom"
+          ],
+          "round",
+          12,
+          "butt"
+        ],
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          18,
+          6
+        ]
+      }
+    },
+    {
+      "id": "road--1Lane--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "tertiary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "!",
+          [
+            "has",
+            "brunnel"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": [
+          "step",
+          [
+            "zoom"
+          ],
+          "round",
+          12,
+          "butt"
+        ],
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          11,
+          1,
+          18,
+          6
+        ]
+      }
+    },
+    {
+      "id": "road--2or3Lanes--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "secondary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "!",
+          [
+            "has",
+            "brunnel"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": [
+          "step",
+          [
+            "zoom"
+          ],
+          "round",
+          12,
+          "butt"
+        ],
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          0.6,
+          10,
+          1,
+          18,
+          10
+        ]
+      }
+    },
+    {
+      "id": "road--4orMoreLanes--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "primary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "!",
+          [
+            "has",
+            "brunnel"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": [
+          "step",
+          [
+            "zoom"
+          ],
+          "round",
+          12,
+          "butt"
+        ],
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          8,
+          0.8,
+          10,
+          1.5,
+          18,
+          12
+        ]
+      }
+    },
+    {
+      "id": "road--divided--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "!",
+          [
+            "has",
+            "brunnel"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": [
+          "step",
+          [
+            "zoom"
+          ],
+          "round",
+          12,
+          "butt"
+        ],
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          7,
+          0.8,
+          10,
+          3,
+          18,
+          20
+        ]
+      }
+    },
+    {
+      "id": "road--divided--notIntact--line3",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "!",
+          [
+            "has",
+            "brunnel"
+          ]
+        ]
+      ],
+      "layout": {
+        "line-cap": [
+          "step",
+          [
+            "zoom"
+          ],
+          "round",
+          12,
+          "butt"
+        ],
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(51,51,51,1)",
+        "line-dasharray": [
+          10,
+          2
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          11,
+          0.5,
+          18,
+          3
+        ]
+      }
+    },
+    {
+      "id": "road--other--line1",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -8160,7 +9322,7 @@
       }
     },
     {
-      "id": "road--other--pedestrian--line2",
+      "id": "road--other--line2",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -8196,11 +9358,7 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
           true,
           false
@@ -8223,14 +9381,11 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "subclass"
           ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
+          "pedestrian",
+          "rgba(199,206,216,1)",
+          "rgba(255,255,255,1)"
         ],
         "line-opacity": 0.2,
         "line-width": [
@@ -8246,76 +9401,6 @@
           1,
           14,
           1.6,
-          18,
-          6
-        ]
-      }
-    },
-    {
-      "id": "road--pedestrian--line3",
-      "type": "line",
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 13,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "pedestrian",
-          true,
-          false
-        ],
-        [
-          "!",
-          [
-            "has",
-            "brunnel"
-          ]
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(0,0,0,1)",
-        "line-opacity": 0.4,
-        "line-dasharray": [
-          0.3,
-          3
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          13,
-          1,
           18,
           6
         ]
@@ -8356,11 +9441,7 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
           true,
           false
@@ -8396,14 +9477,11 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "subclass"
           ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
+          "living_street",
+          "rgba(199,206,216,1)",
+          "rgba(255,255,255,1)"
         ],
         "line-opacity": 0.2,
         "line-width": [
@@ -8425,7 +9503,7 @@
       }
     },
     {
-      "id": "road--other--pedestrian--loose",
+      "id": "road--other--loose",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -9226,11 +10304,7 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
           true,
           false
@@ -9270,19 +10344,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(194,151,165,1)",
-          "rgba(255,221,22,1)"
-        ],
+        "line-color": "rgba(194,151,165,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -9344,11 +10406,7 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
           true,
           false
@@ -9375,19 +10433,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(194,151,165,1)",
-          "rgba(255,221,22,1)"
-        ],
+        "line-color": "rgba(194,151,165,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -9449,13 +10495,24 @@
           ],
           [
             "intact",
-            "construction",
+            "construction"
+          ],
+          true,
+          [
             "demolished",
             "destroyed",
             "razed",
             "removed"
           ],
-          true,
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
           false
         ],
         [
@@ -9480,27 +10537,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(194,151,165,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(194,151,165,1)",
-            "rgba(255,221,22,1)"
-          ]
-        ],
+        "line-color": "rgba(194,151,165,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -9564,13 +10601,24 @@
           ],
           [
             "intact",
-            "construction",
+            "construction"
+          ],
+          true,
+          [
             "demolished",
             "destroyed",
             "razed",
             "removed"
           ],
-          true,
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
           false
         ],
         [
@@ -9609,27 +10657,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(194,151,165,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(194,151,165,1)",
-            "rgba(255,221,22,1)"
-          ]
-        ],
+        "line-color": "rgba(194,151,165,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -9696,13 +10724,24 @@
           ],
           [
             "intact",
-            "construction",
+            "construction"
+          ],
+          true,
+          [
             "demolished",
             "destroyed",
             "razed",
             "removed"
           ],
-          true,
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
           false
         ],
         [
@@ -9742,27 +10781,17 @@
       },
       "paint": {
         "line-color": [
-          "step",
+          "interpolate",
+          [
+            "linear"
+          ],
           [
             "zoom"
           ],
+          6,
           "rgba(180,127,140,1)",
           8,
-          "rgba(194,151,165,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(194,151,165,1)",
-            "rgba(255,221,22,1)"
-          ]
+          "rgba(194,151,165,1)"
         ],
         "line-opacity": [
           "interpolate",
@@ -10306,104 +11335,6 @@
           3,
           18,
           20
-        ]
-      }
-    },
-    {
-      "id": "road--divided--notIntact--line3",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Road",
-          "feature:code": "AP030"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 11,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "motorway",
-            "trunk"
-          ],
-          true,
-          false
-        ],
-        [
-          "!",
-          [
-            "has",
-            "brunnel"
-          ]
-        ]
-      ],
-      "layout": {
-        "line-cap": [
-          "step",
-          [
-            "zoom"
-          ],
-          "round",
-          12,
-          "butt"
-        ],
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(51,51,51,1)",
-        "line-dasharray": [
-          10,
-          2
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          11,
-          0.5,
-          18,
-          3
         ]
       }
     },
@@ -13108,7 +14039,7 @@
       }
     },
     {
-      "id": "bridge--other--track--pedestrian--notIntact--line1",
+      "id": "bridge--other--notIntact--line1",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -13121,6 +14052,20 @@
       "minzoom": 13,
       "filter": [
         "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "unclassified",
+            "service",
+            "road"
+          ],
+          true,
+          false
+        ],
         [
           "match",
           [
@@ -13144,31 +14089,6 @@
           ],
           "bridge",
           true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "pedestrian",
-            "unclassified",
-            "service",
-            "road"
-          ],
-          true,
-          "track",
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            15,
-            true
-          ],
           false
         ]
       ],
@@ -13232,6 +14152,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "residential",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -13250,19 +14180,6 @@
             "brunnel"
           ],
           "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "living_street",
-            "residential"
-          ],
           true,
           false
         ]
@@ -13310,7 +14227,7 @@
       }
     },
     {
-      "id": "bridge--link--notIntact--line1",
+      "id": "bridge--other--notIntact--line2",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -13323,6 +14240,20 @@
       "minzoom": 13,
       "filter": [
         "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "unclassified",
+            "service",
+            "road"
+          ],
+          true,
+          false
+        ],
         [
           "match",
           [
@@ -13347,7 +14278,120 @@
           "bridge",
           true,
           false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": 0.2,
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          13,
+          1,
+          18,
+          6
+        ]
+      }
+    },
+    {
+      "id": "bridge--street--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 13,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "residential",
+          true,
+          false
         ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-opacity": 0.2,
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          18,
+          10
+        ]
+      }
+    },
+    {
+      "id": "bridge--link--notIntact--line1",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 13,
+      "filter": [
+        "all",
         [
           "match",
           [
@@ -13361,6 +14405,31 @@
             "secondary_link",
             "tertiary_link"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -13437,6 +14506,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "tertiary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -13455,16 +14534,6 @@
             "brunnel"
           ],
           "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "tertiary",
           true,
           false
         ]
@@ -13541,6 +14610,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "secondary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -13559,16 +14638,6 @@
             "brunnel"
           ],
           "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "secondary",
           true,
           false
         ]
@@ -13647,6 +14716,16 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          "primary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -13665,16 +14744,6 @@
             "brunnel"
           ],
           "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "primary",
           true,
           false
         ]
@@ -13753,6 +14822,19 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "lifecycle_type"
           ],
           [
@@ -13771,19 +14853,6 @@
             "brunnel"
           ],
           "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "motorway",
-            "trunk"
-          ],
           true,
           false
         ]
@@ -13845,211 +14914,7 @@
       }
     },
     {
-      "id": "bridge--trail--halo",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Bridge",
-          "feature:code": "AQ040"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 15,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "path",
-            "bridleway",
-            "footway",
-            "steps",
-            "cycleway"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(0,0,0,0.4)",
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.5,
-          18,
-          0.2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          15,
-          3,
-          18,
-          6
-        ]
-      }
-    },
-    {
-      "id": "bridge--trail",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Bridge",
-          "feature:code": "AQ040"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 15,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "path",
-            "bridleway",
-            "footway",
-            "steps",
-            "cycleway"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.5,
-          18,
-          0.2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          15,
-          0.6,
-          18,
-          1
-        ]
-      }
-    },
-    {
-      "id": "bridge--other--track--pedestrian--line1",
+      "id": "bridge--link--notIntact--line2",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -14066,12 +14931,540 @@
           "match",
           [
             "get",
+            "subclass"
+          ],
+          [
+            "motorway_link",
+            "trunk_link",
+            "primary_link",
+            "secondary_link",
+            "tertiary_link"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
             "brunnel"
           ],
           "bridge",
           true,
           false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          18,
+          6
         ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "bridge--1Lane--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "tertiary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          11,
+          1,
+          18,
+          6
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "bridge--2or3Lanes--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "secondary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          0.6,
+          10,
+          1,
+          18,
+          10
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "bridge--4orMoreLanes--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "primary",
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          8,
+          0.75,
+          10,
+          1.5,
+          18,
+          12
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "bridge--divided--notIntact--line2",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255,221,22,1)",
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          7,
+          0.5,
+          10,
+          3,
+          18,
+          20
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "bridge--divided--notIntact--line3",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
+          false
+        ]
+      ],
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(51,51,51,1)",
+        "line-dasharray": [
+          10,
+          2
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "exponential",
+            1.3
+          ],
+          [
+            "zoom"
+          ],
+          11,
+          0.5,
+          18,
+          3
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          1,
+          16,
+          0.2
+        ]
+      }
+    },
+    {
+      "id": "bridge--other--line1",
+      "type": "line",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Bridge",
+          "feature:code": "AQ040"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 13,
+      "filter": [
+        "all",
         [
           "match",
           [
@@ -14085,16 +15478,6 @@
             "road"
           ],
           true,
-          "track",
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            15,
-            true
-          ],
           false
         ],
         [
@@ -14107,6 +15490,16 @@
             "intact",
             "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -14167,16 +15560,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           [
@@ -14196,6 +15579,16 @@
             "intact",
             "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -14239,113 +15632,7 @@
       }
     },
     {
-      "id": "bridge--track--line2",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Bridge",
-          "feature:code": "AQ040"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 15,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "track",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
-        "line-dasharray": [
-          20,
-          2.5
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.5,
-          18,
-          0.2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          15,
-          0.8,
-          18,
-          1.2
-        ]
-      }
-    },
-    {
-      "id": "bridge--other--pedestrian--line2",
+      "id": "bridge--other--line2",
       "type": "line",
       "metadata": {
         "feature:info": {
@@ -14358,16 +15645,6 @@
       "minzoom": 13,
       "filter": [
         "all",
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
         [
           "match",
           [
@@ -14391,12 +15668,18 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -14411,89 +15694,13 @@
           "match",
           [
             "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
-        ],
-        "line-opacity": 0.2,
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          13,
-          1,
-          18,
-          6
-        ]
-      }
-    },
-    {
-      "id": "bridge--pedestrian--line3",
-      "type": "line",
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 13,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           "pedestrian",
-          true,
-          false
+          "rgba(199,206,216,1)",
+          "rgba(255,255,255,1)"
         ],
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(0,0,0,1)",
-        "line-opacity": 0.4,
-        "line-dasharray": [
-          0.3,
-          3
-        ],
+        "line-opacity": 0.2,
         "line-width": [
           "interpolate",
           [
@@ -14528,16 +15735,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           [
@@ -14555,12 +15752,18 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -14575,14 +15778,11 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "subclass"
           ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(255,255,255,1)",
-          "rgba(255,221,22,1)"
+          "living_street",
+          "rgba(199,206,216,1)",
+          "rgba(255,255,255,1)"
         ],
         "line-opacity": 0.2,
         "line-width": [
@@ -14619,16 +15819,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           [
@@ -14651,6 +15841,16 @@
             "intact",
             "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -14723,16 +15923,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           "tertiary",
@@ -14749,6 +15939,16 @@
             "intact",
             "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -14821,16 +16021,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           "secondary",
@@ -14863,6 +16053,16 @@
             11,
             false
           ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
           false
         ]
       ],
@@ -14946,16 +16146,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "lifecycle_type"
           ],
           [
@@ -14978,6 +16168,16 @@
             11,
             false
           ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
           false
         ]
       ],
@@ -15064,16 +16264,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "lifecycle_type"
           ],
           [
@@ -15096,6 +16286,16 @@
             11,
             false
           ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
           false
         ]
       ],
@@ -15169,16 +16369,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           [
@@ -15199,12 +16389,18 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -15215,19 +16411,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(149,80,88,1)",
-          "rgba(255,221,22,1)"
-        ],
+        "line-color": "rgba(149,80,88,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -15275,16 +16459,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           "tertiary",
@@ -15299,12 +16473,18 @@
           ],
           [
             "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
+            "construction"
           ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -15315,19 +16495,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "intact",
-            "construction"
-          ],
-          "rgba(149,80,88,1)",
-          "rgba(255,221,22,1)"
-        ],
+        "line-color": "rgba(149,80,88,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -15375,16 +16543,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "subclass"
           ],
           "secondary",
@@ -15399,12 +16557,33 @@
           ],
           [
             "intact",
-            "construction",
+            "construction"
+          ],
+          true,
+          [
             "demolished",
             "destroyed",
             "razed",
             "removed"
           ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
           true,
           false
         ]
@@ -15415,27 +16594,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(149,80,88,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(149,80,88,1)",
-            "rgba(255,221,22,1)"
-          ]
-        ],
+        "line-color": "rgba(149,80,88,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -15495,26 +16654,37 @@
           "match",
           [
             "get",
-            "brunnel"
+            "lifecycle_type"
           ],
-          "bridge",
+          [
+            "intact",
+            "construction"
+          ],
           true,
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
           false
         ],
         [
           "match",
           [
             "get",
-            "lifecycle_type"
+            "brunnel"
           ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
+          "bridge",
           true,
           false
         ]
@@ -15525,27 +16695,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(149,80,88,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(149,80,88,1)",
-            "rgba(255,221,22,1)"
-          ]
-        ],
+        "line-color": "rgba(149,80,88,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -15608,26 +16758,37 @@
           "match",
           [
             "get",
-            "brunnel"
+            "lifecycle_type"
           ],
-          "bridge",
+          [
+            "intact",
+            "construction"
+          ],
           true,
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            true,
+            11,
+            false
+          ],
           false
         ],
         [
           "match",
           [
             "get",
-            "lifecycle_type"
+            "brunnel"
           ],
-          [
-            "intact",
-            "construction",
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
+          "bridge",
           true,
           false
         ]
@@ -15638,27 +16799,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": [
-          "step",
-          [
-            "zoom"
-          ],
-          "rgba(149,80,88,1)",
-          11,
-          [
-            "match",
-            [
-              "get",
-              "lifecycle_type"
-            ],
-            [
-              "intact",
-              "construction"
-            ],
-            "rgba(149,80,88,1)",
-            "rgba(255,221,22,1)"
-          ]
-        ],
+        "line-color": "rgba(149,80,88,1)",
         "line-opacity": [
           "interpolate",
           [
@@ -15687,99 +16828,6 @@
           3,
           18,
           20
-        ]
-      }
-    },
-    {
-      "id": "bridge--divided--notIntact--line3",
-      "type": "line",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Bridge",
-          "feature:code": "AQ040"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 11,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "motorway",
-            "trunk"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ]
-      ],
-      "layout": {
-        "line-cap": "butt",
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "paint": {
-        "line-color": "rgba(51,51,51,1)",
-        "line-dasharray": [
-          10,
-          2
-        ],
-        "line-width": [
-          "interpolate",
-          [
-            "exponential",
-            1.3
-          ],
-          [
-            "zoom"
-          ],
-          11,
-          0.5,
-          18,
-          3
-        ],
-        "line-opacity": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          1,
-          16,
-          0.2
         ]
       }
     },
@@ -15814,9 +16862,12 @@
           "match",
           [
             "get",
-            "brunnel"
+            "lifecycle_type"
           ],
-          "bridge",
+          [
+            "intact",
+            "construction"
+          ],
           true,
           false
         ],
@@ -15824,12 +16875,9 @@
           "match",
           [
             "get",
-            "lifecycle_type"
+            "brunnel"
           ],
-          [
-            "intact",
-            "construction"
-          ],
+          "bridge",
           true,
           false
         ]
@@ -15917,16 +16965,6 @@
           "match",
           [
             "get",
-            "brunnel"
-          ],
-          "bridge",
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
             "lifecycle_type"
           ],
           [
@@ -15949,6 +16987,16 @@
             11,
             false
           ],
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "brunnel"
+          ],
+          "bridge",
+          true,
           false
         ]
       ],
@@ -18324,23 +19372,17 @@
         "feature:info": {
           "feature:name": [
             "Bog",
-            "Farmland",
             "Forest",
             "Grassland",
             "Marsh",
-            "Orchard",
-            "Reef",
             "Sand Dunes",
             "Swamp"
           ],
           "feature:code": [
             "BH015",
-            "EA010",
             "EC015",
             "EB010",
             "ED010",
-            "EA040",
-            "BD120",
             "DB170",
             "ED020"
           ]
@@ -18387,9 +19429,7 @@
             "wood",
             "trees",
             "grassland",
-            "meadow",
-            "orchard",
-            "reef"
+            "meadow"
           ],
           [
             "step",
@@ -18400,10 +19440,7 @@
             11,
             true
           ],
-          [
-            "grass",
-            "farmland"
-          ],
+          "grass",
           [
             "step",
             [
@@ -18905,9 +19942,7 @@
             "wood",
             "trees",
             "grass",
-            "grassland",
-            "farmland",
-            "orchard"
+            "grassland"
           ],
           [
             "literal",
@@ -18983,9 +20018,7 @@
             "wood",
             "trees",
             "grass",
-            "grassland",
-            "farmland",
-            "orchard"
+            "grassland"
           ],
           "none",
           "uppercase"
@@ -19041,16 +20074,12 @@
             "get",
             "subclass"
           ],
-          [
-            "track",
-            "cycleway"
-          ],
+          "track",
           true,
           [
             "path",
             "bridleway",
-            "footway",
-            "steps"
+            "footway"
           ],
           [
             "step",
@@ -19080,15 +20109,8 @@
       "layout": {
         "symbol-placement": "line",
         "text-field": [
-          "coalesce",
-          [
-            "get",
-            "brunnel_name"
-          ],
-          [
-            "get",
-            "name"
-          ]
+          "get",
+          "name"
         ],
         "text-font": [
           "step",
@@ -19160,16 +20182,12 @@
             "get",
             "subclass"
           ],
-          [
-            "track",
-            "cycleway"
-          ],
+          "track",
           true,
           [
             "path",
             "bridleway",
-            "footway",
-            "steps"
+            "footway"
           ],
           [
             "step",
@@ -19201,24 +20219,29 @@
       "layout": {
         "symbol-placement": "line",
         "text-field": [
-          "concat",
-          [
-            "coalesce",
-            [
-              "get",
-              "brunnel_name"
-            ],
-            [
-              "get",
-              "name"
-            ]
-          ],
-          " (",
+          "format",
           [
             "get",
-            "lifecycle_type"
+            "name"
           ],
-          ")"
+          [
+            "concat",
+            " (",
+            [
+              "get",
+              "lifecycle_type"
+            ],
+            ")"
+          ],
+          {
+            "text-font": [
+              "literal",
+              [
+                "NGATopo_Cn_bld",
+                "NotoSansBold"
+              ]
+            ]
+          }
         ],
         "text-font": [
           "NGATopo_Cn_bld",
@@ -20147,19 +21170,6 @@
             "get",
             "type"
           ],
-          [
-            "seaplane_base",
-            "balloonport"
-          ],
-          false,
-          true
-        ],
-        [
-          "match",
-          [
-            "get",
-            "type"
-          ],
           "closed",
           [
             "case",
@@ -20320,107 +21330,88 @@
       "minzoom": 8,
       "maxzoom": 12,
       "filter": [
-        "all",
+        "step",
+        [
+          "zoom"
+        ],
+        [
+          "all",
+          [
+            "case",
+            [
+              ">=",
+              [
+                "to-number",
+                [
+                  "get",
+                  "runway_length_ft"
+                ]
+              ],
+              [
+                "step",
+                [
+                  "zoom"
+                ],
+                4000,
+                9,
+                3000
+              ]
+            ],
+            true,
+            false
+          ],
+          [
+            "match",
+            [
+              "get",
+              "runway_surface"
+            ],
+            [
+              "ASP",
+              "ASP/CON",
+              "ASP/CONC",
+              "ASPH",
+              "ASPH/CONC",
+              "ASPHALT",
+              "Asfalt",
+              "Asfalto",
+              "Asph",
+              "Asph/Conc",
+              "Asphalt",
+              "asphalt",
+              "Asphalt/Concrete",
+              "BRI",
+              "BRICK",
+              "Brick",
+              "COP",
+              "Composite",
+              "CON",
+              "CON/ASP",
+              "CONC",
+              "CONC-G",
+              "Concrete",
+              "CONC-GRVD",
+              "PEM",
+              "PER",
+              "Permanent"
+            ],
+            true,
+            false
+          ]
+        ],
+        11,
         [
           "match",
           [
             "get",
-            "type"
+            "category"
           ],
           [
-            "seaplane_base",
-            "balloonport"
+            2,
+            3
           ],
-          false,
-          true
-        ],
-        [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "all",
-            [
-              "case",
-              [
-                ">=",
-                [
-                  "to-number",
-                  [
-                    "get",
-                    "runway_length_ft"
-                  ]
-                ],
-                [
-                  "step",
-                  [
-                    "zoom"
-                  ],
-                  4000,
-                  9,
-                  3000
-                ]
-              ],
-              true,
-              false
-            ],
-            [
-              "match",
-              [
-                "get",
-                "runway_surface"
-              ],
-              [
-                "ASP",
-                "ASP/CON",
-                "ASP/CONC",
-                "ASPH",
-                "ASPH/CONC",
-                "ASPHALT",
-                "Asfalt",
-                "Asfalto",
-                "Asph",
-                "Asph/Conc",
-                "Asphalt",
-                "asphalt",
-                "Asphalt/Concrete",
-                "BRI",
-                "BRICK",
-                "Brick",
-                "COP",
-                "Composite",
-                "CON",
-                "CON/ASP",
-                "CONC",
-                "CONC-G",
-                "Concrete",
-                "CONC-GRVD",
-                "PEM",
-                "PER",
-                "Permanent"
-              ],
-              true,
-              false
-            ]
-          ],
-          11,
-          [
-            "all",
-            [
-              "match",
-              [
-                "get",
-                "category"
-              ],
-              [
-                2,
-                3
-              ],
-              true,
-              false
-            ]
-          ]
+          true,
+          false
         ]
       ],
       "layout": {
@@ -20456,15 +21447,16 @@
         "circle-radius": [
           "interpolate",
           [
-            "linear"
+            "exponential",
+            1.3
           ],
           [
             "zoom"
           ],
           8,
-          6.1,
+          6,
           12,
-          13.2
+          18
         ],
         "circle-stroke-color": [
           "match",
@@ -21391,6 +22383,159 @@
       }
     },
     {
+      "id": "railway--label",
+      "type": "symbol",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Railway",
+          "feature:code": "AN010"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "railway",
+      "minzoom": 12,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "dps_type"
+          ],
+          [
+            "railway_intact_broadstandard_nonelectrified_singletrack",
+            "railway_intact_broadstandard_electrified_singletrack",
+            "railway_intact_broadstandard_nonelectrified_multipletracks",
+            "railway_intact_broadstandard_electrified_multipletracks",
+            "railway_intact_narrow_electrified_singletrack",
+            "railway_intact_narrow_electrified_multipletracks",
+            "railway_intact_narrow_nonelectrified_singletrack",
+            "railway_intact_narrow_nonelectrified_multipletracks"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "platform",
+          false,
+          true
+        ]
+      ],
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": [
+          "step",
+          [
+            "zoom"
+          ],
+          250,
+          19,
+          500,
+          20,
+          1000,
+          21,
+          2000,
+          22,
+          3000
+        ],
+        "text-field": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "match",
+            [
+              "get",
+              "subclass"
+            ],
+            "subway",
+            "Subway",
+            [
+              "concat",
+              [
+                "get",
+                "name"
+              ],
+              [
+                "case",
+                [
+                  "==",
+                  [
+                    "get",
+                    "tracks"
+                  ],
+                  "multiple"
+                ],
+                "multiple tracks",
+                ""
+              ]
+            ]
+          ],
+          15,
+          [
+            "concat",
+            [
+              "get",
+              "name"
+            ],
+            [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "tracks"
+                ],
+                "multiple"
+              ],
+              "multiple tracks",
+              ""
+            ]
+          ]
+        ],
+        "text-font": [
+          "NGATopo_bi",
+          "NotoSansBold"
+        ],
+        "text-letter-spacing": 0.02,
+        "text-size": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          10,
+          10,
+          16,
+          13
+        ],
+        "text-transform": [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "subway",
+          "none",
+          "uppercase"
+        ],
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "rgba(255,255,255,1)",
+        "text-halo-color": "rgba(0,0,0,0.8)",
+        "text-halo-width": 1.5
+      }
+    },
+    {
       "id": "railway--notIntact--label",
       "type": "symbol",
       "metadata": {
@@ -21504,7 +22649,6 @@
                 "get",
                 "name"
               ],
-              " ",
               [
                 "case",
                 [
@@ -21528,84 +22672,30 @@
           ],
           15,
           [
-            "case",
+            "concat",
             [
-              "==",
-              [
-                "get",
-                "subclass"
-              ],
-              "subway"
+              "get",
+              "name"
             ],
             [
-              "concat",
+              "case",
               [
-                "coalesce",
+                "==",
                 [
                   "get",
-                  "name"
+                  "tracks"
                 ],
-                "Subway"
+                "multiple"
               ],
-              " (",
-              [
-                "get",
-                "lifecycle_type"
-              ],
-              ")"
+              "multiple tracks",
+              ""
             ],
+            " (",
             [
-              "==",
-              [
-                "get",
-                "lifecycle_desc"
-              ],
-              "subway"
+              "get",
+              "lifecycle_type"
             ],
-            [
-              "concat",
-              [
-                "coalesce",
-                [
-                  "get",
-                  "name"
-                ],
-                "Subway"
-              ],
-              " (",
-              [
-                "get",
-                "lifecycle_type"
-              ],
-              ")"
-            ],
-            [
-              "concat",
-              [
-                "get",
-                "name"
-              ],
-              " ",
-              [
-                "case",
-                [
-                  "==",
-                  [
-                    "get",
-                    "tracks"
-                  ],
-                  "multiple"
-                ],
-                "multiple tracks",
-                ""
-              ],
-              " (",
-              [
-                "get",
-                "lifecycle_type"
-              ],
-              ")"
-            ]
+            ")"
           ]
         ],
         "text-font": [
@@ -21674,337 +22764,6 @@
       }
     },
     {
-      "id": "railway--label",
-      "type": "symbol",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Railway",
-          "feature:code": "AN010"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "railway",
-      "minzoom": 12,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "dps_type"
-          ],
-          [
-            "railway_intact_broadstandard_nonelectrified_singletrack",
-            "railway_intact_broadstandard_electrified_singletrack",
-            "railway_intact_broadstandard_nonelectrified_multipletracks",
-            "railway_intact_broadstandard_electrified_multipletracks",
-            "railway_intact_narrow_electrified_singletrack",
-            "railway_intact_narrow_electrified_multipletracks",
-            "railway_intact_narrow_nonelectrified_singletrack",
-            "railway_intact_narrow_nonelectrified_multipletracks"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "platform",
-          false,
-          true
-        ]
-      ],
-      "layout": {
-        "symbol-placement": "line",
-        "symbol-spacing": [
-          "step",
-          [
-            "zoom"
-          ],
-          250,
-          19,
-          500,
-          20,
-          1000,
-          21,
-          2000,
-          22,
-          3000
-        ],
-        "text-field": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "match",
-            [
-              "get",
-              "subclass"
-            ],
-            "subway",
-            "Subway",
-            [
-              "concat",
-              [
-                "get",
-                "name"
-              ],
-              " ",
-              [
-                "case",
-                [
-                  "==",
-                  [
-                    "get",
-                    "tracks"
-                  ],
-                  "multiple"
-                ],
-                "multiple tracks",
-                ""
-              ]
-            ]
-          ],
-          15,
-          [
-            "match",
-            [
-              "get",
-              "subclass"
-            ],
-            "subway",
-            [
-              "coalesce",
-              [
-                "get",
-                "name"
-              ],
-              "Subway"
-            ],
-            [
-              "concat",
-              [
-                "get",
-                "name"
-              ],
-              " ",
-              [
-                "case",
-                [
-                  "==",
-                  [
-                    "get",
-                    "tracks"
-                  ],
-                  "multiple"
-                ],
-                "multiple tracks",
-                ""
-              ]
-            ]
-          ]
-        ],
-        "text-font": [
-          "NGATopo_bi",
-          "NotoSansBold"
-        ],
-        "text-letter-spacing": 0.02,
-        "text-size": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          10,
-          16,
-          13
-        ],
-        "text-transform": [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "subway",
-          "none",
-          "uppercase"
-        ],
-        "visibility": "visible"
-      },
-      "paint": {
-        "text-color": "rgba(255,255,255,1)",
-        "text-halo-color": "rgba(0,0,0,0.8)",
-        "text-halo-width": 1.5
-      }
-    },
-    {
-      "id": "road--notIntact--label",
-      "type": "symbol",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Road",
-          "feature:code": "AP030"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "highway",
-      "minzoom": 12,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          [
-            "demolished",
-            "destroyed",
-            "razed",
-            "removed"
-          ],
-          true,
-          false
-        ],
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          [
-            "motorway",
-            "trunk",
-            "primary"
-          ],
-          true,
-          "secondary",
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            13,
-            true
-          ],
-          [
-            "tertiary",
-            "motorway_link",
-            "trunk_link",
-            "primary_link",
-            "secondary_link",
-            "tertiary_link"
-          ],
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            14,
-            true
-          ],
-          [
-            "pedestrian",
-            "living_street",
-            "residential",
-            "unclassified",
-            "service",
-            "road"
-          ],
-          [
-            "step",
-            [
-              "zoom"
-            ],
-            false,
-            15,
-            true
-          ],
-          false
-        ]
-      ],
-      "layout": {
-        "symbol-placement": "line",
-        "symbol-spacing": 200,
-        "text-field": [
-          "concat",
-          [
-            "coalesce",
-            [
-              "get",
-              "brunnel_name"
-            ],
-            [
-              "get",
-              "name"
-            ],
-            [
-              "get",
-              "ref"
-            ]
-          ],
-          " (",
-          [
-            "get",
-            "lifecycle_type"
-          ],
-          ")"
-        ],
-        "text-font": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "literal",
-            [
-              "NGATopo_Cn_ita",
-              "NotoSansItalic"
-            ]
-          ],
-          13,
-          [
-            "literal",
-            [
-              "NGATopo_bi",
-              "NotoSansBold"
-            ]
-          ]
-        ],
-        "text-letter-spacing": 0.02,
-        "text-pitch-alignment": "viewport",
-        "text-size": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          10,
-          10,
-          16,
-          13
-        ],
-        "text-transform": "uppercase",
-        "visibility": "visible"
-      },
-      "paint": {
-        "text-color": "rgba(255,255,255,1)",
-        "text-halo-color": "rgba(0,0,0,0.8)",
-        "text-halo-width": 1.3
-      }
-    },
-    {
       "id": "road--minor--label",
       "type": "symbol",
       "metadata": {
@@ -22038,8 +22797,8 @@
             "subclass"
           ],
           [
-            "pedestrian",
             "living_street",
+            "pedestrian",
             "residential",
             "unclassified",
             "service",
@@ -22076,10 +22835,6 @@
         ],
         "text-field": [
           "coalesce",
-          [
-            "get",
-            "brunnel_name"
-          ],
           [
             "get",
             "name"
@@ -22209,10 +22964,6 @@
           "coalesce",
           [
             "get",
-            "brunnel_name"
-          ],
-          [
-            "get",
             "name"
           ],
           [
@@ -22223,6 +22974,163 @@
         "text-font": [
           "NGATopo_bi",
           "NotoSansBold"
+        ],
+        "text-letter-spacing": 0.02,
+        "text-pitch-alignment": "viewport",
+        "text-size": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          10,
+          10,
+          16,
+          13
+        ],
+        "text-transform": "uppercase",
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "rgba(255,255,255,1)",
+        "text-halo-color": "rgba(0,0,0,0.8)",
+        "text-halo-width": 1.3
+      }
+    },
+    {
+      "id": "road--notIntact--label",
+      "type": "symbol",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Road",
+          "feature:code": "AP030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "highway",
+      "minzoom": 12,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "lifecycle_type"
+          ],
+          [
+            "demolished",
+            "destroyed",
+            "razed",
+            "removed"
+          ],
+          true,
+          false
+        ],
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          [
+            "motorway",
+            "trunk",
+            "primary"
+          ],
+          true,
+          "secondary",
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            13,
+            true
+          ],
+          [
+            "tertiary",
+            "motorway_link",
+            "trunk_link",
+            "primary_link",
+            "secondary_link",
+            "tertiary_link"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            14,
+            true
+          ],
+          [
+            "residential",
+            "unclassified",
+            "service",
+            "road"
+          ],
+          [
+            "step",
+            [
+              "zoom"
+            ],
+            false,
+            15,
+            true
+          ],
+          false
+        ]
+      ],
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 200,
+        "text-field": [
+          "format",
+          [
+            "coalesce",
+            [
+              "get",
+              "name"
+            ],
+            [
+              "get",
+              "ref"
+            ]
+          ],
+          [
+            "concat",
+            " (",
+            [
+              "get",
+              "lifecycle_type"
+            ],
+            ")"
+          ]
+        ],
+        "text-font": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "literal",
+            [
+              "NGATopo_Cn_ita",
+              "NotoSansItalic"
+            ]
+          ],
+          13,
+          [
+            "literal",
+            [
+              "NGATopo_bi",
+              "NotoSansBold"
+            ]
+          ]
         ],
         "text-letter-spacing": 0.02,
         "text-pitch-alignment": "viewport",
@@ -24024,7 +24932,7 @@
       }
     },
     {
-      "id": "windTurbine--utility--icon--label",
+      "id": "windTurbine--icon--label",
       "type": "symbol",
       "metadata": {
         "feature:info": {
@@ -24150,55 +25058,6 @@
         "text-color": "rgba(255,255,255,1)",
         "text-halo-color": "rgba(0,0,0,0.8)",
         "text-halo-width": 1.5
-      }
-    },
-    {
-      "id": "windTurbine--icon",
-      "type": "symbol",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Wind Turbine",
-          "feature:code": "AJ051"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "power_station_label",
-      "minzoom": 9,
-      "filter": [
-        "match",
-        [
-          "get",
-          "generator_source"
-        ],
-        "wind",
-        true,
-        false
-      ],
-      "layout": {
-        "icon-anchor": "bottom",
-        "icon-image": "wind-turbine",
-        "icon-offset": [
-          -3,
-          11
-        ],
-        "icon-pitch-alignment": "viewport",
-        "icon-size": [
-          "interpolate",
-          [
-            "exponential",
-            1.5
-          ],
-          [
-            "zoom"
-          ],
-          9,
-          0.3,
-          12,
-          0.4,
-          18,
-          1
-        ],
-        "visibility": "visible"
       }
     },
     {
@@ -24701,9 +25560,30 @@
           [
             "zoom"
           ],
-          "water-tower-sm",
+          "water-tower-dot",
           11,
           "water-tower"
+        ],
+        "icon-offset": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "literal",
+            [
+              0,
+              14
+            ]
+          ],
+          11,
+          [
+            "literal",
+            [
+              0,
+              10
+            ]
+          ]
         ],
         "icon-pitch-alignment": "viewport",
         "icon-size": [
@@ -24726,7 +25606,7 @@
       }
     },
     {
-      "id": "powerSubstation--utility--icon",
+      "id": "utility--substation--icon",
       "type": "symbol",
       "metadata": {
         "feature:info": {
@@ -24736,7 +25616,7 @@
       },
       "source": "CULTURAL",
       "source-layer": "utility_point",
-      "minzoom": 9,
+      "minzoom": 12,
       "filter": [
         "all",
         [
@@ -24765,11 +25645,7 @@
                 "substation"
               ],
               [
-                "transmission",
-                "industrial",
-                "military",
-                "power",
-                "production"
+                "transmission"
               ],
               true,
               false
@@ -24781,8 +25657,7 @@
                 "seamark_platform_category"
               ],
               [
-                "production",
-                "substation"
+                "production"
               ],
               true,
               false
@@ -24799,7 +25674,7 @@
               "minor_distribution"
             ],
             false,
-            true
+            false
           ]
         ]
       ],
@@ -24818,121 +25693,11 @@
           ],
           [
             "zoom"
-          ],
-          9,
-          0.3,
-          12,
-          0.4,
-          18,
-          1
-        ],
-        "visibility": "visible"
-      }
-    },
-    {
-      "id": "powerSubstation--icon",
-      "type": "symbol",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Power Substation",
-          "feature:code": "AD030"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "power_station_label",
-      "minzoom": 9,
-      "filter": [
-        "all",
-        [
-          "match",
-          [
-            "get",
-            "subclass"
-          ],
-          "substation",
-          true,
-          false
-        ],
-        [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            ">=",
-            [
-              "get",
-              "area"
-            ],
-            16000
           ],
           10,
-          [
-            ">=",
-            [
-              "get",
-              "area"
-            ],
-            4000
-          ],
-          11,
-          [
-            ">=",
-            [
-              "get",
-              "area"
-            ],
-            1000
-          ],
-          12,
-          [
-            ">=",
-            [
-              "get",
-              "area"
-            ],
-            250
-          ],
-          13,
-          [
-            ">",
-            [
-              "get",
-              "area"
-            ],
-            0
-          ]
-        ]
-      ],
-      "layout": {
-        "icon-anchor": "bottom",
-        "icon-image": "power-substation",
-        "icon-offset": [
-          0,
-          14
-        ],
-        "icon-size": [
-          "interpolate",
-          [
-            "exponential",
-            1.5
-          ],
-          [
-            "zoom"
-          ],
-          9,
-          0.3,
-          12,
           0.4,
           18,
           1
-        ],
-        "symbol-sort-key": [
-          "-",
-          [
-            "get",
-            "area"
-          ]
         ],
         "visibility": "visible"
       }
@@ -25382,6 +26147,114 @@
         "text-color": "rgba(255,255,255,1)",
         "text-halo-color": "rgba(0,0,0,0.8)",
         "text-halo-width": 1.5
+      }
+    },
+    {
+      "id": "power--substation--icon",
+      "type": "symbol",
+      "metadata": {
+        "feature:info": {
+          "feature:name": "Power Substation",
+          "feature:code": "AD030"
+        }
+      },
+      "source": "CULTURAL",
+      "source-layer": "power_station_label",
+      "minzoom": 9,
+      "filter": [
+        "all",
+        [
+          "match",
+          [
+            "get",
+            "subclass"
+          ],
+          "substation",
+          true,
+          false
+        ],
+        [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            ">=",
+            [
+              "get",
+              "area"
+            ],
+            16000
+          ],
+          10,
+          [
+            ">=",
+            [
+              "get",
+              "area"
+            ],
+            4000
+          ],
+          11,
+          [
+            ">=",
+            [
+              "get",
+              "area"
+            ],
+            1000
+          ],
+          12,
+          [
+            ">=",
+            [
+              "get",
+              "area"
+            ],
+            250
+          ],
+          13,
+          [
+            ">",
+            [
+              "get",
+              "area"
+            ],
+            0
+          ]
+        ]
+      ],
+      "layout": {
+        "icon-anchor": "bottom",
+        "icon-image": "power-substation",
+        "icon-offset": [
+          0,
+          14
+        ],
+        "icon-size": [
+          "interpolate",
+          [
+            "exponential",
+            1.5
+          ],
+          [
+            "zoom"
+          ],
+          9,
+          0.3,
+          12,
+          0.4,
+          18,
+          1
+        ],
+        "symbol-sort-key": [
+          "-",
+          [
+            "get",
+            "area"
+          ]
+        ],
+        "visibility": "visible"
       }
     },
     {
@@ -30210,241 +31083,6 @@
       }
     },
     {
-      "id": "waterAerodrome--icon--label",
-      "type": "symbol",
-      "metadata": {
-        "feature:info": {
-          "feature:name": "Water Aerodrome",
-          "feature:code": "GB065"
-        }
-      },
-      "source": "CULTURAL",
-      "source-layer": "airports",
-      "minzoom": 9,
-      "filter": [
-        "match",
-        [
-          "get",
-          "type"
-        ],
-        "seaplane_base",
-        true,
-        false
-      ],
-      "layout": {
-        "icon-allow-overlap": true,
-        "icon-image": [
-          "match",
-          [
-            "get",
-            "type"
-          ],
-          "seaplane_base",
-          "water-aerodrome",
-          "water-aerodrome-notIntact"
-        ],
-        "icon-size": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          8,
-          0.2,
-          12,
-          0.4,
-          18,
-          0.6
-        ],
-        "symbol-sort-key": [
-          "get",
-          "rank"
-        ],
-        "text-field": [
-          "step",
-          [
-            "zoom"
-          ],
-          "",
-          11,
-          [
-            "format",
-            [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "type"
-                ],
-                "seaplane_base"
-              ],
-              "",
-              "closed\n"
-            ],
-            [
-              "get",
-              "name"
-            ],
-            " ",
-            [
-              "coalesce",
-              [
-                "get",
-                "icao"
-              ],
-              [
-                "get",
-                "iata"
-              ],
-              [
-                "get",
-                "local_code"
-              ]
-            ],
-            "\n",
-            [
-              "get",
-              "elevation_ft"
-            ],
-            {
-              "text-font": [
-                "literal",
-                [
-                  "NGATopo_Cn_bld",
-                  "NotoSansBold"
-                ]
-              ]
-            }
-          ],
-          12,
-          [
-            "concat",
-            [
-              "get",
-              "name"
-            ],
-            " ",
-            [
-              "coalesce",
-              [
-                "get",
-                "icao"
-              ],
-              [
-                "get",
-                "iata"
-              ],
-              [
-                "get",
-                "local_code"
-              ]
-            ],
-            "\n",
-            [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "type"
-                ],
-                "seaplane_base"
-              ],
-              "",
-              "(closed)\n"
-            ],
-            [
-              "get",
-              "elevation_ft"
-            ]
-          ]
-        ],
-        "text-font": [
-          "step",
-          [
-            "zoom"
-          ],
-          [
-            "literal",
-            [
-              "NGATopo_Cn_reg",
-              "NotoSansRegular"
-            ]
-          ],
-          12,
-          [
-            "literal",
-            [
-              "NGATopo_Cn_bld",
-              "NotoSansBold"
-            ]
-          ]
-        ],
-        "text-justify": "auto",
-        "text-optional": true,
-        "text-radial-offset": 0.8,
-        "text-size": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          8,
-          13,
-          16,
-          16
-        ],
-        "text-transform": [
-          "step",
-          [
-            "zoom"
-          ],
-          "uppercase",
-          12,
-          "none"
-        ],
-        "text-variable-anchor": [
-          "bottom-left",
-          "top-left",
-          "bottom-right",
-          "top-right",
-          "left",
-          "right",
-          "bottom",
-          "top"
-        ],
-        "visibility": "visible"
-      },
-      "paint": {
-        "text-color": [
-          "match",
-          [
-            "get",
-            "type"
-          ],
-          "seaplane_base",
-          "rgba(255,255,255,1)",
-          "rgba(204,204,204,1)"
-        ],
-        "text-halo-color": [
-          "match",
-          [
-            "get",
-            "type"
-          ],
-          "seaplane_base",
-          "rgba(56,70,157,0.8)",
-          "rgba(51,51,51,0.8)"
-        ],
-        "text-halo-width": 1.5
-      }
-    },
-    {
       "id": "heliport--icon--label",
       "type": "symbol",
       "metadata": {
@@ -30563,27 +31201,6 @@
           [
             "format",
             [
-              "get",
-              "name"
-            ],
-            " ",
-            [
-              "coalesce",
-              [
-                "get",
-                "icao"
-              ],
-              [
-                "get",
-                "iata"
-              ],
-              [
-                "get",
-                "local_code"
-              ]
-            ],
-            "\n",
-            [
               "case",
               [
                 "==",
@@ -30593,9 +31210,26 @@
                 ],
                 "closed_heliport"
               ],
-              "(closed)\n",
+              "CLOSED\n",
               ""
             ],
+            [
+              "get",
+              "name"
+            ],
+            " ",
+            [
+              "coalesce",
+              [
+                "get",
+                "icao_code"
+              ],
+              [
+                "get",
+                "iata_code"
+              ]
+            ],
+            "\n",
             [
               "get",
               "elevation_ft"
@@ -31112,19 +31746,6 @@
             "get",
             "type"
           ],
-          [
-            "seaplane_base",
-            "balloonport"
-          ],
-          false,
-          true
-        ],
-        [
-          "match",
-          [
-            "get",
-            "type"
-          ],
           "closed",
           [
             "case",
@@ -31236,7 +31857,7 @@
                 ],
                 "closed"
               ],
-              "closed\n",
+              "CLOSED\n",
               ""
             ],
             [
@@ -31253,10 +31874,6 @@
               [
                 "get",
                 "iata"
-              ],
-              [
-                "get",
-                "local_code"
               ]
             ],
             [
@@ -31313,7 +31930,7 @@
                 ],
                 "closed"
               ],
-              "closed\n",
+              "CLOSED\n",
               ""
             ],
             [
@@ -31330,10 +31947,6 @@
               [
                 "get",
                 "iata"
-              ],
-              [
-                "get",
-                "local_code"
               ]
             ],
             "\n",
@@ -31355,6 +31968,19 @@
           [
             "concat",
             [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "type"
+                ],
+                "closed"
+              ],
+              "CLOSED\n",
+              ""
+            ],
+            [
               "get",
               "name"
             ],
@@ -31368,10 +31994,6 @@
               [
                 "get",
                 "iata"
-              ],
-              [
-                "get",
-                "local_code"
               ]
             ],
             [
@@ -31469,19 +32091,6 @@
               "/u"
             ],
             "\n",
-            [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "type"
-                ],
-                "closed"
-              ],
-              "(closed)\n",
-              ""
-            ],
             [
               "get",
               "elevation_ft"
@@ -31603,105 +32212,89 @@
       "source-layer": "airports",
       "minzoom": 8,
       "filter": [
-        "all",
+        "step",
         [
-          "match",
-          [
-            "get",
-            "type"
-          ],
-          [
-            "seaplane_base",
-            "balloonport"
-          ],
-          false,
-          true
+          "zoom"
         ],
         [
-          "step",
+          "all",
           [
-            "zoom"
-          ],
-          [
-            "all",
+            "case",
             [
-              "case",
+              ">=",
               [
-                ">=",
+                "to-number",
                 [
-                  "to-number",
-                  [
-                    "get",
-                    "runway_length_ft"
-                  ]
-                ],
-                [
-                  "step",
-                  [
-                    "zoom"
-                  ],
-                  4000,
-                  9,
-                  3000
+                  "get",
+                  "runway_length_ft"
                 ]
               ],
-              true,
-              false
+              [
+                "step",
+                [
+                  "zoom"
+                ],
+                4000,
+                9,
+                3000
+              ]
             ],
-            [
-              "match",
-              [
-                "get",
-                "runway_surface"
-              ],
-              [
-                "ASP",
-                "ASP/CON",
-                "ASP/CONC",
-                "ASPH",
-                "ASPH/CONC",
-                "ASPHALT",
-                "Asfalt",
-                "Asfalto",
-                "Asph",
-                "Asph/Conc",
-                "Asphalt",
-                "asphalt",
-                "Asphalt/Concrete",
-                "BRI",
-                "BRICK",
-                "Brick",
-                "COP",
-                "Composite",
-                "CON",
-                "CON/ASP",
-                "CONC",
-                "CONC-G",
-                "Concrete",
-                "CONC-GRVD",
-                "PEM",
-                "PER",
-                "Permanent"
-              ],
-              true,
-              false
-            ]
+            true,
+            false
           ],
-          11,
           [
             "match",
             [
               "get",
-              "category"
+              "runway_surface"
             ],
             [
-              1,
-              2,
-              3
+              "ASP",
+              "ASP/CON",
+              "ASP/CONC",
+              "ASPH",
+              "ASPH/CONC",
+              "ASPHALT",
+              "Asfalt",
+              "Asfalto",
+              "Asph",
+              "Asph/Conc",
+              "Asphalt",
+              "asphalt",
+              "Asphalt/Concrete",
+              "BRI",
+              "BRICK",
+              "Brick",
+              "COP",
+              "Composite",
+              "CON",
+              "CON/ASP",
+              "CONC",
+              "CONC-G",
+              "Concrete",
+              "CONC-GRVD",
+              "PEM",
+              "PER",
+              "Permanent"
             ],
             true,
             false
           ]
+        ],
+        11,
+        [
+          "match",
+          [
+            "get",
+            "category"
+          ],
+          [
+            1,
+            2,
+            3
+          ],
+          true,
+          false
         ]
       ],
       "layout": {
@@ -31726,7 +32319,7 @@
                 ],
                 "closed"
               ],
-              "closed\n",
+              "CLOSED\n",
               ""
             ],
             [
@@ -31743,10 +32336,6 @@
               [
                 "get",
                 "iata"
-              ],
-              [
-                "get",
-                "local_code"
               ]
             ],
             [
@@ -31803,7 +32392,7 @@
                 ],
                 "closed"
               ],
-              "closed\n",
+              "CLOSED\n",
               ""
             ],
             [
@@ -31820,10 +32409,6 @@
               [
                 "get",
                 "iata"
-              ],
-              [
-                "get",
-                "local_code"
               ]
             ],
             [
@@ -31965,6 +32550,19 @@
           [
             "concat",
             [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "type"
+                ],
+                "closed"
+              ],
+              "CLOSED\n",
+              ""
+            ],
+            [
               "get",
               "name"
             ],
@@ -31978,10 +32576,6 @@
               [
                 "get",
                 "iata"
-              ],
-              [
-                "get",
-                "local_code"
               ]
             ],
             [
@@ -32079,19 +32673,6 @@
               "/u"
             ],
             "\n",
-            [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "type"
-                ],
-                "closed"
-              ],
-              "(closed)\n",
-              ""
-            ],
             [
               "get",
               "elevation_ft"
