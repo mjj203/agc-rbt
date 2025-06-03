@@ -144,17 +144,17 @@ sources:
   rbt_topo_source:
     type: tile
     # Changed from cluster URL to local container URL
-    url: http://tileserver:8080/styles/RBT-TOPO-3395/%(z)s/%(x)s/%(y)s.png
+    url: http://tileserver:8080/styles/RBT-TOPO-3395/512/%(z)s/%(x)s/%(y)s.png
     grid: mercator_3395
   rbt_dark_source:
     type: tile
     # Changed from cluster URL to local container URL
-    url: http://tileserver:8080/styles/RBT-DARK-3395/%(z)s/%(x)s/%(y)s.png
+    url: http://tileserver:8080/styles/RBT-DARK-3395/512/%(z)s/%(x)s/%(y)s.png
     grid: mercator_3395
   rbt_overlay_source:
     type: tile
     # Changed from cluster URL to local container URL
-    url: http://tileserver:8080/styles/RBT-OVERLAY-3395/%(z)s/%(x)s/%(y)s.png
+    url: http://tileserver:8080/styles/RBT-OVERLAY-3395/512/%(z)s/%(x)s/%(y)s.png
     grid: mercator_3395
     transparent: true
 

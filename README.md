@@ -182,6 +182,7 @@ git clone https://github.com/mjj203/agc-rbt.git && \
 **Ubuntu/Debian:**
 
 ```
+apt install unzip -y;
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     sudo ./aws/install;
@@ -239,7 +240,10 @@ Now install **git**, **git-lfs**, **docker**, and **awscli** in your WSL Ubuntu 
 ```
 sudo apt-get remove docker docker-engine docker.io containerd runc;
 sudo apt-get update;
-sudo apt-get install ca-certificates curl gnupg lsb-release;
+sudo apt-get install unzip ca-certificates curl gnupg lsb-release;
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip;
+sudo ./aws/install;
 sudo update-ca-certificates; 
 sudo mkdir -m 0755 -p /etc/apt/keyrings;
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg;
