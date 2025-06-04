@@ -64,6 +64,7 @@ graph TB
     classDef mapproxyStyle fill:#bbdefb,stroke:#0d47a1,stroke-width:3px,color:#0d47a1
     classDef tileserverStyle fill:#ffccbc,stroke:#bf360c,stroke-width:3px,color:#bf360c
     classDef networkStyle fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 5 5
+    classDef containerBoxStyle fill:#fff3e0,stroke:#e65100,stroke-width:3px
     
     %% Client
     CLIENT[fa:fa-laptop Client Browser]:::clientStyle
@@ -87,15 +88,18 @@ graph TB
     end
     
     %% Connections
-    CLIENT -->|"<b>HTTP Request</b><br/>"| NGINX
+    CLIENT -->|"<b>HTTP Request</b><br/>"| NGINX_CONTAINER
     
-    NGINX -->|"<b>/mapproxy/*</b>"| MP
-    NGINX -->|"<b>/tileservergl/*</b>"| TS
+    NGINX_CONTAINER -->|"<b>/mapproxy/*</b>"| MAPPROXY_CONTAINER
+    NGINX_CONTAINER -->|"<b>/tileservergl/*</b>"| TILESERVER_CONTAINER
     
-    MP -.->|"<b>Tile Requests</b><br/>Cache Source<br/>"| TS
+    MAPPROXY_CONTAINER -.->|"<b>Tile Requests</b><br/>Cache Source<br/>"| TILESERVER_CONTAINER
     
     %% Apply network style
     class DOCKER_NET networkStyle
+    
+    %% Apply container styles
+    class NGINX_CONTAINER,MAPPROXY_CONTAINER,TILESERVER_CONTAINER containerBoxStyle
     
     %% Add title
     subgraph TITLE[" "]
