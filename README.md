@@ -98,7 +98,7 @@ graph TB
     
     %% Add title
     subgraph TITLE[" "]
-        T[<b>Containerized Map Service Architecture</b><br/><i>Nginx + MapProxy + TileserverGL</i>]
+        T[<b>Containerized RBT Service Architecture</b><br/><i>Nginx + MapProxy + TileserverGL</i>]
     end
     
     style TITLE fill:none,stroke:none
