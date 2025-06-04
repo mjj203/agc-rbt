@@ -55,64 +55,11 @@ RBT uses several components working together:
 
 # Architecture
 
-```mermaid
-%%{init: {'theme':'default', 'themeVariables': {'primaryTextColor':'#000', 'edgeLabelBackground':'#ffffff'}}}%%
-graph TB
-    %% Define styles
-    classDef clientStyle fill:#e1f5fe,stroke:#01579b,stroke-width:3px,color:#01579b
-    classDef nginxStyle fill:#c8e6c9,stroke:#1b5e20,stroke-width:3px,color:#1b5e20
-    classDef mapproxyStyle fill:#bbdefb,stroke:#0d47a1,stroke-width:3px,color:#0d47a1
-    classDef tileserverStyle fill:#ffccbc,stroke:#bf360c,stroke-width:3px,color:#bf360c
-    classDef networkStyle fill:#f5f5f5,stroke:#616161,stroke-width:2px,stroke-dasharray: 5 5
-    classDef containerBoxStyle fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    
-    %% Client
-    CLIENT[fa:fa-laptop Client Browser]:::clientStyle
-    
-    %% Docker Network Container
-    subgraph DOCKER_NET[" "]
-        %% Nginx Container
-        subgraph NGINX_CONTAINER["🐳 Nginx Container"]
-            NGINX[fa:fa-server <b>Nginx Reverse Proxy</b><br/><i>Port: 8081</i><br/>Load Balancer & Router]:::nginxStyle
-        end
-        
-        %% MapProxy Container
-        subgraph MAPPROXY_CONTAINER["🐳 MapProxy Container"]
-            MP[fa:fa-layer-group <b>MapProxy</b><br/><i>Internal Port: 5000</i><br/>Tile Cache Service]:::mapproxyStyle
-        end
-        
-        %% TileserverGL Container
-        subgraph TILESERVER_CONTAINER["🐳 TileserverGL Container"]
-            TS[fa:fa-map <b>TileserverGL</b><br/><i>Internal Port: 8080</i><br/>Vector & Raster Tile Server]:::tileserverStyle
-        end
-    end
-    
-    %% Connections
-    CLIENT -->|"<b>HTTP Request</b><br/>"| NGINX_CONTAINER
-    
-    NGINX_CONTAINER -->|"<b>/mapproxy/*</b>"| MAPPROXY_CONTAINER
-    NGINX_CONTAINER -->|"<b>/tileservergl/*</b>"| TILESERVER_CONTAINER
-    
-    MAPPROXY_CONTAINER -.->|"<b>Tile Requests</b><br/>Cache Source<br/>"| TILESERVER_CONTAINER
-    
-    %% Apply network style
-    class DOCKER_NET networkStyle
-    
-    %% Apply container styles
-    class NGINX_CONTAINER,MAPPROXY_CONTAINER,TILESERVER_CONTAINER containerBoxStyle
-    
-    %% Add title
-    subgraph TITLE[" "]
-        T[<b>Containerized RBT Service Architecture</b><br/><i>Nginx + MapProxy + TileserverGL</i>]
-    end
-    
-    style TITLE fill:none,stroke:none
-    style T fill:none,stroke:none,font-size:18px
-```
-
 RBT is deployed as a containerized application using a modified version of [TileserverGL](https://github.com/mjj203/tileserver-gl) that uses [MapLibre](https://maplibre.org/) instead of [MapboxGL](https://www.mapbox.com/mapbox-gljs), and enables **EPSG:3395** projections for both WMTS and TileJSON endpoints. Additionally, [MapProxy](https://mapproxy.org/) is deployed to enable **EPSG:4326** Raster Tiles via OGC WMTS Endpoints by caching the Raster Tiles created dynamically from the TileserverGL deployment.
 
 The RBT stack is optimized for deployment into a Kubernetes environment in the cloud or on-premises using helm charts. Local deployments can use **Docker Compose** after setting up the local environment with the required tools and getting S3 credentials from our team to download our MBTiles data for TileserverGL using the **AWSCLI**.
+
+![RBT_ARCHITECTURE](images/rbt_architecture.png)
 
 # Installation
 
