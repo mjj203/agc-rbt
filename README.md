@@ -71,7 +71,7 @@ graph TB
     subgraph DOCKER_NET[" "]
         %% Nginx Container
         subgraph NGINX_CONTAINER["🐳 Nginx Container"]
-            NGINX[fa:fa-server <b>Nginx Reverse Proxy</b><br/><i>Port: 80</i><br/>Load Balancer & Router]:::nginxStyle
+            NGINX[fa:fa-server <b>Nginx Reverse Proxy</b><br/><i>Port: 8081</i><br/>Load Balancer & Router]:::nginxStyle
         end
         
         %% MapProxy Container
@@ -86,12 +86,12 @@ graph TB
     end
     
     %% Connections
-    CLIENT -->|"<b>HTTP Request</b><br/>http://localhost:80"| NGINX
+    CLIENT -->|"<b>HTTP Request</b><br/>localhost:8081"| NGINX
     
-    NGINX -->|"<b>/mapproxy/*</b><br/>Proxy Pass<br/>→ mapproxy:5000"| MP
-    NGINX -->|"<b>/tileservergl/*</b><br/>Proxy Pass<br/>→ tileservergl:8080"| TS
+    NGINX -->|"<b>/mapproxy/*</b>→ mapproxy:5000"| MP
+    NGINX -->|"<b>/tileservergl/*</b>→ tileservergl:8080"| TS
     
-    MP -.->|"<b>Tile Requests</b><br/>Cache Source<br/>http://tileservergl:8080/styles/[style-id]/%(z)s/%(x)s/%(y)s.png"| TS
+    MP -.->|"<b>Tile Requests</b><br/>Cache Source<br/>tileservergl:8080/styles/[style-id]/%(z)s/%(x)s/%(y)s.png"| TS
     
     %% Apply network style
     class DOCKER_NET networkStyle
