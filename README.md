@@ -86,12 +86,12 @@ graph TB
     end
     
     %% Connections
-    CLIENT -->|"<b>HTTP Request</b><br/>localhost:8081"| NGINX
+    CLIENT -->|"<b>HTTP Request</b><br/>"| NGINX
     
-    NGINX -->|"<b>/mapproxy/*</b>→ mapproxy:5000"| MP
-    NGINX -->|"<b>/tileservergl/*</b>→ tileservergl:8080"| TS
+    NGINX -->|"<b>/mapproxy/*</b>"| MP
+    NGINX -->|"<b>/tileservergl/*</b>"| TS
     
-    MP -.->|"<b>Tile Requests</b><br/>Cache Source<br/>tileservergl:8080/styles/[style-id]/%(z)s/%(x)s/%(y)s.png"| TS
+    MP -.->|"<b>Tile Requests</b><br/>Cache Source<br/>"| TS
     
     %% Apply network style
     class DOCKER_NET networkStyle
