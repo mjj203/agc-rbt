@@ -1,0 +1,6 @@
+apiVersion: v2
+name: mapproxy
+description: A Helm chart to deploy MapProxy in OpenShift
+type: application
+version: 0.1.0
+appVersion: "4.1.1"

@@ -1,0 +1,271 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    user nginx;
+    worker_rlimit_nofile 65536;
+    worker_processes auto;
+    error_log /var/log/nginx/error.log warn;
+    pid /var/run/nginx/nginx.pid;
+
+    events {
+      worker_connections 8192;
+      multi_accept on;
+      use epoll;
+    }
+
+    http {
+      include /etc/nginx/mime.types;
+      default_type application/octet-stream;
+      
+      log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+      
+      access_log /var/log/nginx/access.log main;
+      
+      sendfile on;
+      tcp_nopush on;
+      tcp_nodelay on;
+      keepalive_timeout 60;
+      types_hash_max_size 4096;
+      server_tokens off;
+      
+      upstream mapproxy_backend {
+        server {{ .Values.name }}:5000;
+        keepalive 128;
+      }
+      
+      upstream tileserver_backend {
+        server {{ .Values.tileserverService | default "tileserver" }}:8080;
+        keepalive 128;
+      }
+
+    proxy_cache_path /var/cache/nginx/tile_cache
+                    levels=1:2
+                    max_size=10g
+                    inactive=60m
+                    use_temp_path=off
+                    keys_zone=backend_cache:10m;
+
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any; # Compress for all proxied requests
+    gzip_comp_level 6; # Balance between CPU and compression ratio (1-9)
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_min_length 256; # Don't compress very small files
+    gzip_types
+      application/atom+xml
+      application/geo+json
+      application/javascript
+      application/x-javascript
+      application/json
+      application/ld+json
+      application/manifest+json
+      application/rdf+xml
+      application/rss+xml
+      application/vnd.ms-fontobject
+      application/wasm
+      application/x-web-app-manifest+json
+      application/xhtml+xml
+      application/xml
+      font/eot
+      font/otf
+      font/ttf
+      image/bmp
+      image/png
+      image/svg+xml
+      image/x-icon
+      text/cache-manifest
+      text/calendar
+      text/css
+      text/javascript
+      text/plain
+      text/markdown
+      text/vcard
+      text/vnd.rim.location.xloc
+      text/vtt
+      text/x-component
+      text/xml;
+
+      server {
+        listen 8081;
+        server_name _;
+        
+        # Redirect root to tileservergl
+        location = / {
+          return 301 /tileservergl/;
+        }
+        
+        # MapProxy routes
+        location /mapproxy/ {
+          rewrite ^/mapproxy/(.*)$ /$1 break;
+          include /etc/nginx/uwsgi_params;
+          uwsgi_pass mapproxy_backend;
+
+          # Enable caching
+          proxy_cache backend_cache;
+          proxy_cache_valid 200 302 404 1h;
+          proxy_cache_key $scheme$request_method$host$request_uri;
+          proxy_cache_lock on;
+          proxy_cache_use_stale updating error timeout invalid_header http_500 http_502 http_503 http_504;
+          proxy_cache_revalidate on;
+          proxy_cache_background_update on;
+          add_header X-Cache-Status $upstream_cache_status;  # Helpful for debugging
+
+          uwsgi_param UWSGI_SCHEME $scheme;
+          uwsgi_param SERVER_SOFTWARE nginx/$nginx_version;
+          
+          uwsgi_buffering on;
+          uwsgi_buffer_size 32k;
+          uwsgi_buffers 16 32k;
+          uwsgi_busy_buffers_size 64k;
+          uwsgi_read_timeout 80s;
+          uwsgi_send_timeout 65s;
+          uwsgi_connect_timeout 5s;
+
+          proxy_set_header Host $http_host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+        }
+        
+        # TileserverGL routes  
+        location /tileservergl/ {
+          rewrite ^/tileservergl/(.*)$ /$1 break;
+          proxy_pass http://tileserver_backend;
+          
+          proxy_set_header Host $http_host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          
+          # WebSocket support for TileserverGL
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          
+          # Caching for tile requests
+          location ~ ^/tileservergl/styles/.*/.*\.(png|jpg|jpeg|webp|pbf)$ {
+            proxy_pass http://tileserver_backend;
+            proxy_cache backend_cache;
+            proxy_cache_valid 200 7d;
+            proxy_cache_key $uri$is_args$args;
+            add_header X-Cache-Status $upstream_cache_status;
+          }
+        }
+        
+        # Backwards compatibility routes
+        location /wmts/ {
+          rewrite ^/(.*)$ /mapproxy/$1 permanent;
+        }
+        
+        location /wms {
+          rewrite ^/(.*)$ /mapproxy/$1 permanent;
+        }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-proxy
+  template:
+    metadata:
+      labels:
+        app: nginx-proxy
+    spec:
+      containers:
+      - name: nginx
+        image: {{ .Values.nginx.image }}
+        resources:
+          requests:
+            memory: {{ .Values.nginx.resources.requests.memory }}
+            cpu: {{ .Values.nginx.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.nginx.resources.limits.memory }}
+            cpu: {{ .Values.nginx.resources.limits.cpu }}
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: client-temp
+          mountPath: /var/cache/nginx/client_temp
+        - name: log
+          mountPath: /var/log/nginx
+        - name: run
+          mountPath: /var/run/nginx
+        - name: proxy-temp
+          mountPath: /var/cache/nginx/proxy_temp
+        - name: fastcgi-temp
+          mountPath: /var/cache/nginx/fastcgi_temp
+        - name: uwsgi-temp
+          mountPath: /var/cache/nginx/uwsgi_temp
+        - name: scgi-temp
+          mountPath: /var/cache/nginx/scgi_temp
+        - name: tile-cache
+          mountPath: /var/cache/nginx/tile_cache
+        - name: shm
+          mountPath: /dev/shm
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+      - name: shm
+        emptyDir:
+          medium: Memory
+      - name: client-temp
+        emptyDir: {}
+      - name: proxy-temp
+        emptyDir: {}
+      - name: fastcgi-temp
+        emptyDir: {}
+      - name: uwsgi-temp
+        emptyDir: {}
+      - name: scgi-temp
+        emptyDir: {}
+      - name: tile-cache
+        emptyDir: {}
+      - name: log
+        emptyDir: {}
+      - name: run
+        emptyDir: {}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-proxy
+spec:
+  ports:
+    - name: 8081-tcp
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: nginx-proxy
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: mapproxy
+spec:
+  to:
+    kind: Service
+    name: nginx-proxy
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

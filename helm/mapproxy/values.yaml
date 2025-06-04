@@ -1,0 +1,22 @@
+image: 'docker.io/mjj203/mapproxy:latest'
+name: mapproxy
+network: mapproxy
+replicas: 1
+
+# Add nginx configuration
+nginx:
+  image: 'docker.io/mjj203/nginx:latest'
+  replicas: 1
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
+
+# Add namespace configuration
+namespace: "" # Empty means use current namespace
+
+# TileServer service name for nginx routing
+tileserverService: "tileserver"

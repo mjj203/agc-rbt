@@ -1,0 +1,17 @@
+image: 'docker.io/mjj203/rbt:tileservergl-3395-latest'
+name: tileservergl
+network: tileserver
+replicas: 1
+config: '/data/config/config.json'
+
+# Add resource configuration
+resources:
+  requests:
+    memory: "4Gi"
+    cpu: "2000m"
+  limits:
+    memory: "8Gi"
+    cpu: "4000m"
+
+# Add namespace configuration
+namespace: "" # Empty means use current namespace

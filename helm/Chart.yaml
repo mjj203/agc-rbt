@@ -1,6 +1,14 @@
 apiVersion: v2
-name: tileserver
-description: A Helm chart for Kubernetes
+name: rbt
+description: Umbrella Helm chart for deploying RBT (Releasable Basemap Tiles) stack
 type: application
 version: 0.1.0
-appVersion: "5.2.1-pre.3"
+appVersion: "1.0.0"
+
+dependencies:
+  - name: tileservergl
+    version: "0.1.0"
+    repository: "file://./tileservergl"
+  - name: mapproxy
+    version: "0.1.0"
+    repository: "file://./mapproxy" 

@@ -455,57 +455,20 @@ If you need to bypass nginx for any reason:
 - **TileserverGL**: `http://localhost:8080` (port 8080)
 - **MapProxy**: `http://localhost:8081/wms` or `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml` (backwards compatibility)
 
-### Connecting QGIS to RBT
+### Connecting GIS Clients to RBT
 
-#### Method 1: MapProxy WMS (Easiest)
-1. In QGIS, go to **Layer → Add Layer → Add WMS/WMTS Layer**
-2. Click **New** to create a new connection
-3. Enter:
-   - **Name**: RBT MapProxy WMS
-   - **URL**: `http://localhost:8081/mapproxy/wms`
-4. Click **OK**, then **Connect**
-5. Select available layers and click **Add**
+For detailed step-by-step instructions with screenshots on connecting QGIS and ArcGIS Pro to RBT services, see our [WMTS Connection Guide](docs/WMTS.md).
 
-#### Method 2: MapProxy WMTS
-1. In QGIS, go to **Layer → Add Layer → Add WMS/WMTS Layer**
-2. Click **New** to create a new connection
-3. Enter:
-   - **Name**: RBT MapProxy WMTS
-   - **URL**: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
-4. Click **OK**, then **Connect**
-5. Select available layers and click **Add**
+#### Quick Connection URLs:
 
-#### Method 3: TileserverGL WMTS (Through Nginx)
-1. First, visit `http://localhost:8081/tileservergl/` to see available styles
-2. Note the style ID you want to use (e.g., "RBT-TOPO-3395")
-3. In QGIS, go to **Layer → Add Layer → Add WMS/WMTS Layer**
-4. Enter:
-   - **Name**: RBT TileserverGL - [Style Name]
-   - **URL**: `http://localhost:8081/tileservergl/styles/[style-id]/wmts.xml`
-   - Example: `http://localhost:8081/tileservergl/styles/RBT-TOPO-3395/wmts.xml`
+**MapProxy (Recommended for Performance):**
+- WMS: `http://localhost:8081/mapproxy/wms`
+- WMTS: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
 
-#### Method 4: Vector Tiles (QGIS 3.14+)
-1. In QGIS, go to **Layer → Add Layer → Add Vector Tile Layer**
-2. Click **New** under **Vector Tile Connections**
-3. Enter:
-   - **Name**: RBT Vector Tiles
-   - **URL**: `http://localhost:8081/tileservergl/data/{data-id}/{z}/{x}/{y}.pbf`
-   - **Style URL**: `http://localhost:8081/tileservergl/styles/{style-id}/style.json`
-4. Set Min/Max zoom levels (typically 0-15)
-
-### Connecting ArcGIS to RBT
-
-#### For ArcGIS Pro:
-1. In the **Catalog** pane, right-click **Servers**
-2. Select **Add WMTS Server**
-3. Enter URL: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
-4. Or for WMS: Select **Add WMS Server** and use `http://localhost:8081/mapproxy/wms`
-
-#### For ArcMap:
-1. Open **Catalog Window**
-2. Expand **GIS Servers**
-3. Double-click **Add WMTS Server** or **Add WMS Server**
-4. Enter the appropriate URL from above
+**TileserverGL (For Style Options):**
+- Web Interface: `http://localhost:8081/tileservergl/`
+- WMTS per style: `http://localhost:8081/tileservergl/styles/{style-id}/wmts.xml`
+- Vector Tiles: `http://localhost:8081/tileservergl/data/{data-id}/{z}/{x}/{y}.pbf`
 
 ### Advanced TileserverGL Endpoints
 

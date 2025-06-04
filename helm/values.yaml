@@ -1,20 +1,36 @@
-gl:
+# Global values
+global:
+  namespace: "" # Empty means use current namespace
+
+# TileserverGL configuration
+tileservergl:
+  image: 'docker.io/mjj203/rbt:tileservergl-3395-latest'
+  name: tileservergl
+  network: tileserver
   replicas: 1
-  tileservergl:
-    args:
-    - -c
-    - /data/config/config.json
-    image:
-      repository: docker.io/mjj203/rbt
-      tag: tileserver-gl-v5.2.1-pre.3
-kubernetesClusterDomain: cluster.local
-pvc:
-  efsAp1:
-    storageClass: efs-sc
-    storageRequest: 5Gi
-tileserver:
-  ports:
-  - port: 8080
-    protocol: TCP
-    targetPort: 8080
-  type: ClusterIP
+  config: '/data/config/config.json'
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "2000m"
+    limits:
+      memory: "8Gi"
+      cpu: "4000m"
+
+# MapProxy configuration
+mapproxy:
+  image: 'docker.io/mjj203/mapproxy:latest'
+  name: mapproxy
+  network: mapproxy
+  replicas: 1
+  tileserverService: "tileserver"
+  nginx:
+    image: 'docker.io/mjj203/nginx:latest'
+    replicas: 1
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "500m"
+      limits:
+        memory: "2Gi"
+        cpu: "2000m" 

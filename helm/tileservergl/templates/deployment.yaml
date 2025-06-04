@@ -1,0 +1,174 @@
+﻿kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.name }}
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
+  labels:
+    app: {{ .Values.name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: tileserver
+        - name: shm
+          emptyDir:
+            medium: Memory
+        - name: cache
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: config-dir
+          emptyDir: {}
+        - name: tileserver-config
+          configMap:
+            name: tileserver-config
+      containers:
+        - resources:
+            requests:
+              memory: {{ .Values.resources.requests.memory | default "4Gi" }}
+              cpu: {{ .Values.resources.requests.cpu | default "2000m" }}
+            limits:
+              memory: {{ .Values.resources.limits.memory | default "8Gi" }}
+              cpu: {{ .Values.resources.limits.cpu | default "4000m" }}
+          name: {{ .Values.name }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: prod
+            - name: config-dir
+              mountPath: /data/config
+            - name: tileserver-config
+              mountPath: /data/config/config.json
+              subPath: config.json
+            - name: cache
+              mountPath: /.cache
+            - name: shm
+              mountPath: /dev/shm
+            - name: tmp
+              mountPath: /tmp
+          image: {{ .Values.image }}
+          args:
+            - '-c'
+            - {{ .Values.config }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tileserver-config
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
+data:
+  config.json: |
+    {
+      "options": {
+        "paths": {
+          "root": "",
+          "fonts": "../fonts",
+          "mbtiles": "../data",
+          "styles": "../styles"
+        },
+        "formatQuality": {
+          "jpeg": 100,
+          "webp": 100,
+          "png": 100
+        },
+        "tileMargin": 0,
+        "pbfAlias": "pbf",
+        "maxSize": 2048,
+        "minRendererPoolSizes": [8, 4, 2],
+        "maxRendererPoolSizes": [8, 4, 2],
+        "serveAllFonts": true,
+        "serveAllStyles": true,
+        "serveStaticMaps": true
+      },
+      "data": {
+        "CULTURAL": {
+          "mbtiles": "cultural-3395.mbtiles"
+        },
+        "HILLSHADE": {
+          "mbtiles": "hillshade-3395.mbtiles"
+        },
+        "PHYSICAL": {
+          "mbtiles": "physical-3395.mbtiles"
+        }
+      },
+      "styles": {
+        "RBT-TOPO-3395": {
+          "style": "RBT-TOPO-3395/style.json",
+          "serve_data": true,
+          "serve_rendered": true,
+          "tilejson": {
+            "format": "png",
+            "bounds": [-180, -80, 180, 84]
+          }
+        },
+        "RBT-TOPO-3DBLDG-3395": {
+          "style": "RBT-TOPO-3DBLDG-3395/style.json",
+          "serve_data": true,
+          "serve_rendered": false
+        },
+        "RBT-DARK-3395": {
+          "style": "RBT-DARK-3395/style.json",
+          "serve_data": true,
+          "serve_rendered": true,
+          "tilejson": {
+            "format": "png",
+            "bounds": [-180, -80, 180, 84]
+          }
+        },
+        "RBT-OVERLAY-3395": {
+          "style": "RBT-OVERLAY-3395/style.json",
+          "serve_data": true,
+          "serve_rendered": true,
+          "tilejson": {
+            "format": "png",
+            "bounds": [-180, -80, 180, 84]
+          }
+        }
+      }
+    }
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.network }}
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: {{ .Values.name }}
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.network }}
+spec:
+  to:
+    kind: Service
+    name: {{ .Values.network }}
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
