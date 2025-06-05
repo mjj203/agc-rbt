@@ -44,7 +44,7 @@ This application runs using Docker, which is like a virtual container that packa
 
 The [AGC](https://www.agc.army.mil/) Releasable Basemap Tiles (RBT) is important because the capability can be easily shared with international coalition partners and doesn't need to go through the current approval process associated with traditional Limited Distribution (LIMDIS) data. The National System for Geospatial Intelligence (NSG) RBT is based on modern technology and provides access to like-in-kind Standard Map Products such as Topographic Map (TM), Joint Operations Graphic (JOG), and Tactical Pilotage Chart (TPC) in Vector Tiles format. This format enables rapid transfer across a network or accessed offline from a tile cache. By implementing simple changes in how modern maps are produced and accessed, international coalition partners will be able to track plans and activities using the same basemaps as U.S. services without delays associated with release of classified information.
 
-**RBT** is funded by [NGA](https://www.nga.mil/) and development, demonstration and enhancement will continue with the help of the Army Geospatial Enterprise [AGE](https://www.agc.army.mil/Army-Geospatial-Enterprise/About/) community, [LazarusAI](https://www.lazarusai.com), and [Axis Maps](https://www.axismaps.com/).
+**RBT** is funded by [NGA](https://www.nga.mil/) and development, demonstration and enhancement will continue with the help of the Army Geospatial Enterprise [AGE](https://www.agc.army.mil/Army-Geospatial-Enterprise/About/) community, [StrategicACI](https://www.strategicaci.com), [LazarusAI](https://www.lazarusai.com), and [Axis Maps](https://www.axismaps.com/).
 
 ## How It Works (Simple Version)
 RBT uses several components working together:
