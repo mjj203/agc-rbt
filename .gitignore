@@ -1,6 +1,10 @@
 .idea/
 .idea/*
 .DS_Store
+
+# Local overrides of .env.example -- see that file for the documented
+# defaults docker-compose.yaml falls back to when this is absent.
+.env
 */.DS_Store
 */*/.DS_Store
 */*/*/.DS_Store

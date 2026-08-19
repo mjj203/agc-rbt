@@ -57,13 +57,13 @@ Replace `localhost:8081` with your production URL.
    - Production: Replace with your deployment URL
 
 ### 2. Find the style you want and right-click the **WMTS** button, then select **Copy Link Address**
-   - Example URL: `http://localhost:8081/tileservergl/styles/RBT-TOPO-3395/wmts.xml`
+   - Example URL: `http://localhost:8081/tileservergl/styles/RBT-TOPO/wmts.xml`
 
 ### 3. In QGIS, right-click **WMS/WMTS** in the Browser panel and select **New Connection**
    ![WMTS CONNECTION](../images/wmts_connection.png)
 
 ### 4. Enter the connection details:
-   - **Name**: Your chosen name (e.g., `RBT-TOPO-3395`)
+   - **Name**: Your chosen name (e.g., `RBT-TOPO`)
    - **URL**: The WMTS URL copied in step 2
    - **WMTS server-side tile pixel ratio**: Choose **High (192 DPI)** for better quality
 
@@ -129,7 +129,6 @@ Replace `localhost:8081` with your production URL.
 - You need standard OGC-compliant WMTS
 - You're working with older GIS clients
 - You want cached tiles for offline use
-- You need EPSG:4326 projection support
 
 ## Use TileserverGL WMTS when:
 - You need multiple style options
@@ -140,13 +139,15 @@ Replace `localhost:8081` with your production URL.
 
 ## Available Styles in TileserverGL
 
-Common styles include:
-- **RBT-TOPO-3395**: Topographic style
-- **RBT-DARK-3395**: Dark theme style  
-- **RBT-OVERLAY-3395**: Overlay style for use with imagery
-- **RBT-TOPO-3DBLDG-3395**: Topographic with 3D buildings
+Available styles:
+- **RBT-TOPO**: Topographic style
+- **RBT-LIGHT**: Light basemap style
+- **RBT-BROWN**: Brown/sepia basemap style
+- **RBT-GRAY**: Grayscale basemap style
+- **RBT-DARK**: Dark theme style
+- **RBT-OVERLAY**: Overlay style for use with imagery
 
-Visit the TileserverGL interface to see all available styles and their previews.
+Visit the TileserverGL interface to see all available styles and their previews. Screenshots elsewhere in this guide may still show older `-3395` style identifiers (e.g. `RBT-TOPO-3395`) from a previous release that served an additional EPSG:3395 projection; those styles were renamed to drop the `-3395` suffix when this deployment moved to serving EPSG:3857 only.
 
 ## Troubleshooting
 
@@ -165,6 +166,5 @@ Visit the TileserverGL interface to see all available styles and their previews.
 - Consider adjusting tile cache settings
 
 ### Projection Issues
-- TileserverGL uses EPSG:3395 (World Mercator)
-- MapProxy supports both EPSG:3395 and EPSG:4326
-- Ensure your project CRS is compatible
+- Both TileserverGL and MapProxy serve EPSG:3857 (Web Mercator), the standard projection used by most web maps
+- Set your QGIS/ArcGIS project CRS to EPSG:3857 (or let the client reproject on the fly)

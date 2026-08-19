@@ -1,0 +1,123 @@
+{
+  "airfield": {
+    "height": 18,
+    "pixelRatio": 1,
+    "width": 18,
+    "x": 0,
+    "y": 170
+  },
+  "airport": {
+    "height": 18,
+    "pixelRatio": 1,
+    "width": 18,
+    "x": 0,
+    "y": 188
+  },
+  "circle": {
+    "height": 23,
+    "pixelRatio": 1,
+    "width": 23,
+    "x": 0,
+    "y": 128
+  },
+  "heliport": {
+    "height": 18,
+    "pixelRatio": 1,
+    "width": 18,
+    "x": 0,
+    "y": 206
+  },
+  "routeMarker-lg-USA": {
+    "height": 18,
+    "pixelRatio": 1,
+    "width": 18,
+    "x": 0,
+    "y": 224,
+    "content": [4, 4, 14, 15],
+    "stretchX": [[6, 7], [11, 12]],
+    "stretchY": [[7, 8]],
+    "textFitWidth": "stretchOnly",
+    "textFitHeight": "proportional"
+  },
+  "routeMarker-lg-nonUSA": {
+    "height": 13,
+    "pixelRatio": 1,
+    "width": 23,
+    "x": 0,
+    "y": 242,
+    "content": [3, 2, 20, 13],
+    "stretchX": [[11, 13]],
+    "stretchY": [[4, 10]],
+    "textFitWidth": "stretchOnly",
+    "textFitHeight": "proportional"
+  },
+  "routeMarker-md-USA": {
+    "height": 18,
+    "pixelRatio": 1,
+    "width": 18,
+    "x": 18,
+    "y": 170,
+    "content": [5, 4, 13, 15],
+    "stretchX": [[6, 7], [11, 12]],
+    "stretchY": [[7, 8]],
+    "textFitWidth": "stretchOnly",
+    "textFitHeight": "proportional"
+  },
+  "routeMarker-md-nonUSA": {
+    "height": 12,
+    "pixelRatio": 1,
+    "width": 22,
+    "x": 23,
+    "y": 128,
+    "content": [3, 2, 19, 12],
+    "stretchX": [[10, 12]],
+    "stretchY": [[4, 8]],
+    "textFitWidth": "stretchOnly",
+    "textFitHeight": "proportional"
+  },
+  "routeMarker-sm-USA": {
+    "height": 18,
+    "pixelRatio": 1,
+    "width": 18,
+    "x": 19,
+    "y": 151,
+    "content": [4, 4, 13, 16],
+    "stretchX": [[8, 10]],
+    "stretchY": [[8, 10]],
+    "textFitWidth": "stretchOnly",
+    "textFitHeight": "proportional"
+  },
+  "routeMarker-sm-nonUSA": {
+    "height": 12,
+    "pixelRatio": 1,
+    "width": 22,
+    "x": 18,
+    "y": 188,
+    "content": [3, 2, 19, 12],
+    "stretchX": [[10, 12]],
+    "stretchY": [[4, 8]],
+    "textFitWidth": "stretchOnly",
+    "textFitHeight": "proportional"
+  },
+  "star": {
+    "height": 19,
+    "pixelRatio": 1,
+    "width": 19,
+    "x": 0,
+    "y": 151
+  },
+  "water-intermittent-level1": {
+    "height": 128,
+    "pixelRatio": 1,
+    "width": 128,
+    "x": 0,
+    "y": 0
+  },
+  "water-intermittent-level2": {
+    "height": 128,
+    "pixelRatio": 1,
+    "width": 128,
+    "x": 128,
+    "y": 0
+  }
+}

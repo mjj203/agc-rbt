@@ -5,65 +5,48 @@
         "fonts": "../fonts",
         "mbtiles": "../data",
         "styles": "../styles"
-      },
-      "formatQuality": {
-        "jpeg": 100,
-        "webp": 100,
-        "png": 100
-      },
-      "tileMargin": 0,
-      "pbfAlias": "pbf",
-      "maxSize": 2048,
-      "minRendererPoolSizes": [8, 4, 2],
-      "maxRendererPoolSizes": [8, 4, 2],
-      "pbfAlias": "pbf",
-      "serveAllFonts": true,
-      "serveAllStyles": true,
-      "serveStaticMaps": true
+      }
     },
     "data": {
-      "CULTURAL": {
-        "mbtiles": "cultural-3395.mbtiles"
+      "TERRAIN": {
+        "mbtiles": "TERRAIN.mbtiles",
+        "encoding": "mapbox",
+        "tileSize": 256
       },
-      "HILLSHADE": {
-        "mbtiles": "hillshade-3395.mbtiles"
-      },
-      "PHYSICAL": {
-        "mbtiles": "physical-3395.mbtiles"
+      "RBT": {
+        "mbtiles": "RBT.mbtiles"
       }
     },
     "styles": {
-      "RBT-TOPO-3395": {
-        "style": "RBT-TOPO-3395/style.json",
+      "RBT-TOPO": {
+        "style": "RBT-TOPO/style.json",
         "serve_data": true,
-        "serve_rendered": true,
-        "tilejson": {
-          "format": "png",
-          "bounds": [-180, -80, 180, 84]
-        }
+        "serve_rendered": true
       },
-      "RBT-TOPO-3DBLDG-3395": {
-        "style": "RBT-TOPO-3DBLDG-3395/style.json",
+      "RBT-LIGHT": {
+        "style": "RBT-LIGHT/style.json",
         "serve_data": true,
-        "serve_rendered": false
+        "serve_rendered": true
       },
-      "RBT-DARK-3395": {
-        "style": "RBT-DARK-3395/style.json",
+      "RBT-BROWN": {
+        "style": "RBT-BROWN/style.json",
         "serve_data": true,
-        "serve_rendered": true,
-        "tilejson": {
-          "format": "png",
-          "bounds": [-180, -80, 180, 84]
-        }
+        "serve_rendered": true
       },
-      "RBT-OVERLAY-3395": {
-        "style": "RBT-OVERLAY-3395/style.json",
+      "RBT-GRAY": {
+        "style": "RBT-GRAY/style.json",
         "serve_data": true,
-        "serve_rendered": true,
-        "tilejson": {
-          "format": "png",
-          "bounds": [-180, -80, 180, 84]
-        }
+        "serve_rendered": true
+      },
+      "RBT-DARK": {
+        "style": "RBT-DARK/style.json",
+        "serve_data": true,
+        "serve_rendered": true
+      },
+      "RBT-OVERLAY": {
+        "style": "RBT-OVERLAY/style.json",
+        "serve_data": true,
+        "serve_rendered": true
       }
     }
-  } 
+  }

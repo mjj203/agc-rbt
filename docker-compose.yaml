@@ -1,54 +1,80 @@
 services:
   mapproxy:
-    image: docker.io/mjj203/mapproxy:latest
+    # The "-nginx" tag is the only upstream variant that has uwsgi installed
+    # (see mapproxy's Dockerfile: `pip install uwsgi` only happens in that
+    # build stage). We don't use its bundled nginx/run-nginx.sh -- our own
+    # nginx service fronts everything -- we just need this tag for the
+    # uwsgi binary, and run it directly instead of the image's default CMD.
+    image: ghcr.io/mapproxy/mapproxy/mapproxy:7.0.0-nginx
     container_name: mapproxy
-    ports:
-      - "0.0.0.0:5000:5000"
+    command: ["uwsgi", "--ini", "/mapproxy/config/uwsgi.ini"]
+    environment:
+      - UWSGI_PROCESSES=${UWSGI_PROCESSES:-8}
+      - UWSGI_THREADS=${UWSGI_THREADS:-4}
     volumes:
+      - ./mapproxy/config:/mapproxy/config:ro
       - ./mapproxy/data:/data
-      - ./mapproxy/config/mapproxy.yaml:/app/mapproxy.yaml
-      - ./mapproxy/config/uwsgi.ini:/app/uwsgi.ini
       - ./mapproxy/locks:/locks
       - ./mapproxy/tile_locks:/tile_locks
     depends_on:
-      - tileservergl
-    shm_size: '16gb'
+      tileservergl:
+        condition: service_healthy
+    shm_size: ${MAPPROXY_SHM_SIZE:-512mb}
     restart: unless-stopped
     networks:
       - rbt-network
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/5000"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   nginx:
-    image: docker.io/mjj203/nginx:latest
+    image: nginx:alpine
     container_name: nginx
     ports:
-      - "0.0.0.0:8081:8081"
+      - "${BIND_ADDR:-0.0.0.0}:${NGINX_PORT:-8081}:8081"
     volumes:
-      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/cache:/var/cache/nginx
       - ./nginx/logs:/var/log/nginx
       - ./nginx/run:/var/run/nginx
     depends_on:
-      - mapproxy
-    shm_size: '1gb'
+      mapproxy:
+        condition: service_healthy
+    shm_size: ${NGINX_SHM_SIZE:-1gb}
     restart: unless-stopped
     networks:
       - rbt-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8081/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   tileservergl:
-    image: docker.io/mjj203/rbt:tileservergl-3395-latest
+    image: maptiler/tileserver-gl:v5.7.0-pre.0
     container_name: tileservergl
     ports:
-      - "0.0.0.0:8080:8080"
+      - "${BIND_ADDR:-0.0.0.0}:${TILESERVER_PORT:-8080}:8080"
     volumes:
       - ./tileserver/data:/data
       - ./tileserver/fonts:/fonts
       - ./tileserver/styles:/styles
-      - ./tileserver/config:/config
+      - ./tileserver/config:/config:ro
     command: ["-c", "/config/config.json"]
     restart: unless-stopped
-    shm_size: '16gb'
+    shm_size: ${TILESERVER_SHM_SIZE:-2gb}
     networks:
       - rbt-network
+    healthcheck:
+      test: ["CMD", "node", "/usr/src/app/src/healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
 
 networks:
   rbt-network:
