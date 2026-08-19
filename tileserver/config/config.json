@@ -39,12 +39,12 @@
         "serve_rendered": true
       },
       "RBT-DARK": {
-        "style": "RBT-DARK-3395/style.json",
+        "style": "RBT-DARK/style.json",
         "serve_data": true,
         "serve_rendered": true
       },
       "RBT-OVERLAY": {
-        "style": "RBT-OVERLAY-3395/style.json",
+        "style": "RBT-OVERLAY/style.json",
         "serve_data": true,
         "serve_rendered": true
       }
