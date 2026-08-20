@@ -15,6 +15,7 @@ RBT_FILE="$DATA_DIR/RBT.mbtiles"
 TERRAIN_FILE="$DATA_DIR/TERRAIN.mbtiles"
 
 FORCE_DOWNLOAD=0
+WITH_NGINX=1
 
 log()  { printf '\n\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33mWARNING:\033[0m %s\n' "$*" >&2; }
@@ -24,15 +25,32 @@ usage() {
   cat <<'EOF'
 deploy.sh - Bootstrap an Ubuntu host and deploy the RBT Docker Compose stack.
 
-What this does (see README.md for the manual equivalent of each step):
-  1. Installs prerequisites: AWS CLI v2, Docker Engine + Compose plugin, git/git-lfs.
-  2. Downloads RBT.mbtiles and TERRAIN.mbtiles from S3 into tileserver/data/.
-  3. Fixes mapproxy/nginx runtime directory permissions.
-  4. Runs `docker compose up -d`.
+With no flags, all four steps below run in order. Pass one or more step
+flags to run only those steps (still in the order listed here, regardless
+of the order given on the command line):
+
+  --init      Install prerequisites: AWS CLI v2, Docker Engine + Compose
+              plugin, git/git-lfs.
+  --download  Download RBT.mbtiles/TERRAIN.mbtiles from S3 into
+              tileserver/data/.
+  --perm      Fix mapproxy/nginx runtime directory permissions.
+  --deploy    Run `docker compose up -d`.
+  --force     Re-download mbtiles even if already present (only relevant
+              together with --download, or with no step flags).
+  --no-nginx  Deploy mapproxy and tileservergl only, without the local
+              nginx reverse-proxy/cache -- use this when something else
+              (e.g. an AWS ALB and/or CloudFront) talks HTTP directly to
+              mapproxy (port ${MAPPROXY_PORT:-8082}) and tileservergl
+              (port ${TILESERVER_PORT:-8080}) instead. Only relevant with
+              --deploy, or with no step flags.
 
 Usage:
   S3_BUCKET_RBT=my-bucket S3_BUCKET_TERRAIN=my-other-bucket ./deploy.sh
-  ./deploy.sh --force   # re-download mbtiles even if already present
+  ./deploy.sh --init                # just install prerequisites
+  ./deploy.sh --download --perm     # just refresh data + permissions
+  ./deploy.sh --deploy              # just (re)start the stack
+  ./deploy.sh --force               # full run, force re-download
+  ./deploy.sh --no-nginx            # full run, skip the local nginx
 
 Run this as your normal (non-root) user, not via `sudo` -- it escalates
 internally with sudo only for the specific steps that need root (apt,
@@ -41,15 +59,17 @@ installing/starting Docker, chown). Running it unprivileged means
 AWS_PROFILE, or an EC2/ECS instance role) exactly as it would outside this
 script -- nothing here configures AWS credentials for you.
 
-Required environment variables:
+Required environment variables (only enforced when the download step runs):
   S3_BUCKET_RBT      Bucket (optionally with a prefix), no filename, e.g.
                       "my-bucket" or "s3://my-bucket/exports". Must contain
                       RBT.mbtiles.
   S3_BUCKET_TERRAIN  Same, but must contain TERRAIN.mbtiles.
 
 Re-running this script is safe: package installs are skipped when already
-present, and RBT.mbtiles/TERRAIN.mbtiles are only downloaded once unless
---force is given.
+present. TERRAIN.mbtiles is only downloaded once (it never changes upstream).
+RBT.mbtiles is re-downloaded automatically whenever the S3 object's
+LastModified time is newer than the local copy's -- pass --force to
+re-download either file unconditionally.
 EOF
 }
 
@@ -107,7 +127,20 @@ install_docker() {
   fi
 }
 
+prereqs_installed() {
+  command -v aws >/dev/null 2>&1 &&
+    command -v docker >/dev/null 2>&1 &&
+    docker compose version >/dev/null 2>&1 &&
+    command -v git >/dev/null 2>&1 &&
+    command -v git-lfs >/dev/null 2>&1
+}
+
 install_prereqs() {
+  if prereqs_installed; then
+    log "All prerequisites already installed (aws, docker, docker compose, git, git-lfs); skipping setup"
+    return
+  fi
+
   log "Updating apt package lists"
   export DEBIAN_FRONTEND=noninteractive
   "${SUDO[@]}" apt-get update
@@ -130,26 +163,81 @@ normalize_s3_uri() {
   [[ "$value" == s3://* ]] && echo "$value" || echo "s3://$value"
 }
 
-fetch_mbtiles() {
-  local bucket_var="$1" dest="$2" filename
-  filename="$(basename "$dest")"
+s3_bucket_name() {
+  local uri="${1#s3://}"
+  echo "${uri%%/*}"
+}
 
-  if [[ "$FORCE_DOWNLOAD" -eq 0 && -s "$dest" ]]; then
+s3_object_key() {
+  local uri="${1#s3://}"
+  case "$uri" in
+    */*) echo "${uri#*/}" ;;
+    *) echo "" ;;
+  esac
+}
+
+# Prints the epoch seconds of an S3 object's LastModified time on stdout, or
+# nothing (with a non-zero exit) if it can't be read -- e.g. missing object,
+# or an IAM policy that allows GetObject but not this HeadObject call.
+remote_mtime_epoch() {
+  local remote_uri="$1" last_modified
+  last_modified="$(aws s3api head-object \
+    --bucket "$(s3_bucket_name "$remote_uri")" \
+    --key "$(s3_object_key "$remote_uri")" \
+    --query 'LastModified' --output text 2>/dev/null)" || return 1
+  [[ -n "$last_modified" && "$last_modified" != "None" ]] || return 1
+  date -d "$last_modified" +%s
+}
+
+# check_remote=1 re-downloads whenever the S3 object's LastModified is newer
+# than the local file's mtime (used for RBT.mbtiles, which is updated
+# periodically). check_remote=0 just downloads once and leaves the local
+# file alone afterwards (used for TERRAIN.mbtiles, which never changes).
+# --force always re-downloads regardless of check_remote.
+fetch_mbtiles() {
+  local bucket_var="$1" dest="$2" check_remote="$3"
+  local filename prefix remote_uri need_download
+
+  filename="$(basename "$dest")"
+  prefix="$(normalize_s3_uri "${!bucket_var}")"
+  remote_uri="$prefix/$filename"
+  need_download=1
+
+  if [[ "$FORCE_DOWNLOAD" -eq 1 ]]; then
+    need_download=1
+  elif [[ ! -s "$dest" ]]; then
+    need_download=1
+  elif [[ "$check_remote" -eq 0 ]]; then
     log "$filename already present at $dest; skipping (use --force to re-download)"
-    return
+    need_download=0
+  else
+    local remote_epoch local_epoch
+    if remote_epoch="$(remote_mtime_epoch "$remote_uri")"; then
+      local_epoch="$(stat -c %Y "$dest")"
+      if [[ "$remote_epoch" -gt "$local_epoch" ]]; then
+        log "$filename in S3 was modified $(date -d "@$remote_epoch") (newer than the local copy); re-downloading"
+        need_download=1
+      else
+        log "$filename is already up to date with S3; skipping (use --force to re-download)"
+        need_download=0
+      fi
+    else
+      warn "Could not read S3 metadata for $remote_uri; re-downloading $filename to be safe"
+      need_download=1
+    fi
   fi
 
-  local prefix
-  prefix="$(normalize_s3_uri "${!bucket_var}")"
-  log "Downloading $filename from $prefix/$filename"
-  aws s3 cp "$prefix/$filename" "$dest"
+  [[ "$need_download" -eq 1 ]] || return 0
+
+  log "Downloading $filename from $remote_uri"
+  aws s3 cp "$remote_uri" "$dest"
 }
 
 download_mbtiles() {
   mkdir -p "$DATA_DIR"
 
-  fetch_mbtiles S3_BUCKET_RBT "$RBT_FILE"
-  fetch_mbtiles S3_BUCKET_TERRAIN "$TERRAIN_FILE"
+  fetch_mbtiles S3_BUCKET_RBT "$RBT_FILE" 1
+  fetch_mbtiles S3_BUCKET_TERRAIN "$TERRAIN_FILE" 0
 
   [[ -s "$RBT_FILE" ]] || die "$RBT_FILE is missing or empty after download"
   [[ -s "$TERRAIN_FILE" ]] || die "$TERRAIN_FILE is missing or empty after download"
@@ -170,19 +258,32 @@ fix_permissions() {
 # ---------------------------------------------------------------------------
 
 deploy_stack() {
+  local compose_files=(-f "$SCRIPT_DIR/docker-compose.yaml")
+  if [[ "$WITH_NGINX" -eq 1 ]]; then
+    compose_files+=(-f "$SCRIPT_DIR/docker-compose.override.yaml")
+  else
+    log "Deploying without nginx -- mapproxy and tileservergl publish their own ports directly"
+  fi
+
   log "Pulling images"
-  "${SUDO[@]}" docker compose -f "$SCRIPT_DIR/docker-compose.yaml" pull
+  "${SUDO[@]}" docker compose "${compose_files[@]}" pull
 
   log "Starting the RBT stack"
-  "${SUDO[@]}" docker compose -f "$SCRIPT_DIR/docker-compose.yaml" up -d
+  "${SUDO[@]}" docker compose "${compose_files[@]}" up -d
 
   log "Current service status"
-  "${SUDO[@]}" docker compose -f "$SCRIPT_DIR/docker-compose.yaml" ps
+  "${SUDO[@]}" docker compose "${compose_files[@]}" ps
 }
 
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
+RUN_INIT=0
+RUN_DOWNLOAD=0
+RUN_PERM=0
+RUN_DEPLOY=0
+STEP_SELECTED=0
 
 for arg in "$@"; do
   case "$arg" in
@@ -190,14 +291,41 @@ for arg in "$@"; do
       usage
       exit 0
       ;;
+    --init)
+      RUN_INIT=1
+      STEP_SELECTED=1
+      ;;
+    --download)
+      RUN_DOWNLOAD=1
+      STEP_SELECTED=1
+      ;;
+    --perm)
+      RUN_PERM=1
+      STEP_SELECTED=1
+      ;;
+    --deploy)
+      RUN_DEPLOY=1
+      STEP_SELECTED=1
+      ;;
     --force)
       FORCE_DOWNLOAD=1
+      ;;
+    --no-nginx)
+      WITH_NGINX=0
       ;;
     *)
       die "Unknown argument: $arg (use --help for usage)"
       ;;
   esac
 done
+
+# No step flags given -- run the whole thing.
+if [[ "$STEP_SELECTED" -eq 0 ]]; then
+  RUN_INIT=1
+  RUN_DOWNLOAD=1
+  RUN_PERM=1
+  RUN_DEPLOY=1
+fi
 
 if [[ $EUID -eq 0 ]]; then
   SUDO=()
@@ -213,15 +341,32 @@ fi
 [[ -f "$SCRIPT_DIR/docker-compose.yaml" ]] ||
   die "docker-compose.yaml not found next to this script -- run it from inside the agc-rbt repo checkout."
 
-: "${S3_BUCKET_RBT:?Set S3_BUCKET_RBT to the bucket (and optional prefix) containing RBT.mbtiles, e.g. S3_BUCKET_RBT=my-bucket}"
-: "${S3_BUCKET_TERRAIN:?Set S3_BUCKET_TERRAIN to the bucket (and optional prefix) containing TERRAIN.mbtiles}"
+if [[ "$RUN_DOWNLOAD" -eq 1 ]]; then
+  : "${S3_BUCKET_RBT:?Set S3_BUCKET_RBT to the bucket (and optional prefix) containing RBT.mbtiles, e.g. S3_BUCKET_RBT=my-bucket}"
+  : "${S3_BUCKET_TERRAIN:?Set S3_BUCKET_TERRAIN to the bucket (and optional prefix) containing TERRAIN.mbtiles}"
+fi
 
-install_prereqs
-download_mbtiles
-fix_permissions
-deploy_stack
+if [[ "$RUN_INIT" -eq 1 ]]; then
+  install_prereqs
+fi
+if [[ "$RUN_DOWNLOAD" -eq 1 ]]; then
+  download_mbtiles
+fi
+if [[ "$RUN_PERM" -eq 1 ]]; then
+  fix_permissions
+fi
+if [[ "$RUN_DEPLOY" -eq 1 ]]; then
+  deploy_stack
+fi
 
 log "Done."
-echo "  Logs:   docker compose logs -f"
-echo "  Health: curl -fsS http://localhost:\${NGINX_PORT:-8081}/healthz"
-echo "  Stop:   docker compose down --remove-orphans"
+if [[ "$RUN_DEPLOY" -eq 1 && "$WITH_NGINX" -eq 0 ]]; then
+  echo "  Logs:      docker compose -f docker-compose.yaml logs -f"
+  echo "  MapProxy:  curl -fsS http://localhost:\${MAPPROXY_PORT:-8082}/wmts/1.0.0/WMTSCapabilities.xml"
+  echo "  Tiles:     curl -fsS http://localhost:\${TILESERVER_PORT:-8080}/"
+  echo "  Stop:      docker compose -f docker-compose.yaml down --remove-orphans"
+else
+  echo "  Logs:   docker compose logs -f"
+  echo "  Health: curl -fsS http://localhost:\${NGINX_PORT:-8081}/healthz"
+  echo "  Stop:   docker compose down --remove-orphans"
+fi

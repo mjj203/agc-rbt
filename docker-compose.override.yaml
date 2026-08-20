@@ -1,0 +1,36 @@
+# Adds the optional nginx reverse-proxy/cache in front of mapproxy and
+# tileservergl. Docker Compose merges this file automatically whenever you
+# run `docker compose ...` without explicit -f flags, so plain
+# `docker compose up -d` includes nginx exactly as before.
+#
+# If you're fronting this stack with something else that speaks HTTP
+# directly to the backends -- e.g. an AWS ALB and/or CloudFront -- skip this
+# file by passing explicit -f flags (deploy.sh does this via --no-nginx):
+#
+#   docker compose -f docker-compose.yaml up -d
+#
+# See README.md for the ALB/CloudFront routing this replaces.
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "${BIND_ADDR:-0.0.0.0}:${NGINX_PORT:-8081}:8081"
+    volumes:
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/cache:/var/cache/nginx
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/run:/var/run/nginx
+    depends_on:
+      mapproxy:
+        condition: service_healthy
+    shm_size: ${NGINX_SHM_SIZE:-1gb}
+    restart: unless-stopped
+    networks:
+      - rbt-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8081/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

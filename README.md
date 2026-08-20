@@ -515,10 +515,10 @@ curl -sD - -o /dev/null "http://localhost:8081/mapproxy/wms?SERVICE=WMS&REQUEST=
 
 Expect: `HTTP/1.1 200 OK` with an `X-Cache-Status: MISS` header on this first request, since MapProxy has to fetch from TileserverGL and cache the result. Run the exact same command again -- the second response should show `X-Cache-Status: HIT`, confirming nginx served it from cache without asking MapProxy again. (Use `curl -sD -` rather than `curl -sI` here -- a HEAD request is a different request method and some WMS servers, MapProxy included, respond to it with an error rather than an actual capabilities-appropriate response.)
 
-If you'd rather check by eye: open `http://localhost:8081/tileservergl/` in a browser to see the TileserverGL style previews. Direct (bypassing nginx) access is also available:
+If you'd rather check by eye: open `http://localhost:8081/tileservergl/` in a browser to see the TileserverGL style previews. Direct (bypassing nginx entirely) access is also available on each service's own port:
 
 - TileserverGL: `http://localhost:8080`
-- MapProxy: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml` (backwards compatibility)
+- MapProxy: `http://localhost:8082/wmts/1.0.0/WMTSCapabilities.xml`
 
 
 
@@ -551,10 +551,12 @@ RBT exposes the following endpoints for GIS client connections through a unified
 
 #### 3. **Direct Access (Optional)**
 
-If you need to bypass nginx for any reason:
+MapProxy and TileserverGL each also publish their own port directly, bypassing nginx entirely (no `/mapproxy` or `/tileservergl` prefix, no nginx caching -- just the backend's native paths):
 
 - **TileserverGL**: `http://localhost:8080` (port 8080)
-- **MapProxy**: `http://localhost:8081/wms` or `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml` (backwards compatibility)
+- **MapProxy**: `http://localhost:8082/wms` or `http://localhost:8082/wmts/1.0.0/WMTSCapabilities.xml` (port 8082)
+
+This is also what powers the nginx-free deployment described in [Deploying Without nginx (AWS ALB / CloudFront)](#deploying-without-nginx-aws-alb--cloudfront) below.
 
 
 
@@ -607,6 +609,31 @@ Based on the [TileserverGL documentation](https://tileserver.readthedocs.io/en/l
 - Nginx provides additional caching and performance optimization
 - Easier to implement SSL/TLS for all services
 - Simplified proxy configuration for enterprise environments
+
+
+
+### Deploying Without nginx (AWS ALB / CloudFront)
+
+Everything above assumes the local nginx service is fronting MapProxy and TileserverGL. If you're deploying to AWS and would rather let an Application Load Balancer and/or CloudFront handle TLS termination, routing, and caching, you can skip nginx entirely -- MapProxy speaks plain HTTP (via uWSGI's built-in HTTP router) exactly like TileserverGL already does, so both are directly reachable by an ALB target group or CloudFront origin.
+
+**To deploy without nginx:**
+
+```bash
+docker compose -f docker-compose.yaml up -d
+# or, using deploy.sh:
+./deploy.sh --no-nginx
+```
+
+nginx normally comes from `docker-compose.override.yaml`, which Docker Compose merges in automatically whenever you run `docker compose ...` with no explicit `-f` flags -- that's why the plain `docker compose up -d` used everywhere else in this guide still includes it. Naming `-f docker-compose.yaml` explicitly (as above) opts out of that auto-merge.
+
+**What changes:**
+
+- MapProxy and TileserverGL each publish their own port directly (`MAPPROXY_PORT`, default `8082`; `TILESERVER_PORT`, default `8080` -- see `.env.example`), reached at their native paths with no `/mapproxy` or `/tileservergl` prefix (the same paths documented under [Direct Access](#3-direct-access-optional) above).
+- Neither ALB nor CloudFront rewrite request paths by default, so route by each backend's own path patterns instead of trying to recreate nginx's prefix scheme:
+  - MapProxy target/origin: `/wms*`, `/wmts/*`, `/service*`, `/demo/*`
+  - TileserverGL target/origin: `/styles/*`, `/data/*`, `/fonts.json`, `/styles.json`, `/`
+- You lose nginx's local HTTP response cache and gzip compression -- CloudFront's edge caching and compression are the intended replacement. MapProxy's own GeoPackage tile cache (`mapproxy/data`) is unaffected either way; it caches upstream TileserverGL tiles regardless of what's in front of MapProxy.
+- If a client needs the exact `example.org/mapproxy/...` / `example.org/tileservergl/...` URLs nginx currently produces, that rewrite has to happen at the ALB/CloudFront layer (e.g. a CloudFront Function) -- it isn't something this repo can do once nginx is out of the path.
 
 
 
