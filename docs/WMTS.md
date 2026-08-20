@@ -6,9 +6,14 @@ RBT provides two types of WMTS services:
 
 ## Deployment Endpoints
 
-### Local Docker Compose Deployment
+### Local Docker Compose Deployment (through nginx, port 8082)
 - **TileserverGL**: `http://localhost:8082/tileservergl/`
 - **MapProxy WMTS**: `http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
+
+Running without nginx (see the main README's "Deploying Without nginx" section)? Each
+service is reached directly instead, with no `/mapproxy` or `/tileservergl` prefix:
+- **TileserverGL**: `http://localhost:8080/`
+- **MapProxy WMTS**: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
 
 ### Production Deployment
 Replace `localhost:8082` with your production URL.
@@ -154,7 +159,7 @@ Visit the TileserverGL interface to see all available styles and their previews.
 ### Connection Failed
 - Ensure Docker containers are running: `docker ps`
 - Check if services are accessible in your browser
-- Verify firewall settings allow connections on port 8082
+- Verify firewall settings allow connections on port 8082 (or 8080/8081 if bypassing nginx)
 
 ### No Layers Available
 - Ensure map data has been downloaded and mounted
