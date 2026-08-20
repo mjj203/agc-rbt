@@ -13,7 +13,7 @@ services:
       - UWSGI_PROCESSES=${UWSGI_PROCESSES:-8}
       - UWSGI_THREADS=${UWSGI_THREADS:-4}
     ports:
-      - "${BIND_ADDR:-0.0.0.0}:${MAPPROXY_PORT:-8082}:5000"
+      - "${BIND_ADDR:-0.0.0.0}:${MAPPROXY_PORT:-8081}:5000"
     volumes:
       - ./mapproxy/config:/mapproxy/config:ro
       - ./mapproxy/data:/data
@@ -22,7 +22,7 @@ services:
     depends_on:
       tileservergl:
         condition: service_healthy
-    shm_size: ${MAPPROXY_SHM_SIZE:-512mb}
+    shm_size: ${MAPPROXY_SHM_SIZE:-2gb}
     restart: unless-stopped
     networks:
       - rbt-network

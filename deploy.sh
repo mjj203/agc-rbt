@@ -40,7 +40,7 @@ of the order given on the command line):
   --no-nginx  Deploy mapproxy and tileservergl only, without the local
               nginx reverse-proxy/cache -- use this when something else
               (e.g. an AWS ALB and/or CloudFront) talks HTTP directly to
-              mapproxy (port ${MAPPROXY_PORT:-8082}) and tileservergl
+              mapproxy (port ${MAPPROXY_PORT:-8081}) and tileservergl
               (port ${TILESERVER_PORT:-8080}) instead. Only relevant with
               --deploy, or with no step flags.
 
@@ -362,11 +362,11 @@ fi
 log "Done."
 if [[ "$RUN_DEPLOY" -eq 1 && "$WITH_NGINX" -eq 0 ]]; then
   echo "  Logs:      docker compose -f docker-compose.yaml logs -f"
-  echo "  MapProxy:  curl -fsS http://localhost:\${MAPPROXY_PORT:-8082}/wmts/1.0.0/WMTSCapabilities.xml"
+  echo "  MapProxy:  curl -fsS http://localhost:\${MAPPROXY_PORT:-8081}/wmts/1.0.0/WMTSCapabilities.xml"
   echo "  Tiles:     curl -fsS http://localhost:\${TILESERVER_PORT:-8080}/"
   echo "  Stop:      docker compose -f docker-compose.yaml down --remove-orphans"
 else
   echo "  Logs:   docker compose logs -f"
-  echo "  Health: curl -fsS http://localhost:\${NGINX_PORT:-8081}/healthz"
+  echo "  Health: curl -fsS http://localhost:\${NGINX_PORT:-8082}/healthz"
   echo "  Stop:   docker compose down --remove-orphans"
 fi
