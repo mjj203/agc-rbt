@@ -6,17 +6,17 @@ RBT provides two types of WMTS services:
 
 ## Deployment Endpoints
 
-### Local Docker Compose Deployment (through nginx, port 8081)
-- **TileserverGL**: `http://localhost:8081/tileservergl/`
-- **MapProxy WMTS**: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
+### Local Docker Compose Deployment (through nginx, port 8082)
+- **TileserverGL**: `http://localhost:8082/tileservergl/`
+- **MapProxy WMTS**: `http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
 
 Running without nginx (see the main README's "Deploying Without nginx" section)? Each
 service is reached directly instead, with no `/mapproxy` or `/tileservergl` prefix:
 - **TileserverGL**: `http://localhost:8080/`
-- **MapProxy WMTS**: `http://localhost:8082/wmts/1.0.0/WMTSCapabilities.xml`
+- **MapProxy WMTS**: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
 
 ### Production Deployment
-Replace `localhost:8081` with your production URL.
+Replace `localhost:8082` with your production URL.
 
 ---
 
@@ -30,8 +30,8 @@ Replace `localhost:8081` with your production URL.
 
 ### 3. Enter the connection details:
    - **Name**: `RBT MapProxy WMTS`
-   - **URL**: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
-   - For production, replace `localhost:8081` with your deployment URL
+   - **URL**: `http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
+   - For production, replace `localhost:8082` with your deployment URL
 
 ### 4. Click **OK**, then click **Connect**
 
@@ -44,8 +44,8 @@ Replace `localhost:8081` with your production URL.
 ### 1. In the **Catalog** pane, right-click **Servers** and select **Add WMTS Server**
 
 ### 2. Enter the Server URL:
-   - `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
-   - For production, replace `localhost:8081` with your deployment URL
+   - `http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
+   - For production, replace `localhost:8082` with your deployment URL
 
 ### 3. Click **OK** to save the connection
 
@@ -58,11 +58,11 @@ Replace `localhost:8081` with your production URL.
 ## From QGIS
 
 ### 1. Open the TileserverGL interface:
-   - Local: `http://localhost:8081/tileservergl/`
+   - Local: `http://localhost:8082/tileservergl/`
    - Production: Replace with your deployment URL
 
 ### 2. Find the style you want and right-click the **WMTS** button, then select **Copy Link Address**
-   - Example URL: `http://localhost:8081/tileservergl/styles/RBT-TOPO/wmts.xml`
+   - Example URL: `http://localhost:8082/tileservergl/styles/RBT-TOPO/wmts.xml`
 
 ### 3. In QGIS, right-click **WMS/WMTS** in the Browser panel and select **New Connection**
    ![WMTS CONNECTION](../images/wmts_connection.png)
@@ -97,7 +97,7 @@ Replace `localhost:8081` with your production URL.
 ## From ArcGIS Pro
 
 ### 1. Open the TileserverGL interface:
-   - Local: `http://localhost:8081/tileservergl/`
+   - Local: `http://localhost:8082/tileservergl/`
    - Production: Replace with your deployment URL
 
 ### 2. Find the style you want and right-click the **WMTS** button, then select **Copy Link Address**
@@ -159,7 +159,7 @@ Visit the TileserverGL interface to see all available styles and their previews.
 ### Connection Failed
 - Ensure Docker containers are running: `docker ps`
 - Check if services are accessible in your browser
-- Verify firewall settings allow connections on port 8081 (or 8080/8082 if bypassing nginx)
+- Verify firewall settings allow connections on port 8082 (or 8080/8081 if bypassing nginx)
 
 ### No Layers Available
 - Ensure map data has been downloaded and mounted
