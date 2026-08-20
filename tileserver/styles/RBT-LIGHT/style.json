@@ -1258,32 +1258,8 @@
           15,
           0
         ],
-        "hillshade-shadow-color": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          "rgba(174,174,174,1)",
-          15,
-          "rgba(174,174,174,0)"
-        ],
-        "hillshade-highlight-color": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          "rgba(255,255,255,1)",
-          15,
-          "rgba(255,255,255,0)"
-        ],
+        "hillshade-shadow-color": "rgba(174,174,174,1)",
+        "hillshade-highlight-color": "rgba(255,255,255,1)",
         "hillshade-accent-color": [
           "interpolate",
           [
