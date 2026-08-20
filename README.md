@@ -492,48 +492,48 @@ docker compose ps
 Expect: all three services (`mapproxy`, `nginx`, `tileservergl`) `running`, moving to `healthy` once their healthchecks pass. TileserverGL can take a few minutes to report healthy while it opens the MBTiles files -- this is normal.
 
 ```bash
-curl -fsS http://localhost:8081/healthz
+curl -fsS http://localhost:8082/healthz
 ```
 
 Expect: `ok`
 
 ```bash
-curl -fsS http://localhost:8081/tileservergl/styles.json
+curl -fsS http://localhost:8082/tileservergl/styles.json
 ```
 
 Expect: a JSON array listing `RBT-TOPO`, `RBT-LIGHT`, `RBT-BROWN`, `RBT-GRAY`, `RBT-DARK`, and `RBT-OVERLAY`.
 
 ```bash
-curl -fsS "http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml" | head -20
+curl -fsS "http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml" | head -20
 ```
 
 Expect: an XML document starting with `<Capabilities` that lists layers such as `rbt_topo_3857`, `rbt_dark_3857`, and `rbt_overlay_3857`.
 
 ```bash
-curl -sD - -o /dev/null "http://localhost:8081/mapproxy/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=rbt_topo_3857&STYLES=&SRS=EPSG:3857&BBOX=-20037508.34,-20037508.34,20037508.34,20037508.34&WIDTH=256&HEIGHT=256&FORMAT=image/png"
+curl -sD - -o /dev/null "http://localhost:8082/mapproxy/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=rbt_topo_3857&STYLES=&SRS=EPSG:3857&BBOX=-20037508.34,-20037508.34,20037508.34,20037508.34&WIDTH=256&HEIGHT=256&FORMAT=image/png"
 ```
 
 Expect: `HTTP/1.1 200 OK` with an `X-Cache-Status: MISS` header on this first request, since MapProxy has to fetch from TileserverGL and cache the result. Run the exact same command again -- the second response should show `X-Cache-Status: HIT`, confirming nginx served it from cache without asking MapProxy again. (Use `curl -sD -` rather than `curl -sI` here -- a HEAD request is a different request method and some WMS servers, MapProxy included, respond to it with an error rather than an actual capabilities-appropriate response.)
 
-If you'd rather check by eye: open `http://localhost:8081/tileservergl/` in a browser to see the TileserverGL style previews. Direct (bypassing nginx entirely) access is also available on each service's own port:
+If you'd rather check by eye: open `http://localhost:8082/tileservergl/` in a browser to see the TileserverGL style previews. Direct (bypassing nginx entirely) access is also available on each service's own port:
 
 - TileserverGL: `http://localhost:8080`
-- MapProxy: `http://localhost:8082/wmts/1.0.0/WMTSCapabilities.xml`
+- MapProxy: `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml`
 
 
 
 ## Connecting GIS Clients to RBT
 
-RBT provides multiple ways for GIS clients (like QGIS, ArcGIS, or Global Mapper) to connect and access map data. With the unified nginx routing, all services are now accessible through port 8081.
+RBT provides multiple ways for GIS clients (like QGIS, ArcGIS, or Global Mapper) to connect and access map data. With the unified nginx routing, all services are now accessible through port 8082.
 
 ### Available Service Endpoints
 
-RBT exposes the following endpoints for GIS client connections through a unified nginx proxy on port 8081:
+RBT exposes the following endpoints for GIS client connections through a unified nginx proxy on port 8082:
 
 #### 1. **MapProxy Services** - Best for Standard GIS Clients
 
-- **WMS**: `http://localhost:8081/mapproxy/wms`
-- **WMTS**: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
+- **WMS**: `http://localhost:8082/mapproxy/wms`
+- **WMTS**: `http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
 - These provide cached raster tiles in standard OGC formats
 - Compatible with virtually all GIS software
 
@@ -541,11 +541,11 @@ RBT exposes the following endpoints for GIS client connections through a unified
 
 #### 2. **TileserverGL Services** - For Modern GIS Clients
 
-- **Web Interface**: `http://localhost:8081/tileservergl/`
-- **WMTS per style**: `http://localhost:8081/tileservergl/styles/{style-id}/wmts.xml`
-- **TileJSON**: `http://localhost:8081/tileservergl/styles/{style-id}.json`
-- **Vector Tiles**: `http://localhost:8081/tileservergl/data/{data-id}/{z}/{x}/{y}.pbf`
-- **Raster Tiles**: `http://localhost:8081/tileservergl/styles/{style-id}/{z}/{x}/{y}.png`
+- **Web Interface**: `http://localhost:8082/tileservergl/`
+- **WMTS per style**: `http://localhost:8082/tileservergl/styles/{style-id}/wmts.xml`
+- **TileJSON**: `http://localhost:8082/tileservergl/styles/{style-id}.json`
+- **Vector Tiles**: `http://localhost:8082/tileservergl/data/{data-id}/{z}/{x}/{y}.pbf`
+- **Raster Tiles**: `http://localhost:8082/tileservergl/styles/{style-id}/{z}/{x}/{y}.png`
 
 
 
@@ -554,7 +554,7 @@ RBT exposes the following endpoints for GIS client connections through a unified
 MapProxy and TileserverGL each also publish their own port directly, bypassing nginx entirely (no `/mapproxy` or `/tileservergl` prefix, no nginx caching -- just the backend's native paths):
 
 - **TileserverGL**: `http://localhost:8080` (port 8080)
-- **MapProxy**: `http://localhost:8082/wms` or `http://localhost:8082/wmts/1.0.0/WMTSCapabilities.xml` (port 8082)
+- **MapProxy**: `http://localhost:8081/wms` or `http://localhost:8081/wmts/1.0.0/WMTSCapabilities.xml` (port 8081)
 
 This is also what powers the nginx-free deployment described in [Deploying Without nginx (AWS ALB / CloudFront)](#deploying-without-nginx-aws-alb--cloudfront) below.
 
@@ -568,14 +568,14 @@ For detailed step-by-step instructions with screenshots on connecting QGIS and A
 
 **MapProxy (Recommended for Performance):**
 
-- WMS: `http://localhost:8081/mapproxy/wms`
-- WMTS: `http://localhost:8081/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
+- WMS: `http://localhost:8082/mapproxy/wms`
+- WMTS: `http://localhost:8082/mapproxy/wmts/1.0.0/WMTSCapabilities.xml`
 
 **TileserverGL (For Style Options):**
 
-- Web Interface: `http://localhost:8081/tileservergl/`
-- WMTS per style: `http://localhost:8081/tileservergl/styles/{style-id}/wmts.xml`
-- Vector Tiles: `http://localhost:8081/tileservergl/data/{data-id}/{z}/{x}/{y}.pbf`
+- Web Interface: `http://localhost:8082/tileservergl/`
+- WMTS per style: `http://localhost:8082/tileservergl/styles/{style-id}/wmts.xml`
+- Vector Tiles: `http://localhost:8082/tileservergl/data/{data-id}/{z}/{x}/{y}.pbf`
 
 
 
@@ -583,11 +583,11 @@ For detailed step-by-step instructions with screenshots on connecting QGIS and A
 
 Based on the [TileserverGL documentation](https://tileserver.readthedocs.io/en/latest/endpoints.html), you can also access through the unified nginx proxy:
 
-- **List all styles**: `http://localhost:8081/tileservergl/styles.json`
-- **Style details**: `http://localhost:8081/tileservergl/styles/{style-id}/style.json`
-- **Available fonts**: `http://localhost:8081/tileservergl/fonts.json`
-- **Static images**: `http://localhost:8081/tileservergl/styles/{style-id}/static/{lon},{lat},{zoom}/{width}x{height}.png`
-- **Data inspection**: `http://localhost:8081/tileservergl/data/{data-id}/{z}/{x}/{y}.geojson`
+- **List all styles**: `http://localhost:8082/tileservergl/styles.json`
+- **Style details**: `http://localhost:8082/tileservergl/styles/{style-id}/style.json`
+- **Available fonts**: `http://localhost:8082/tileservergl/fonts.json`
+- **Static images**: `http://localhost:8082/tileservergl/styles/{style-id}/static/{lon},{lat},{zoom}/{width}x{height}.png`
+- **Data inspection**: `http://localhost:8082/tileservergl/data/{data-id}/{z}/{x}/{y}.geojson`
 
 
 
@@ -602,7 +602,7 @@ Based on the [TileserverGL documentation](https://tileserver.readthedocs.io/en/l
   - You need the latest style directly from the source
   - You're using modern GIS clients that support vector tiles
 
-**Benefits of Unified Nginx Routing (Port 8081):**
+**Benefits of Unified Nginx Routing (Port 8082):**
 
 - Single port for all services simplifies firewall rules
 - Consistent URL structure for all endpoints
@@ -628,7 +628,7 @@ nginx normally comes from `docker-compose.override.yaml`, which Docker Compose m
 
 **What changes:**
 
-- MapProxy and TileserverGL each publish their own port directly (`MAPPROXY_PORT`, default `8082`; `TILESERVER_PORT`, default `8080` -- see `.env.example`), reached at their native paths with no `/mapproxy` or `/tileservergl` prefix (the same paths documented under [Direct Access](#3-direct-access-optional) above).
+- MapProxy and TileserverGL each publish their own port directly (`MAPPROXY_PORT`, default `8081`; `TILESERVER_PORT`, default `8080` -- see `.env.example`), reached at their native paths with no `/mapproxy` or `/tileservergl` prefix (the same paths documented under [Direct Access](#3-direct-access-optional) above).
 - Neither ALB nor CloudFront rewrite request paths by default, so route by each backend's own path patterns instead of trying to recreate nginx's prefix scheme:
   - MapProxy target/origin: `/wms*`, `/wmts/*`, `/service*`, `/demo/*`
   - TileserverGL target/origin: `/styles/*`, `/data/*`, `/fonts.json`, `/styles.json`, `/`

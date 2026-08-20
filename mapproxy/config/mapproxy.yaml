@@ -18,6 +18,15 @@ layers:
   - name: rbt_overlay_3857
     title: rbt_overlay_3857
     sources: [rbt_overlay_3857_cache]
+  - name: rbt_topo_3395
+    title: rbt_topo_3395
+    sources: [rbt_topo_3395_cache]
+  - name: rbt_dark_3395
+    title: rbt_dark_3395
+    sources: [rbt_dark_3395_cache]
+  - name: rbt_overlay_3395
+    title: rbt_overlay_3395
+    sources: [rbt_overlay_3395_cache]
 
 caches:
   rbt_topo_3857_cache:
@@ -26,49 +35,61 @@ caches:
     request_format: image/png
     minimize_meta_requests: true
     grids: [webmercator]
-    cache:
-      type: geopackage
-      levels: true
-      directory: /data/geopackage/topo3857
-      table_name: topo_3857
+    disable_storage: true
   rbt_dark_3857_cache:
     sources: [rbt_dark_source]
     format: mixed
     request_format: image/png
     minimize_meta_requests: true
     grids: [webmercator]
-    cache:
-      type: geopackage
-      levels: true
-      directory: /data/geopackage/dark3857
-      table_name: dark_3857
+    disable_storage: true
   rbt_overlay_3857_cache:
     sources: [rbt_overlay_source]
     format: mixed
     request_format: image/png
     minimize_meta_requests: true
     grids: [webmercator]
-    cache:
-      type: geopackage
-      levels: true
-      directory: /data/geopackage/overlay3857
-      table_name: overlay_3857
+    disable_storage: true
+  # EPSG:3395 has no native tile source -- these reproject on the fly from
+  # the corresponding EPSG:3857 cache above (MapProxy's "cache as source"
+  # feature), rather than fetching TileserverGL a second time.
+  rbt_topo_3395_cache:
+    sources: [rbt_topo_3857_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [world_mercator]
+    disable_storage: true
+  rbt_dark_3395_cache:
+    sources: [rbt_dark_3857_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [world_mercator]
+    disable_storage: true
+  rbt_overlay_3395_cache:
+    sources: [rbt_overlay_3857_cache]
+    format: mixed
+    request_format: image/png
+    minimize_meta_requests: true
+    grids: [world_mercator]
+    disable_storage: true
 
 sources:
   rbt_topo_source:
     type: tile
     # Local TileserverGL container, EPSG:3857 (Web Mercator)
-    url: http://tileservergl:8080/styles/RBT-TOPO/%(z)s/%(x)s/%(y)s.png
+    url: http://tileservergl:8080/styles/RBT-TOPO/512/%(z)s/%(x)s/%(y)s.png
     grid: webmercator
   rbt_dark_source:
     type: tile
     # Local TileserverGL container, EPSG:3857 (Web Mercator)
-    url: http://tileservergl:8080/styles/RBT-DARK/%(z)s/%(x)s/%(y)s.png
+    url: http://tileservergl:8080/styles/RBT-DARK/512/%(z)s/%(x)s/%(y)s.png
     grid: webmercator
   rbt_overlay_source:
     type: tile
     # Local TileserverGL container, EPSG:3857 (Web Mercator)
-    url: http://tileservergl:8080/styles/RBT-OVERLAY/%(z)s/%(x)s/%(y)s.png
+    url: http://tileservergl:8080/styles/RBT-OVERLAY/512/%(z)s/%(x)s/%(y)s.png
     grid: webmercator
     transparent: true
 
@@ -77,7 +98,7 @@ grids:
     base: GLOBAL_WEBMERCATOR
     srs: EPSG:3857
     origin: nw
-    tile_size: [256, 256]
+    tile_size: [512, 512]
     bbox:
       [
         -20037508.342789244,
@@ -85,6 +106,15 @@ grids:
         20037508.342789244,
         20037508.342789244
       ]
+  # EPSG:3395 (World Mercator) is ellipsoidal, not spherical like EPSG:3857,
+  # so it has no GLOBAL_* base grid to derive from -- bbox_srs lets MapProxy
+  # compute the native bbox from the EPSG:3395 valid area (80S-84N) itself.
+  world_mercator:
+    srs: EPSG:3395
+    origin: nw
+    tile_size: [512, 512]
+    bbox: [-180, -80, 180, 84]
+    bbox_srs: EPSG:4326
 
 globals:
   http:
