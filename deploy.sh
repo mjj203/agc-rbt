@@ -15,6 +15,7 @@ RBT_FILE="$DATA_DIR/RBT.mbtiles"
 TERRAIN_FILE="$DATA_DIR/TERRAIN.mbtiles"
 
 FORCE_DOWNLOAD=0
+WITH_NGINX=1
 
 log()  { printf '\n\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33mWARNING:\033[0m %s\n' "$*" >&2; }
@@ -36,6 +37,12 @@ of the order given on the command line):
   --deploy    Run `docker compose up -d`.
   --force     Re-download mbtiles even if already present (only relevant
               together with --download, or with no step flags).
+  --no-nginx  Deploy mapproxy and tileservergl only, without the local
+              nginx reverse-proxy/cache -- use this when something else
+              (e.g. an AWS ALB and/or CloudFront) talks HTTP directly to
+              mapproxy (port ${MAPPROXY_PORT:-8082}) and tileservergl
+              (port ${TILESERVER_PORT:-8080}) instead. Only relevant with
+              --deploy, or with no step flags.
 
 Usage:
   S3_BUCKET_RBT=my-bucket S3_BUCKET_TERRAIN=my-other-bucket ./deploy.sh
@@ -43,6 +50,7 @@ Usage:
   ./deploy.sh --download --perm     # just refresh data + permissions
   ./deploy.sh --deploy              # just (re)start the stack
   ./deploy.sh --force               # full run, force re-download
+  ./deploy.sh --no-nginx            # full run, skip the local nginx
 
 Run this as your normal (non-root) user, not via `sudo` -- it escalates
 internally with sudo only for the specific steps that need root (apt,
@@ -250,14 +258,21 @@ fix_permissions() {
 # ---------------------------------------------------------------------------
 
 deploy_stack() {
+  local compose_files=(-f "$SCRIPT_DIR/docker-compose.yaml")
+  if [[ "$WITH_NGINX" -eq 1 ]]; then
+    compose_files+=(-f "$SCRIPT_DIR/docker-compose.override.yaml")
+  else
+    log "Deploying without nginx -- mapproxy and tileservergl publish their own ports directly"
+  fi
+
   log "Pulling images"
-  "${SUDO[@]}" docker compose -f "$SCRIPT_DIR/docker-compose.yaml" pull
+  "${SUDO[@]}" docker compose "${compose_files[@]}" pull
 
   log "Starting the RBT stack"
-  "${SUDO[@]}" docker compose -f "$SCRIPT_DIR/docker-compose.yaml" up -d
+  "${SUDO[@]}" docker compose "${compose_files[@]}" up -d
 
   log "Current service status"
-  "${SUDO[@]}" docker compose -f "$SCRIPT_DIR/docker-compose.yaml" ps
+  "${SUDO[@]}" docker compose "${compose_files[@]}" ps
 }
 
 # ---------------------------------------------------------------------------
@@ -294,6 +309,9 @@ for arg in "$@"; do
       ;;
     --force)
       FORCE_DOWNLOAD=1
+      ;;
+    --no-nginx)
+      WITH_NGINX=0
       ;;
     *)
       die "Unknown argument: $arg (use --help for usage)"
@@ -342,6 +360,13 @@ if [[ "$RUN_DEPLOY" -eq 1 ]]; then
 fi
 
 log "Done."
-echo "  Logs:   docker compose logs -f"
-echo "  Health: curl -fsS http://localhost:\${NGINX_PORT:-8081}/healthz"
-echo "  Stop:   docker compose down --remove-orphans"
+if [[ "$RUN_DEPLOY" -eq 1 && "$WITH_NGINX" -eq 0 ]]; then
+  echo "  Logs:      docker compose -f docker-compose.yaml logs -f"
+  echo "  MapProxy:  curl -fsS http://localhost:\${MAPPROXY_PORT:-8082}/wmts/1.0.0/WMTSCapabilities.xml"
+  echo "  Tiles:     curl -fsS http://localhost:\${TILESERVER_PORT:-8080}/"
+  echo "  Stop:      docker compose -f docker-compose.yaml down --remove-orphans"
+else
+  echo "  Logs:   docker compose logs -f"
+  echo "  Health: curl -fsS http://localhost:\${NGINX_PORT:-8081}/healthz"
+  echo "  Stop:   docker compose down --remove-orphans"
+fi
